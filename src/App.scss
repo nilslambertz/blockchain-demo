@@ -1,9 +1,11 @@
-$default-background-color: #1c2326;
-$default-text-color: #c4c4c4;
+@import "variables";
 
 .App {
   height: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
   background-color: $default-background-color;
-  color: $default-text-color;
+  color: $default-color;
 }
