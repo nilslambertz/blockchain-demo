@@ -1,0 +1,9 @@
+$default-background-color: #1c2326;
+$default-text-color: #c4c4c4;
+
+.App {
+  height: 100%;
+  width: 100%;
+  background-color: $default-background-color;
+  color: $default-text-color;
+}
