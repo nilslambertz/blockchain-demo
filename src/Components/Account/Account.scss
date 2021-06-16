@@ -1,3 +1,25 @@
 .account {
-  background-color: red;
+  margin-bottom: 10px;
+}
+
+.accountTable {
+  border: 1px solid white;
+  width: 700px;
+  table-layout:fixed;
+  border-collapse: collapse;
+}
+
+.accountTable tr:first-child {
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+.accountTable td {
+  padding: 10px;
+  border-right: 1px solid white;
+}
+
+.accountTable .privateKey, .accountTable .address {
+  width: 250px;
+  overflow-wrap: break-word;
+  font-size: 13px;
 }
