@@ -3,12 +3,13 @@
 .upperList {
   display: inline-block;
   height: 40%;
-  width: 50%;
+  flex-grow: 1;
   padding: 10px;
   border-bottom: 1px solid $default-color;
+  border-right: 1px solid $default-color;
 
-  &:first-child {
-    border-right: 1px solid $default-color;
+  &:last-child {
+    border-right: none;
   }
 }
 

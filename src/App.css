@@ -8,4 +8,9 @@
   color: #c4c4c4;
 }
 
+#upperContent {
+  width: 100%;
+  display: flex;
+}
+
 /*# sourceMappingURL=App.css.map */

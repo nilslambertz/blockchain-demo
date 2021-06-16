@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {accountArray} from "./Utils/Interfaces";
+import {account, accountArray} from "./Utils/Interfaces";
+import Account from "./Components/Account/Account";
 
 interface AppProps {
 }
@@ -24,12 +25,17 @@ class App extends React.Component<AppProps, AppState> {
 
     render() {
         return <div className="App">
-            <UpperList
-                title={"accounts"}
-            />
-            <UpperList
-                title={"transactions"}
-            />
+            <div id={"upperContent"}>
+                <UpperList
+                    title={"accounts"}
+                />
+                <UpperList
+                    title={"transactions"}
+                />
+                <UpperList
+                    title={"settings"}
+                />
+            </div>
         </div>;
     };
 }

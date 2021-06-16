@@ -1,12 +1,13 @@
 .upperList {
   display: inline-block;
   height: 40%;
-  width: 50%;
+  flex-grow: 1;
   padding: 10px;
   border-bottom: 1px solid #c4c4c4;
-}
-.upperList:first-child {
   border-right: 1px solid #c4c4c4;
+}
+.upperList:last-child {
+  border-right: none;
 }
 
 .upperList .upperListTitle {
