@@ -1,15 +1,13 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
+import {accountArray} from "./Utils/Interfaces";
 
 interface AppProps {
 }
 
-interface accountArray {
-    [index: number]: {id: number, privateKey: string, publicKey: string, balance: number}
-}
-
 interface AppState {
+    idCount: number,
     accounts: accountArray,
 }
 
@@ -18,6 +16,7 @@ class App extends React.Component<AppProps, AppState> {
         super(props);
 
         this.state = {
+            idCount: 0,
             accounts: []
         };
     }
