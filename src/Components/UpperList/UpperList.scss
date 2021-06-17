@@ -3,8 +3,8 @@
 .upperListContainer {
   display: flex;
   flex-direction: column;
-  height: 40%;
-  width: 50%;
+  height: calc(100% - 20px);
+  flex: 1;
   min-width: 600px;
   padding: 10px;
   border-bottom: 1px solid $default-color;

@@ -78,6 +78,12 @@ class App extends React.Component<AppProps, AppState> {
                     addFunction={this.addTransaction}
                 />
             </div>
+            <div id={"blockchainContent"}>
+                test
+            </div>
+            <div id={"footer"}>
+                footer
+            </div>
         </div>;
     };
 }
