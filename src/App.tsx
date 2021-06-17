@@ -44,7 +44,6 @@ class App extends React.Component<AppProps, AppState> {
         let arr : account[] = this.state.accounts;
         arr.push(a);
         this.setState({accounts: arr});
-        console.log(a);
     }
 
     render() {
@@ -53,12 +52,11 @@ class App extends React.Component<AppProps, AppState> {
                 <UpperList
                     title={"accounts"}
                     accounts={this.state.accounts}
+                    className={"accountListContainer"}
                 />
                 <UpperList
                     title={"transactions"}
-                />
-                <UpperList
-                    title={"settings"}
+                    className={"transactionListContainer"}
                 />
             </div>
         </div>;
