@@ -19,6 +19,8 @@ class UpperList extends React.Component<UpperListProps, {}> {
         if(this.props.accounts) {
             printFunction = this.printAccountList;
             arg = this.props.accounts;
+        } else if(this.props.transactions) {
+
         }
 
         let addFunction = this.props.addFunction;
