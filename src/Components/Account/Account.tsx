@@ -12,11 +12,11 @@ class Account extends React.Component<AccountProps, {}> {
             <table className={"accountTable"}>
                 <tr>
                     <td className={"id"}>{this.props.account.id}</td>
-                    <td className={"privateKey"}>{this.props.account.privateKey}</td>
-                    <td className={"address"}>{this.props.account.address}</td>
+                    <td className={"privateKey smallText"}>{this.props.account.privateKey}</td>
+                    <td className={"address smallText"}>{this.props.account.address}</td>
                     <td className={"balance"}>{this.props.account.balance}</td>
                 </tr>
-                <tr>
+                <tr className={"description"}>
                     <td>ID</td>
                     <td>Private Key</td>
                     <td>Address</td>

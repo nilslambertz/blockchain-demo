@@ -4,22 +4,38 @@
 
 .accountTable {
   border: 1px solid white;
-  width: 700px;
-  table-layout:fixed;
+  width: 100%;
+  min-width: 600px;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
 .accountTable tr:first-child {
-  border-bottom: 1px solid rgba(255,255,255,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .accountTable td {
-  padding: 10px;
+  padding: 10px 10px 3px;
   border-right: 1px solid white;
 }
 
+.accountTable .description td {
+  padding-top: 1px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  padding-bottom: 5px;
+}
+
+.accountTable .id, .accountTable .balance {
+  width: 100px;
+  font-size: 130%;
+}
+
 .accountTable .privateKey, .accountTable .address {
-  width: 250px;
+  min-width: 200px;
+}
+
+.accountTable .smallText {
   overflow-wrap: break-word;
   font-size: 13px;
 }
