@@ -2,6 +2,7 @@ import React from 'react';
 import './UpperList.scss';
 import {account, settings, transcation} from "../../Utils/Interfaces";
 import Account from "../Account/Account";
+import Transaction from "../Transaction/Transaction";
 
 interface UpperListProps {
     title: string;
@@ -20,7 +21,8 @@ class UpperList extends React.Component<UpperListProps, {}> {
             printFunction = this.printAccountList;
             arg = this.props.accounts;
         } else if(this.props.transactions) {
-
+            printFunction = this.printTransactionList;
+            arg = this.props.transactions
         }
 
         let addFunction = this.props.addFunction;
@@ -42,6 +44,12 @@ class UpperList extends React.Component<UpperListProps, {}> {
     printAccountList(accounts : account[]) {
         return accounts.map(function (value, index, array) {
             return <Account account={value} key={value.id} />;
+        });
+    }
+
+    printTransactionList(transactions : transcation[]) {
+        return transactions.map(function (value, index, array) {
+            return <Transaction transaction={value} key={value.id} />;
         });
     }
 }
