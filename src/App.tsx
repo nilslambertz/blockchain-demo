@@ -26,7 +26,7 @@ class App extends React.Component<AppProps, AppState> {
         };
     }
 
-    addAccount = (random?: boolean) : void => {
+    addAccount = () : void => {
         let keys = generateKeyAddressPair();
         let count = this.state.idCount;
 
@@ -37,9 +37,7 @@ class App extends React.Component<AppProps, AppState> {
         }
         this.setState({idCount: count + 1})
 
-        if(random) {
-            a.balance = Math.floor(Math.random() * 1001);
-        }
+        a.balance = Math.floor(Math.random() * 1001);
 
         let arr : account[] = this.state.accounts;
         arr.push(a);
@@ -48,11 +46,12 @@ class App extends React.Component<AppProps, AppState> {
 
     render() {
         return <div className="App">
-            <div id={"upperContent"} onClick={() => this.addAccount(true)}>
+            <div id={"upperContent"}>
                 <UpperList
                     title={"accounts"}
                     accounts={this.state.accounts}
                     className={"accountListContainer"}
+                    addFunction={this.addAccount}
                 />
                 <UpperList
                     title={"transactions"}
