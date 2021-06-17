@@ -39,7 +39,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
 
     printAccountList(accounts : account[]) {
         return accounts.map(function (value, index, array) {
-            return <Account account={value} />;
+            return <Account account={value} key={value.id} />;
         });
     }
 }
