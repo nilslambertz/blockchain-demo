@@ -24,3 +24,11 @@ export interface keyAddressPair {
     privateKey: string,
     address: string
 }
+
+export interface block {
+    prevHash: string,
+    transactions: transcation[],
+    nonce?: number,
+    hash?: string,
+    valid: boolean
+}
