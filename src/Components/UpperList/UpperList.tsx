@@ -9,6 +9,7 @@ interface UpperListProps {
     transactions?: transcation[],
     settings?: settings[],
     className?: string
+    addFunction?: any
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
@@ -20,9 +21,19 @@ class UpperList extends React.Component<UpperListProps, {}> {
             arg = this.props.accounts;
         }
 
+        let addFunction = this.props.addFunction;
+        if(!addFunction) addFunction = () => {console.log("Error: function is not defined")};
+
         return <div className={"upperListContainer " + this.props.className}>
             <div className={"upperListTitle"}>{this.props.title}</div>
-            <div className={"upperList"}>{printFunction(arg)}</div>
+            <div className={"upperList"}>
+                {printFunction(arg)}
+                <div className={"addButtonContainer"}>
+                    <div className={"addButton"} onClick={() => addFunction()}>
+                        Add
+                    </div>
+                </div>
+            </div>
         </div>;
     }
 
