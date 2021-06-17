@@ -1,9 +1,10 @@
 @import "../../Utils/variables";
 
-.upperList {
+.upperListContainer {
   display: inline-block;
   height: 40%;
-  flex-grow: 1;
+  width: 50%;
+  min-width: 600px;
   padding: 10px;
   border-bottom: 1px solid $default-color;
   border-right: 1px solid $default-color;
@@ -13,14 +14,14 @@
   }
 }
 
-.upperList .upperListTitle {
+.upperListContainer .upperListTitle {
   width: 100%;
   font-size: 27px;
   text-align: center;
   margin-bottom: 10px;
 }
 
-.upperList .listError {
+.upperListContainer .listError {
   font-size: 30px;
   text-align: center;
   color: red;

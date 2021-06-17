@@ -7,13 +7,12 @@ interface UpperListProps {
     title: string;
     accounts?: account[],
     transactions?: transcation[],
-    settings?: settings[]
+    settings?: settings[],
+    className?: string
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
     render() {
-        console.log("XDDD");
-
         let printFunction : any = (err : any) => {return <div className={"listError"}>{err}</div>};
         let arg : any = "Error";
         if(this.props.accounts) {
@@ -21,14 +20,13 @@ class UpperList extends React.Component<UpperListProps, {}> {
             arg = this.props.accounts;
         }
 
-        return <div className={"upperList"}>
+        return <div className={"upperListContainer " + this.props.className}>
             <div className={"upperListTitle"}>{this.props.title}</div>
-            <div>{printFunction(arg)}</div>
+            <div className={"upperList"}>{printFunction(arg)}</div>
         </div>;
     }
 
     printAccountList(accounts : account[]) {
-        console.log("DDXCSADC");
         return accounts.map(function (value, index, array) {
             return <Account account={value} />;
         });
