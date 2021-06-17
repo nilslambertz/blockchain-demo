@@ -2,18 +2,15 @@ import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
 import {account, transcation} from "./Utils/Interfaces";
-import Account from "./Components/Account/Account";
 import {generateKeyAddressPair} from "./Utils/Functions";
-
-const crypto = require('crypto');
-const primeLength = 120;
 
 interface AppProps {
 }
 
 interface AppState {
-    idCount: number,
+    accountIdCount: number,
     accounts: account[],
+    transactionIdCount: number,
     unusedTransactions: transcation[]
 }
 
@@ -22,22 +19,23 @@ class App extends React.Component<AppProps, AppState> {
         super(props);
 
         this.state = {
-            idCount: 0,
+            accountIdCount: 0,
             accounts: [],
+            transactionIdCount: 0,
             unusedTransactions: []
         };
     }
 
     addAccount = () : void => {
         let keys = generateKeyAddressPair();
-        let count = this.state.idCount;
+        let count = this.state.accountIdCount;
 
         let a : account = {
             id: count,
             privateKey: keys.privateKey,
             address: keys.address
         }
-        this.setState({idCount: count + 1})
+        this.setState({accountIdCount: count + 1});
 
         a.balance = Math.floor(Math.random() * 1001);
 
@@ -47,7 +45,20 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     addTransaction = () : void => {
-        console.log("lo");
+        let count = this.state.transactionIdCount;
+
+        let t : transcation = {
+            id: count,
+            from: "me",
+            to: "u uwu",
+            amount: 187,
+            signature: "alge"
+        }
+        this.setState({transactionIdCount: count + 1});
+
+        let arr : transcation[] = this.state.unusedTransactions;
+        arr.push(t);
+        this.setState({unusedTransactions: arr});
     }
 
 
