@@ -11,6 +11,28 @@
   border-right: none;
 }
 
+.upperListContainer {
+  overflow: auto;
+}
+
+.upperListContainer .upperList .addButtonContainer {
+  text-align: center;
+}
+
+.addButtonContainer .addButton {
+  background-color: green;
+  border-radius: 2px;
+  padding: 10px 50px;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+.addButtonContainer .addButton:hover {
+  background-color: #009900;
+}
+
 .upperListContainer .upperListTitle {
   width: 100%;
   font-size: 27px;
