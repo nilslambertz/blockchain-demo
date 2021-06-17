@@ -28,10 +28,10 @@ class UpperList extends React.Component<UpperListProps, {}> {
             <div className={"upperListTitle"}>{this.props.title}</div>
             <div className={"upperList"}>
                 {printFunction(arg)}
-                <div className={"addButtonContainer"}>
-                    <div className={"addButton"} onClick={() => addFunction()}>
-                        Add
-                    </div>
+            </div>
+            <div className={"addButtonContainer"}>
+                <div className={"addButton"} onClick={() => addFunction()}>
+                    Add
                 </div>
             </div>
         </div>;

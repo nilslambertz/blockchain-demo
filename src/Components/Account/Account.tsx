@@ -1,6 +1,7 @@
 import React from 'react';
 import {account} from "../../Utils/Interfaces";
 import "./Account.scss"
+import "../UpperList/UpperList.scss"
 
 interface AccountProps {
     account: account
@@ -8,8 +9,8 @@ interface AccountProps {
 
 class Account extends React.Component<AccountProps, {}> {
     render() {
-        return <div className={"account"}>
-            <table className={"accountTable"}>
+        return <div className={"account listElement"}>
+            <table className={"accountTable listTable"}>
                 <tbody>
                     <tr>
                         <td className={"id"}>{this.props.account.id}</td>

@@ -1,5 +1,6 @@
 .upperListContainer {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   height: 40%;
   width: 50%;
   min-width: 600px;
@@ -13,10 +14,16 @@
 
 .upperListContainer {
   overflow: auto;
+  position: relative;
 }
 
-.upperListContainer .upperList .addButtonContainer {
+.upperListContainer .addButtonContainer {
   text-align: center;
+  width: 100%;
+  position: -webkit-sticky;
+  /* Safari */
+  position: sticky;
+  bottom: 0;
 }
 
 .addButtonContainer .addButton {
@@ -44,6 +51,39 @@
   font-size: 30px;
   text-align: center;
   color: red;
+}
+
+.upperList {
+  flex: 1;
+  padding-bottom: 60px;
+}
+
+.upperList .listElement {
+  margin-bottom: 10px;
+}
+
+.listElement .listTable {
+  border: 1px solid white;
+  width: 100%;
+  min-width: 600px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.listElement .listTable tr:first-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.listElement .listTable td {
+  padding: 10px 10px 3px;
+  border-right: 1px solid white;
+}
+
+.listElement .listTable .description td {
+  padding-top: 1px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  padding-bottom: 5px;
 }
 
 /*# sourceMappingURL=UpperList.css.map */
