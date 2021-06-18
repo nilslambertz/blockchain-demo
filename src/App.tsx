@@ -82,7 +82,7 @@ class App extends React.Component<AppProps, AppState> {
                 test
             </div>
             <div id={"footer"}>
-                footer
+                by nils lambertz
             </div>
         </div>;
     };
