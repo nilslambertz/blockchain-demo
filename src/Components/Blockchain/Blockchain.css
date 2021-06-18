@@ -1,0 +1,22 @@
+.blockchain {
+  height: calc(100% - 20px);
+  width: calc(100% - 20px);
+  overflow: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.arrows {
+  height: 100%;
+  width: 10px;
+  background-color: green;
+}
+
+.blockContainer {
+  display: inline-block;
+  height: 100%;
+  background-color: brown;
+}
+
+/*# sourceMappingURL=Blockchain.css.map */
