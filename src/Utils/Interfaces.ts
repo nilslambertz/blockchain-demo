@@ -27,8 +27,9 @@ export interface keyAddressPair {
 
 export interface block {
     prevHash: string,
-    transactions: transcation[],
+    transactions?: transcation[],
     nonce?: number,
     hash?: string,
-    valid: boolean
+    valid?: boolean,
+    confirmed?: boolean
 }
