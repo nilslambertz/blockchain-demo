@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {account, transcation} from "./Utils/Interfaces";
+import {account, block, transcation} from "./Utils/Interfaces";
 import {generateKeyAddressPair} from "./Utils/Functions";
 import Block from "./Components/Blockchain/Block";
 import Blockchain from "./Components/Blockchain/Blockchain";
@@ -13,7 +13,8 @@ interface AppState {
     accountIdCount: number,
     accounts: account[],
     transactionIdCount: number,
-    unusedTransactions: transcation[]
+    unusedTransactions: transcation[],
+    blocks: block[]
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -24,7 +25,20 @@ class App extends React.Component<AppProps, AppState> {
             accountIdCount: 0,
             accounts: [],
             transactionIdCount: 0,
-            unusedTransactions: []
+            unusedTransactions: [],
+            blocks: [{
+                prevHash: "0000",
+                nonce: 187,
+                hash: "hashahsha",
+                valid: false,
+                confirmed: false
+            },{
+                prevHash: "13123123",
+                nonce: 222,
+                hash: "xddddd",
+                valid: false,
+                confirmed: false
+            }]
         };
     }
 
@@ -81,7 +95,7 @@ class App extends React.Component<AppProps, AppState> {
                 />
             </div>
             <div id={"blockchainContent"}>
-                <Blockchain></Blockchain>
+                <Blockchain blocks={this.state.blocks}></Blockchain>
             </div>
             <div id={"footer"}>
                 by nils lambertz
