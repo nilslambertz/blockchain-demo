@@ -31,5 +31,5 @@ export interface block {
     nonce?: number,
     hash?: string,
     valid?: boolean,
-    confirmed?: boolean
+    confirmed: boolean
 }
