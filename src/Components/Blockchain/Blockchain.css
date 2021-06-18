@@ -9,14 +9,43 @@
 
 .arrows {
   height: 100%;
-  width: 10px;
-  background-color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
 }
 
 .blockContainer {
   display: inline-block;
   height: 100%;
+}
+
+.block {
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 2px);
+}
+
+.block.unconfirmed {
   background-color: brown;
+}
+
+.block.confirmed {
+  background-color: #04490b;
+}
+
+.block div {
+  padding: 5px;
+  border-bottom: 1px solid white;
+}
+
+.block div:last-child {
+  border: none;
+}
+
+.block .transactions {
+  flex: 1;
 }
 
 /*# sourceMappingURL=Blockchain.css.map */
