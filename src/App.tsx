@@ -3,6 +3,8 @@ import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
 import {account, transcation} from "./Utils/Interfaces";
 import {generateKeyAddressPair} from "./Utils/Functions";
+import Block from "./Components/Blockchain/Block";
+import Blockchain from "./Components/Blockchain/Blockchain";
 
 interface AppProps {
 }
@@ -79,7 +81,7 @@ class App extends React.Component<AppProps, AppState> {
                 />
             </div>
             <div id={"blockchainContent"}>
-                test
+                <Blockchain></Blockchain>
             </div>
             <div id={"footer"}>
                 by nils lambertz
