@@ -1,9 +1,8 @@
-import React, {createRef, useRef} from 'react';
+import React from 'react';
 import './UpperList.scss';
 import {account, settings, transcation} from "../../Utils/Interfaces";
 import Account from "../Account/Account";
 import Transaction from "../Transaction/Transaction";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
 
 interface UpperListProps {
     title: string;
