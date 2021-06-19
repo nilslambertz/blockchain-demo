@@ -14,6 +14,7 @@ export interface transcation {
     amount?: number,
     signed: boolean
     signature?: string,
+    signatureArray?: Uint8Array
     editable: boolean
 }
 
@@ -29,6 +30,11 @@ export interface keyAddressPair {
     privateKeyArray?: Uint8Array
     address: string,
     addressArray: Uint8Array
+}
+
+export interface signaturePair {
+    signature: string,
+    signatureArray: Uint8Array
 }
 
 export interface block {
