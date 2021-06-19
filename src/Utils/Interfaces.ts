@@ -7,12 +7,12 @@ export interface account {
 
 export interface transcation {
     id: number,
-    from?: string,
-    to?: string,
+    from?: number,
+    to?: number,
     amount?: number,
-    signed?: boolean
+    signed: boolean
     signature?: string,
-    editable?: boolean
+    editable: boolean
 }
 
 export interface settings {
