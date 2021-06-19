@@ -68,7 +68,8 @@ class App extends React.Component<AppProps, AppState> {
             from: "me",
             to: "u uwu",
             amount: 187,
-            signature: "alge"
+            signature: "alge",
+            editable: true
         }
         this.setState({transactionIdCount: count + 1});
 
@@ -90,6 +91,7 @@ class App extends React.Component<AppProps, AppState> {
                 <UpperList
                     title={"transactions"}
                     transactions={this.state.unusedTransactions}
+                    numberOfAccounts={this.state.accountIdCount}
                     className={"transactionListContainer"}
                     addFunction={this.addTransaction}
                 />
