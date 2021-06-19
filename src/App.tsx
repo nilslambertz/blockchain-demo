@@ -102,6 +102,18 @@ class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    removeSignature = (id : number) => {
+        let transactionArray : transcation[] = this.state.transactions;
+        let t : transcation = transactionArray[id];
+
+        t.signed = false;
+        t.signatureArray = undefined;
+        t.signature = undefined;
+
+        transactionArray[id] = t;
+
+        this.setState({transactions: transactionArray});
+    }
 
     render() {
         return <div className="App">
@@ -119,6 +131,7 @@ class App extends React.Component<AppProps, AppState> {
                     className={"transactionListContainer"}
                     addFunction={this.addTransaction}
                     signFunction={this.signTransaction}
+                    removeSignatureFunction={this.removeSignature}
                 />
             </div>
             <div id={"blockchainContent"}>
