@@ -16,8 +16,6 @@ function getArrayfromString(str : string) : Uint8Array {
 export function generateKeyAddressPair() : keyAddressPair {
     let pair : BoxKeyPair = nacl.sign.keyPair();
 
-    console.log("alge: " + pair.secretKey.length);
-
     let privateKey = getStringfromArray(pair.secretKey);
     let address = getStringfromArray(pair.publicKey);
 
