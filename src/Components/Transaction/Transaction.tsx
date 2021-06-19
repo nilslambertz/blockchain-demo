@@ -7,13 +7,15 @@ import NumericInput from "react-numeric-input";
 
 interface TransactionProps {
     transaction: transcation,
-    numberOfAccounts: number
+    numberOfAccounts: number,
+    signFunction: any
 }
 
 const selectStyle = {
     option: (provided : any, state : any) =>  ({
         ...provided,
         color: "black",
+        fontSize: "110%",
         backgroundColor: state.isFocused ? "#3d73e2" : "white"
     })
 }
@@ -25,7 +27,33 @@ const inputStyle = {
     }
 }
 
+interface transactionState {
+    from: number,
+    to: number
+    amount: number
+}
+
 class Transaction extends React.Component<TransactionProps, {}> {
+    state : transactionState = {
+        from: -1,
+        to: -1,
+        amount: 0
+    }
+
+    sign = () => {
+        if(this.state.from !== -1 && this.state.to !== -1 && this.state.amount !== -1) {
+            let t = this.props.transaction;
+            t.from = this.state.from;
+            t.to = this.state.to;
+            t.amount = this.state.amount
+
+            this.props.signFunction(t);
+        } else {
+            console.log("Error: One of the transaction-values isn't set!");
+            // TODO
+        }
+    }
+
     render() {
         let options = Array.from({length: this.props.numberOfAccounts}, (item, index) => {
             return {value: index, label: index};
@@ -42,6 +70,14 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <Select
                                     options={options}
                                     styles={selectStyle}
+                                    onChange={(value => {
+                                        let newValue = -1;
+                                        if(value != null) {
+                                            newValue = value.value;
+                                        }
+
+                                        this.setState({from: newValue});
+                                    })}
                                 />
                                 :
                                 this.props.transaction.from
@@ -53,6 +89,14 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <Select
                                     options={options}
                                     styles={selectStyle}
+                                    onChange={(value => {
+                                        let newValue = -1;
+                                        if(value != null) {
+                                            newValue = value.value;
+                                        }
+
+                                        this.setState({to: newValue});
+                                    })}
                                 />
                                 :
                                 this.props.transaction.to
@@ -61,7 +105,21 @@ class Transaction extends React.Component<TransactionProps, {}> {
                     <td className={"amount"}>
                         {
                             this.props.transaction.editable ?
-                                <NumericInput min={0} max={1000} precision={2} style={inputStyle}/>
+                                <NumericInput
+                                    min={0}
+                                    max={1000}
+                                    precision={2}
+                                    style={inputStyle}
+                                    defaultValue={0}
+                                    onChange={value => {
+                                        let newValue = -1;
+                                        if(value != null) {
+                                            newValue = value;
+                                        }
+
+                                        this.setState({amount: newValue});
+                                    }}
+                                />
                                 :
                                 this.props.transaction.amount
                         }
@@ -71,7 +129,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                             this.props.transaction.signed ?
                                 this.props.transaction.signature
                                 :
-                                <div className={"signButton"}>Sign</div>
+                                <div className={"signButton"} onClick={() => this.sign()}>Sign</div>
                         }
                     </td>
                 </tr>
