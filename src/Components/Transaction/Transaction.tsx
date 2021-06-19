@@ -22,7 +22,7 @@ const selectStyle = {
 
 const inputStyle = {
     input: {
-        width: "130px",
+        width: "100%",
         height: "100%"
     }
 }
@@ -108,7 +108,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <NumericInput
                                     min={0}
                                     max={1000}
-                                    precision={2}
+                                    precision={0}
                                     style={inputStyle}
                                     defaultValue={0}
                                     onChange={value => {
@@ -124,7 +124,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 this.props.transaction.amount
                         }
                     </td>
-                    <td className={"signature"}>
+                    <td className={"signature" + (this.props.transaction.signed ? " smallText" : "")}>
                         {
                             this.props.transaction.signed ?
                                 this.props.transaction.signature

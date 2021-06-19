@@ -1,5 +1,10 @@
 .transaction {
   display: inline-block;
+  width: 100%;
+}
+
+.transactionTable {
+  width: 100%;
 }
 
 .transaction .signButton {
@@ -23,7 +28,12 @@
   font-size: 130%;
 }
 
-.transactionTable .id, .transactionTable .amount {
+.transactionTable .id {
   width: 70px;
+  font-size: 130%;
+}
+
+.transactionTable .amount {
+  width: 100px;
   font-size: 130%;
 }
