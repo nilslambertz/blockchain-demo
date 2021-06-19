@@ -18,9 +18,9 @@ class Blockchain extends React.Component<BlockchainProps, {}> {
     printBlocks = () => {
         return this.props.blocks.map(function (value, index, array) {
             return (
-                <React.Fragment>
-                    <Block block={value} />
-                    {index !== array.length -1 ? <div className={"arrows"} ><Arrow /></div> : "" }
+                <React.Fragment key={index}>
+                    <Block block={value}/>
+                    {index !== array.length -1 ? <div className={"arrows"}><Arrow /></div> : "" }
                 </React.Fragment>
             );
         });
