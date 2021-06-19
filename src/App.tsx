@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
 import {account, block, transcation} from "./Utils/Interfaces";
-import {generateKeyAddressPair} from "./Utils/Functions";
+import {generateKeyAddressPair, signTransaction} from "./Utils/Functions";
 import Block from "./Components/Blockchain/Block";
 import Blockchain from "./Components/Blockchain/Blockchain";
 
@@ -49,7 +49,9 @@ class App extends React.Component<AppProps, AppState> {
         let a : account = {
             id: count,
             privateKey: keys.privateKey,
-            address: keys.address
+            privateKeyArray: keys.privateKeyArray,
+            address: keys.address,
+            addressArray: keys.addressArray
         }
         this.setState({accountIdCount: count + 1});
 
@@ -76,7 +78,17 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     signTransaction = (t: transcation) => {
-        console.log(t);
+        let sender : number = -1;
+        if(t.from !== undefined){
+            sender = t.from;
+        }
+
+        let privateKey = this.state.accounts[sender].privateKeyArray;
+
+        let signature : string = "";
+        if(sender !== -1 && privateKey !== undefined) {
+            signature = signTransaction(t, privateKey);
+        }
     }
 
 
