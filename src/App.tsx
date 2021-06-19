@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {account, block, transcation} from "./Utils/Interfaces";
-import {generateKeyAddressPair, signTransaction} from "./Utils/Functions";
+import {account, block, signaturePair, transcation} from "./Utils/Interfaces";
+import {generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
 import Block from "./Components/Blockchain/Block";
 import Blockchain from "./Components/Blockchain/Blockchain";
 
@@ -13,7 +13,8 @@ interface AppState {
     accountIdCount: number,
     accounts: account[],
     transactionIdCount: number,
-    unusedTransactions: transcation[],
+    transactions: transcation[],
+    unusedTransactions: number[],
     blocks: block[]
 }
 
@@ -25,6 +26,7 @@ class App extends React.Component<AppProps, AppState> {
             accountIdCount: 0,
             accounts: [],
             transactionIdCount: 0,
+            transactions: [],
             unusedTransactions: [],
             blocks: [{
                 prevHash: "0000",
@@ -72,9 +74,11 @@ class App extends React.Component<AppProps, AppState> {
         }
         this.setState({transactionIdCount: count + 1});
 
-        let arr : transcation[] = this.state.unusedTransactions;
+        let arr : transcation[] = this.state.transactions;
+        let unusedArr : number[] = this.state.unusedTransactions;
         arr.push(t);
-        this.setState({unusedTransactions: arr});
+        unusedArr.push(t.id);
+        this.setState({transactions: arr, unusedTransactions: unusedArr});
     }
 
     signTransaction = (t: transcation) => {
@@ -84,10 +88,17 @@ class App extends React.Component<AppProps, AppState> {
         }
 
         let privateKey = this.state.accounts[sender].privateKeyArray;
+        let address = this.state.accounts[sender].addressArray;
 
-        let signature : string = "";
-        if(sender !== -1 && privateKey !== undefined) {
-            signature = signTransaction(t, privateKey);
+        if(sender !== -1 && privateKey !== undefined && address !== undefined) {
+            let sig : signaturePair = signTransaction(t, privateKey);
+
+            let transactionArray = this.state.transactions;
+            transactionArray[t.id].signed = true;
+            transactionArray[t.id].signatureArray = sig.signatureArray;
+            transactionArray[t.id].signature = sig.signature;
+
+            this.setState({transactions: transactionArray});
         }
     }
 
@@ -103,7 +114,7 @@ class App extends React.Component<AppProps, AppState> {
                 />
                 <UpperList
                     title={"transactions"}
-                    transactions={this.state.unusedTransactions}
+                    transactions={this.state.transactions}
                     numberOfAccounts={this.state.accountIdCount}
                     className={"transactionListContainer"}
                     addFunction={this.addTransaction}
