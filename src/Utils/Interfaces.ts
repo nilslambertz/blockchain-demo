@@ -10,7 +10,9 @@ export interface transcation {
     from?: string,
     to?: string,
     amount?: number,
-    signature?: string
+    signed?: boolean
+    signature?: string,
+    editable?: boolean
 }
 
 export interface settings {
