@@ -1,7 +1,9 @@
 export interface account {
     id: number,
     privateKey?: string,
+    privateKeyArray?: Uint8Array
     address?: string,
+    addressArray?: Uint8Array
     balance?: number
 }
 
@@ -24,7 +26,9 @@ export interface settings {
 
 export interface keyAddressPair {
     privateKey: string,
-    address: string
+    privateKeyArray?: Uint8Array
+    address: string,
+    addressArray: Uint8Array
 }
 
 export interface block {
