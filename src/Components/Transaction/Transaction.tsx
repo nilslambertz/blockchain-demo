@@ -8,7 +8,8 @@ import NumericInput from "react-numeric-input";
 interface TransactionProps {
     transaction: transcation,
     numberOfAccounts: number,
-    signFunction: any
+    signFunction: any,
+    removeSignatureFunction: any
 }
 
 const selectStyle = {
@@ -71,9 +72,13 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                     options={options}
                                     styles={selectStyle}
                                     onChange={(value => {
+                                        let oldValue = this.state.from;
                                         let newValue = -1;
                                         if(value != null) {
                                             newValue = value.value;
+                                        }
+                                        if(oldValue !== newValue) {
+                                            this.props.removeSignatureFunction(this.props.transaction.id);
                                         }
 
                                         this.setState({from: newValue});
@@ -90,9 +95,13 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                     options={options}
                                     styles={selectStyle}
                                     onChange={(value => {
+                                        let oldValue = this.state.to;
                                         let newValue = -1;
                                         if(value != null) {
                                             newValue = value.value;
+                                        }
+                                        if(oldValue !== newValue) {
+                                            this.props.removeSignatureFunction(this.props.transaction.id);
                                         }
 
                                         this.setState({to: newValue});
@@ -112,9 +121,13 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                     style={inputStyle}
                                     defaultValue={0}
                                     onChange={value => {
+                                        let oldValue = this.state.amount;
                                         let newValue = -1;
                                         if(value != null) {
                                             newValue = value;
+                                        }
+                                        if(oldValue !== newValue) {
+                                            this.props.removeSignatureFunction(this.props.transaction.id);
                                         }
 
                                         this.setState({amount: newValue});

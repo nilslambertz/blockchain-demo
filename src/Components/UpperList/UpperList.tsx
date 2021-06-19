@@ -12,7 +12,8 @@ interface UpperListProps {
     settings?: settings[],
     className?: string
     addFunction?: any
-    signFunction?: any
+    signFunction?: any,
+    removeSignatureFunction?: any
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
@@ -55,9 +56,10 @@ class UpperList extends React.Component<UpperListProps, {}> {
             numberOfAccounts = this.props.numberOfAccounts
         }
         let signFunction = this.props.signFunction;
+        let removeSignatureFunction = this.props.removeSignatureFunction;
 
         return transactions.map(function (value, index, array) {
-            return <Transaction transaction={value} numberOfAccounts={numberOfAccounts} key={value.id} signFunction={signFunction} />;
+            return <Transaction transaction={value} numberOfAccounts={numberOfAccounts} key={value.id} signFunction={signFunction} removeSignatureFunction={removeSignatureFunction}/>;
         });
     }
 }
