@@ -8,6 +8,7 @@ interface UpperListProps {
     title: string;
     accounts?: account[],
     transactions?: transcation[],
+    numberOfAccounts?: number,
     settings?: settings[],
     className?: string
     addFunction?: any
@@ -47,9 +48,14 @@ class UpperList extends React.Component<UpperListProps, {}> {
         });
     }
 
-    printTransactionList(transactions : transcation[]) {
+    printTransactionList = (transactions : transcation[]) => {
+        let numberOfAccounts = 0;
+        if(this.props?.numberOfAccounts) {
+            numberOfAccounts = this.props.numberOfAccounts
+        }
+
         return transactions.map(function (value, index, array) {
-            return <Transaction transaction={value} key={value.id} />;
+            return <Transaction transaction={value} numberOfAccounts={numberOfAccounts} key={value.id} />;
         });
     }
 }
