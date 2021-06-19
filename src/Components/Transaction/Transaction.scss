@@ -1,6 +1,9 @@
+@import "../../Utils/variables";
+
 .transaction {
   display: inline-block;
   width: 100%;
+  background-color: $default-background-color;
 }
 
 .transactionTable {

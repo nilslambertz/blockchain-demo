@@ -4,12 +4,14 @@ import "./Transaction.scss"
 import "../UpperList/UpperList.scss";
 import Select from "react-select";
 import NumericInput from "react-numeric-input";
+import {Draggable} from "react-beautiful-dnd";
 
 interface TransactionProps {
     transaction: transcation,
     numberOfAccounts: number,
     signFunction: any,
-    removeSignatureFunction: any
+    removeSignatureFunction: any,
+    index: number
 }
 
 const selectStyle = {
@@ -60,102 +62,109 @@ class Transaction extends React.Component<TransactionProps, {}> {
             return {value: index, label: index};
         })
 
-        return <div className={"transaction listElement"}>
-            <table className={"transactionTable listTable"}>
-                <tbody>
-                <tr>
-                    <td className={"id"}>{this.props.transaction.id}</td>
-                    <td className={"from smallText"}>
-                        {
-                            this.props.transaction.editable ?
-                                <Select
-                                    options={options}
-                                    styles={selectStyle}
-                                    onChange={(value => {
-                                        let oldValue = this.state.from;
-                                        let newValue = -1;
-                                        if(value != null) {
-                                            newValue = value.value;
-                                        }
-                                        if(oldValue !== newValue) {
-                                            this.props.removeSignatureFunction(this.props.transaction.id);
-                                        }
+        return <Draggable draggableId={this.props.transaction.id + ""} index={this.props.index}>
+            {(provided, snapshot) => (
+                    <div className={"transaction listElement"}
+                         ref={provided.innerRef}
+                         {...provided.draggableProps}
+                         {...provided.dragHandleProps}>
+                        <table className={"transactionTable listTable"}>
+                            <tbody>
+                            <tr>
+                                <td className={"id"}>{this.props.transaction.id}</td>
+                                <td className={"from smallText"}>
+                                    {
+                                        this.props.transaction.editable ?
+                                            <Select
+                                                options={options}
+                                                styles={selectStyle}
+                                                onChange={(value => {
+                                                    let oldValue = this.state.from;
+                                                    let newValue = -1;
+                                                    if (value != null) {
+                                                        newValue = value.value;
+                                                    }
+                                                    if (oldValue !== newValue) {
+                                                        this.props.removeSignatureFunction(this.props.transaction.id);
+                                                    }
 
-                                        this.setState({from: newValue});
-                                    })}
-                                />
-                                :
-                                this.props.transaction.from
-                        }
-                    </td>
-                    <td className={"to smallText"}>
-                        {
-                            this.props.transaction.editable ?
-                                <Select
-                                    options={options}
-                                    styles={selectStyle}
-                                    onChange={(value => {
-                                        let oldValue = this.state.to;
-                                        let newValue = -1;
-                                        if(value != null) {
-                                            newValue = value.value;
-                                        }
-                                        if(oldValue !== newValue) {
-                                            this.props.removeSignatureFunction(this.props.transaction.id);
-                                        }
+                                                    this.setState({from: newValue});
+                                                })}
+                                            />
+                                            :
+                                            this.props.transaction.from
+                                    }
+                                </td>
+                                <td className={"to smallText"}>
+                                    {
+                                        this.props.transaction.editable ?
+                                            <Select
+                                                options={options}
+                                                styles={selectStyle}
+                                                onChange={(value => {
+                                                    let oldValue = this.state.to;
+                                                    let newValue = -1;
+                                                    if (value != null) {
+                                                        newValue = value.value;
+                                                    }
+                                                    if (oldValue !== newValue) {
+                                                        this.props.removeSignatureFunction(this.props.transaction.id);
+                                                    }
 
-                                        this.setState({to: newValue});
-                                    })}
-                                />
-                                :
-                                this.props.transaction.to
-                        }
-                    </td>
-                    <td className={"amount"}>
-                        {
-                            this.props.transaction.editable ?
-                                <NumericInput
-                                    min={0}
-                                    max={1000}
-                                    precision={0}
-                                    style={inputStyle}
-                                    defaultValue={0}
-                                    onChange={value => {
-                                        let oldValue = this.state.amount;
-                                        let newValue = -1;
-                                        if(value != null) {
-                                            newValue = value;
-                                        }
-                                        if(oldValue !== newValue) {
-                                            this.props.removeSignatureFunction(this.props.transaction.id);
-                                        }
+                                                    this.setState({to: newValue});
+                                                })}
+                                            />
+                                            :
+                                            this.props.transaction.to
+                                    }
+                                </td>
+                                <td className={"amount"}>
+                                    {
+                                        this.props.transaction.editable ?
+                                            <NumericInput
+                                                min={0}
+                                                max={1000}
+                                                precision={0}
+                                                style={inputStyle}
+                                                defaultValue={0}
+                                                onChange={value => {
+                                                    let oldValue = this.state.amount;
+                                                    let newValue = -1;
+                                                    if (value != null) {
+                                                        newValue = value;
+                                                    }
+                                                    if (oldValue !== newValue) {
+                                                        this.props.removeSignatureFunction(this.props.transaction.id);
+                                                    }
 
-                                        this.setState({amount: newValue});
-                                    }}
-                                />
-                                :
-                                this.props.transaction.amount
-                        }
-                    </td>
-                    <td className={"signature" + (this.props.transaction.signed ? " smallText" : "")}>
-                        {
-                            this.props.transaction.signed ?
-                                this.props.transaction.signature
-                                :
-                                <div className={"signButton"} onClick={() => this.sign()}>Sign</div>
-                        }
-                    </td>
-                </tr>
-                <tr className={"description"}>
-                    <td>ID</td>
-                    <td>From</td>
-                    <td>To</td>
-                    <td>Amount</td>
-                    <td>Signature</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>;
+                                                    this.setState({amount: newValue});
+                                                }}
+                                            />
+                                            :
+                                            this.props.transaction.amount
+                                    }
+                                </td>
+                                <td className={"signature" + (this.props.transaction.signed ? " smallText" : "")}>
+                                    {
+                                        this.props.transaction.signed ?
+                                            this.props.transaction.signature
+                                            :
+                                            <div className={"signButton"} onClick={() => this.sign()}>Sign</div>
+                                    }
+                                </td>
+                            </tr>
+                            <tr className={"description"}>
+                                <td>ID</td>
+                                <td>From</td>
+                                <td>To</td>
+                                <td>Amount</td>
+                                <td>Signature</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            )}
+        </Draggable>;
     }
 }
 
