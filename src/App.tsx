@@ -3,7 +3,6 @@ import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
 import {account, block, signaturePair, transcation} from "./Utils/Interfaces";
 import {generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
-import Block from "./Components/Blockchain/Block";
 import Blockchain from "./Components/Blockchain/Blockchain";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 
@@ -95,28 +94,61 @@ class App extends React.Component<AppProps, AppState> {
             let sig : signaturePair = signTransaction(t, privateKey);
 
             let transactionArray = this.state.transactions;
-            transactionArray[t.id].signed = true;
-            transactionArray[t.id].signatureArray = sig.signatureArray;
-            transactionArray[t.id].signature = sig.signature;
+            let index = this.getIndex(transactionArray, t.id);
+
+            transactionArray[index].signed = true;
+            transactionArray[index].signatureArray = sig.signatureArray;
+            transactionArray[index].signature = sig.signature;
 
             this.setState({transactions: transactionArray});
         }
     }
 
+    getIndex = (transactionArray : transcation[], id : number) : number => {
+        for(let i = 0; i < transactionArray.length; i++) {
+            if(transactionArray[i].id === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     removeSignature = (id : number) => {
         let transactionArray : transcation[] = this.state.transactions;
-        let t : transcation = transactionArray[id];
+        let index = this.getIndex(transactionArray, id);
+        let t : transcation = transactionArray[index];
 
         t.signed = false;
         t.signatureArray = undefined;
         t.signature = undefined;
 
-        transactionArray[id] = t;
+        transactionArray[index] = t;
 
         this.setState({transactions: transactionArray});
     }
 
-    onDragEnd = () => {
+    onDragEnd = (result : any) => {
+        let {destination, source, draggableId} = result;
+
+        if(result.destination === null) return;
+        if(destination.droppableId === source.droppableId && destination.index  === source.index) return;
+
+        if(result.destination.droppableId === "transactionListDroppable") {
+            let firstIndex = source.index;
+            let secondIndex = destination.index;
+
+            let unusedTransactions = this.state.unusedTransactions;
+            let newTransactionArray : any[] = [];
+            unusedTransactions.forEach((id : number) => {
+                newTransactionArray.push(this.state.transactions[id]);
+            });
+
+            let temp : transcation = newTransactionArray[firstIndex];
+            newTransactionArray[firstIndex] = newTransactionArray[secondIndex];
+            newTransactionArray[secondIndex] = temp;
+
+            this.setState({transactions: newTransactionArray});
+        }
     }
 
     render() {
@@ -129,7 +161,7 @@ class App extends React.Component<AppProps, AppState> {
                     addFunction={this.addAccount}
                 />
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Droppable droppableId={"1"}>
+                    <Droppable droppableId={"transactionListDroppable"}>
                         {provided => (
                 <UpperList
                     innerRef={provided.innerRef}
