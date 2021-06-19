@@ -36,4 +36,8 @@
   font-size: 130%;
 }
 
+.transactionTable .signature.smallText {
+  font-size: 11px;
+}
+
 /*# sourceMappingURL=Transaction.css.map */

@@ -12,3 +12,7 @@
 .accountTable .privateKey, .accountTable .address {
   min-width: 200px;
 }
+
+.accountTable .privateKey.smallText {
+  font-size: 11px;
+}

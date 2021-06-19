@@ -11,4 +11,8 @@
   min-width: 200px;
 }
 
+.accountTable .privateKey.smallText {
+  font-size: 11px;
+}
+
 /*# sourceMappingURL=Account.css.map */
