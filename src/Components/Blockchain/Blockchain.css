@@ -46,6 +46,7 @@
 
 .block .transactions {
   flex: 1;
+  overflow: auto;
 }
 
 /*# sourceMappingURL=Blockchain.css.map */
