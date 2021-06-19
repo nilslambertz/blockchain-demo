@@ -5,6 +5,7 @@ import {account, block, signaturePair, transcation} from "./Utils/Interfaces";
 import {generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
 import Block from "./Components/Blockchain/Block";
 import Blockchain from "./Components/Blockchain/Blockchain";
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
 
 interface AppProps {
 }
@@ -115,6 +116,9 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({transactions: transactionArray});
     }
 
+    onDragEnd = () => {
+    }
+
     render() {
         return <div className="App">
             <div id={"upperContent"}>
@@ -124,7 +128,12 @@ class App extends React.Component<AppProps, AppState> {
                     className={"accountListContainer"}
                     addFunction={this.addAccount}
                 />
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable droppableId={"1"}>
+                        {provided => (
                 <UpperList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
                     title={"transactions"}
                     transactions={this.state.transactions}
                     numberOfAccounts={this.state.accountIdCount}
@@ -132,7 +141,8 @@ class App extends React.Component<AppProps, AppState> {
                     addFunction={this.addTransaction}
                     signFunction={this.signTransaction}
                     removeSignatureFunction={this.removeSignature}
-                />
+                    placeholder={provided.placeholder}
+                />)}</Droppable></DragDropContext>
             </div>
             <div id={"blockchainContent"}>
                 <Blockchain blocks={this.state.blocks}></Blockchain>
