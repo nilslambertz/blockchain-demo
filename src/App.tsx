@@ -65,10 +65,7 @@ class App extends React.Component<AppProps, AppState> {
 
         let t : transcation = {
             id: count,
-            from: "me",
-            to: "u uwu",
-            amount: 187,
-            signature: "alge",
+            signed: false,
             editable: true
         }
         this.setState({transactionIdCount: count + 1});
@@ -76,6 +73,10 @@ class App extends React.Component<AppProps, AppState> {
         let arr : transcation[] = this.state.unusedTransactions;
         arr.push(t);
         this.setState({unusedTransactions: arr});
+    }
+
+    signTransaction = (t: transcation) => {
+        console.log(t);
     }
 
 
@@ -94,6 +95,7 @@ class App extends React.Component<AppProps, AppState> {
                     numberOfAccounts={this.state.accountIdCount}
                     className={"transactionListContainer"}
                     addFunction={this.addTransaction}
+                    signFunction={this.signTransaction}
                 />
             </div>
             <div id={"blockchainContent"}>
