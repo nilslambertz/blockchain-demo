@@ -3,8 +3,6 @@ import nacl, {BoxKeyPair} from "tweetnacl";
 import util from "tweetnacl-util";
 import {encode} from "@stablelib/utf8";
 
-const secp256k1 = require('secp256k1');
-
 function getStringfromArray(array : Uint8Array) {
     return Buffer.from(util.encodeBase64(array), "base64").toString("hex");
 }
