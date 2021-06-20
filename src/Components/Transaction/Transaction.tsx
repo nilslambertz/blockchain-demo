@@ -3,7 +3,6 @@ import {transcation} from "../../Utils/Interfaces";
 import "./Transaction.scss"
 import "../UpperList/UpperList.scss";
 import Select from "react-select";
-import NumericInput from "react-numeric-input";
 import {Draggable} from "react-beautiful-dnd";
 
 interface TransactionProps {
@@ -21,13 +20,6 @@ const selectStyle = {
         fontSize: "110%",
         backgroundColor: state.isFocused ? "#3d73e2" : "white"
     })
-}
-
-const inputStyle = {
-    input: {
-        width: "100%",
-        height: "100%"
-    }
 }
 
 interface transactionState {
@@ -121,23 +113,23 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <td className={"amount"}>
                                     {
                                         this.props.transaction.editable ?
-                                            <NumericInput
-                                                min={0}
-                                                max={1000}
-                                                precision={0}
-                                                style={inputStyle}
-                                                defaultValue={0}
-                                                onChange={value => {
-                                                    let oldValue = this.state.amount;
-                                                    let newValue = -1;
-                                                    if (value != null) {
-                                                        newValue = value;
-                                                    }
-                                                    if (oldValue !== newValue) {
-                                                        this.props.removeSignatureFunction(this.props.transaction.id);
-                                                    }
+                                            <input
+                                                type="number"
+                                                className={"amountInput"}
+                                                min="0"
+                                                max="1000"
+                                                value={this.state.amount}
+                                                onChange={(event) => {
+                                                    let val = parseInt(event.target.value);
 
-                                                    this.setState({amount: newValue});
+                                                    if(!isNaN(val)) {
+                                                        let oldValue = this.state.amount;
+                                                        if (oldValue !== val) {
+                                                            this.props.removeSignatureFunction(this.props.transaction.id);
+                                                        }
+
+                                                        this.setState({amount: val});
+                                                    }
                                                 }}
                                             />
                                             :
