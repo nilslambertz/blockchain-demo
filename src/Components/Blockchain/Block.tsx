@@ -34,6 +34,10 @@ class Block extends React.Component<BlockProps, {}> {
                     {confirmed}
                     <div className={"blockDescription"}>Confirmation</div>
                 </div>
+                <div className={"hash"}>
+                    {this.props.block?.hash}
+                    <div className={"blockDescription"}>Hash</div>
+                </div>
             </div>
         </div>;
     }
