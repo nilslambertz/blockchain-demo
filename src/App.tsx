@@ -32,12 +32,14 @@ class App extends React.Component<AppProps, AppState> {
                 prevHash: "0000",
                 nonce: 187,
                 hash: "hashahsha",
+                transactions: [],
                 valid: false,
                 confirmed: false
             },{
                 prevHash: "13123123",
                 nonce: 222,
                 hash: "xddddd",
+                transactions: [],
                 valid: false,
                 confirmed: false
             }]
