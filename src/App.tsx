@@ -29,6 +29,7 @@ class App extends React.Component<AppProps, AppState> {
             transactions: [],
             unusedTransactions: [],
             blocks: [{
+                id: 0,
                 prevHash: "0000",
                 nonce: 187,
                 hash: "hashahsha",
@@ -36,6 +37,7 @@ class App extends React.Component<AppProps, AppState> {
                 valid: false,
                 confirmed: false
             },{
+                id: 1,
                 prevHash: "13123123",
                 nonce: 222,
                 hash: "xddddd",

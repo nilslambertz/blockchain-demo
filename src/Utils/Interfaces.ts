@@ -38,6 +38,7 @@ export interface signaturePair {
 }
 
 export interface block {
+    id: number,
     prevHash: string,
     transactions: transcation[],
     nonce?: number,
