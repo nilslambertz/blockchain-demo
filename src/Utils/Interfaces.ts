@@ -40,7 +40,7 @@ export interface signaturePair {
 export interface block {
     id: number,
     prevHash: string,
-    transactions: transcation[],
+    transactions: number[],
     nonce?: number,
     hash?: string,
     valid?: boolean,

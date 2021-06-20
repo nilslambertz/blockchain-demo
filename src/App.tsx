@@ -181,7 +181,7 @@ class App extends React.Component<AppProps, AppState> {
                 />)}</Droppable></DragDropContext>
             </div>
             <div id={"blockchainContent"}>
-                <Blockchain blocks={this.state.blocks}></Blockchain>
+                <Blockchain blocks={this.state.blocks} />
             </div>
             <div id={"footer"}>
                 by nils lambertz
