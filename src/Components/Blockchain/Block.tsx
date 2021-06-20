@@ -12,10 +12,28 @@ class Block extends React.Component<BlockProps, {}> {
 
         return <div className={"blockContainer"}>
             <div className={"block " + confirmed}>
-                <div className={"prevHash"}>{this.props.block?.prevHash}</div>
-                <div className={"transactions"}>test</div>
-                <div className={"nonce"}>{this.props.block?.nonce}</div>
-                <div className={"confirmed"}>{confirmed}</div>
+                <div className={"prevHash"}>
+                    {this.props.block?.prevHash}
+                    <div className={"blockDescription"}>Previous hash</div>
+                </div>
+                <div className={"transactions"}>
+                    <div className={"transactionList"}>
+                        {this.props.block.transactions?.length === 0 ?
+                            "Drag and drop transactions here!"
+                            :
+                            "Error"
+                        }
+                    </div>
+                    <div className={"blockDescription"}>Transactions</div>
+                </div>
+                <div className={"nonce"}>
+                    {this.props.block?.nonce}
+                    <div className={"blockDescription"}>Nonce</div>
+                </div>
+                <div className={"confirmed"}>
+                    {confirmed}
+                    <div className={"blockDescription"}>Confirmation</div>
+                </div>
             </div>
         </div>;
     }
