@@ -68,6 +68,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                     {
                                         this.props.transaction.editable ?
                                             <select className={"selectStyle"}
+                                                    value={this.state.from}
                                                 onChange={(v) => {
                                                 let newValue = parseInt(v.target.value);
                                                 if(this.state.from !== newValue) {
@@ -77,7 +78,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                             }}>
                                                 {
                                                     Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
-                                                    return <option value={x} key={x} selected={this.state.from === x}>{x}</option>
+                                                    return <option value={x} key={x}>{x}</option>
                                                 })}
                                             </select>
                                             :
@@ -88,6 +89,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                     {
                                         this.props.transaction.editable ?
                                             <select className={"selectStyle"}
+                                                    value={this.state.to}
                                                     onChange={(v) => {
                                                         let newValue = parseInt(v.target.value);
                                                         if(this.state.to !== newValue) {
@@ -97,7 +99,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                                     }}>
                                                 {
                                                     Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
-                                                        return <option value={x} key={x} selected={this.state.to === x}>{x}</option>
+                                                        return <option value={x} key={x}>{x}</option>
                                                     })}
                                             </select>
                                             :
