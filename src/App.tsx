@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {account, block, signaturePair, transcation} from "./Utils/Interfaces";
-import {generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
+import {account, block, firstHash, signaturePair, transcation} from "./Utils/Interfaces";
+import {generateBlockHash, generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
 import Blockchain from "./Components/Blockchain/Blockchain";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import { ToastContainer } from 'react-toastify';
@@ -33,22 +33,21 @@ class App extends React.Component<AppProps, AppState> {
             unusedTransactions: [],
             blocks: [{
                 id: 0,
-                prevHash: "0000",
-                nonce: 187,
-                hash: "hashahsha",
+                prevHash: firstHash,
+                nonce: 0,
                 transactions: [],
                 valid: false,
                 confirmed: false
             },{
                 id: 1,
-                prevHash: "13123123",
-                nonce: 222,
-                hash: "xddddd",
+                nonce: 0,
                 transactions: [],
                 valid: false,
                 confirmed: false
             }]
         };
+
+        this.recalculateBlocks();
     }
 
     addAccount = () : void => {
@@ -121,6 +120,24 @@ class App extends React.Component<AppProps, AppState> {
         transactionArray[id] = t;
 
         this.setState({transactions: transactionArray});
+    }
+
+    recalculateBlocks = () => {
+        let blocks = [...this.state.blocks];
+        let transactions = [...this.state.transactions];
+        let accounts = [...this.state.accounts];
+
+        for(let i = 0; i < blocks.length; i++) {
+            let hash = generateBlockHash(blocks[i], transactions, accounts);
+            if(hash === "") {
+                console.log("Error while generating hash, see previous error-messages!");
+                return;
+            }
+            blocks[i].hash = hash;
+            if(i !== blocks.length-1) {
+                blocks[i+1].prevHash = hash;
+            }
+        }
     }
 
     onDragEnd = (result : any) => {
@@ -205,6 +222,8 @@ class App extends React.Component<AppProps, AppState> {
                 }
             }
         }
+
+        this.recalculateBlocks();
     }
 
     render() {
