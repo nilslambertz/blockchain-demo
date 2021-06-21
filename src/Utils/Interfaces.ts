@@ -1,3 +1,5 @@
+export const firstHash = "0000";
+
 export interface account {
     id: number,
     privateKey?: string,
@@ -39,7 +41,7 @@ export interface signaturePair {
 
 export interface block {
     id: number,
-    prevHash: string,
+    prevHash?: string,
     transactions: number[],
     nonce?: number,
     hash?: string,
