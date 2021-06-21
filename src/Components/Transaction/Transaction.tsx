@@ -2,9 +2,7 @@ import React from 'react';
 import {transcation} from "../../Utils/Interfaces";
 import "./Transaction.scss"
 import "../UpperList/UpperList.scss";
-import Select from "react-select";
 import {Draggable} from "react-beautiful-dnd";
-import {toast} from "react-toastify";
 import {showError} from "../../Utils/ToastFunctions";
 
 interface TransactionProps {
@@ -15,15 +13,6 @@ interface TransactionProps {
     index: number
 }
 
-const selectStyle = {
-    option: (provided : any, state : any) =>  ({
-        ...provided,
-        color: "black",
-        fontSize: "110%",
-        backgroundColor: state.isFocused ? "#3d73e2" : "white"
-    })
-}
-
 interface transactionState {
     from: number,
     to: number
@@ -31,9 +20,20 @@ interface transactionState {
 }
 
 class Transaction extends React.Component<TransactionProps, {}> {
+    componentDidMount() {
+        let t = this.props.transaction;
+        if(t.from !== undefined && t.to !== undefined && t.amount !== undefined) {
+            this.setState({
+                from: t.from,
+                to: t.to,
+                amount: t.amount,
+            });
+        }
+    }
+
     state : transactionState = {
-        from: -1,
-        to: -1,
+        from: 0,
+        to: 0,
         amount: 0
     }
 
@@ -50,11 +50,9 @@ class Transaction extends React.Component<TransactionProps, {}> {
         }
     }
 
-    render() {
-        let options = Array.from({length: this.props.numberOfAccounts}, (item, index) => {
-            return {value: index, label: index};
-        });
 
+
+    render() {
         return <Draggable draggableId={"transaction" + this.props.transaction.id} index={this.props.index}>
             {(provided, snapshot) => (
                     <div className={"transaction listElement" + (snapshot.isDragging ? " transactionDragging" : "")}
@@ -69,22 +67,19 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <td className={"from" + (!this.props.transaction.editable ? " biggerText" : "")}>
                                     {
                                         this.props.transaction.editable ?
-                                            <Select
-                                                options={options}
-                                                styles={selectStyle}
-                                                onChange={(value => {
-                                                    let oldValue = this.state.from;
-                                                    let newValue = -1;
-                                                    if (value != null) {
-                                                        newValue = value.value;
-                                                    }
-                                                    if (oldValue !== newValue) {
-                                                        this.props.removeSignatureFunction(this.props.transaction.id);
-                                                    }
-
+                                            <select className={"selectStyle"}
+                                                onChange={(v) => {
+                                                let newValue = parseInt(v.target.value);
+                                                if(this.state.from !== newValue) {
+                                                    this.props.removeSignatureFunction(this.props.transaction.id);
                                                     this.setState({from: newValue});
+                                                }
+                                            }}>
+                                                {
+                                                    Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
+                                                    return <option value={x} key={x} selected={this.state.from === x}>{x}</option>
                                                 })}
-                                            />
+                                            </select>
                                             :
                                             this.props.transaction.from
                                     }
@@ -92,22 +87,19 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <td className={"to" + (!this.props.transaction.editable ? " biggerText" : "")}>
                                     {
                                         this.props.transaction.editable ?
-                                            <Select
-                                                options={options}
-                                                styles={selectStyle}
-                                                onChange={(value => {
-                                                    let oldValue = this.state.to;
-                                                    let newValue = -1;
-                                                    if (value != null) {
-                                                        newValue = value.value;
-                                                    }
-                                                    if (oldValue !== newValue) {
-                                                        this.props.removeSignatureFunction(this.props.transaction.id);
-                                                    }
-
-                                                    this.setState({to: newValue});
-                                                })}
-                                            />
+                                            <select className={"selectStyle"}
+                                                    onChange={(v) => {
+                                                        let newValue = parseInt(v.target.value);
+                                                        if(this.state.to !== newValue) {
+                                                            this.props.removeSignatureFunction(this.props.transaction.id);
+                                                            this.setState({to: newValue});
+                                                        }
+                                                    }}>
+                                                {
+                                                    Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
+                                                        return <option value={x} key={x} selected={this.state.to === x}>{x}</option>
+                                                    })}
+                                            </select>
                                             :
                                             this.props.transaction.to
                                     }
