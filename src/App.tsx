@@ -7,6 +7,7 @@ import Blockchain from "./Components/Blockchain/Blockchain";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {showError} from "./Utils/ToastFunctions";
 
 interface AppProps {
 }
@@ -108,7 +109,7 @@ class App extends React.Component<AppProps, AppState> {
             this.setState({transactions: transactionArray});
         }
     }
-    
+
     removeSignature = (id : number) => {
         let transactionArray : transcation[] = this.state.transactions;
         let t : transcation = transactionArray[id];
@@ -154,6 +155,12 @@ class App extends React.Component<AppProps, AppState> {
             }
         } else {
             if(result.source.droppableId === "transactionList") {
+                let transaction = this.state.transactions[transactionId];
+                if(!transaction.signed) {
+                    showError("Transaction must be signed to be included in a block!");
+                    return;
+                }
+
                 let unusedTransactions = this.state.unusedTransactions;
                 unusedTransactions.splice(sourceIndex, 1);
 
