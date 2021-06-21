@@ -1,7 +1,6 @@
 import React from 'react';
 import "./Blockchain.scss";
 import {block, transcation} from "../../Utils/Interfaces";
-import {Droppable} from "react-beautiful-dnd";
 import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
