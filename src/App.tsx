@@ -100,35 +100,24 @@ class App extends React.Component<AppProps, AppState> {
             let sig : signaturePair = signTransaction(t, privateKey);
 
             let transactionArray = this.state.transactions;
-            let index = this.getIndex(transactionArray, t.id);
 
-            transactionArray[index].signed = true;
-            transactionArray[index].signatureArray = sig.signatureArray;
-            transactionArray[index].signature = sig.signature;
+            transactionArray[t.id].signed = true;
+            transactionArray[t.id].signatureArray = sig.signatureArray;
+            transactionArray[t.id].signature = sig.signature;
 
             this.setState({transactions: transactionArray});
         }
     }
-
-    getIndex = (transactionArray : transcation[], id : number) : number => {
-        for(let i = 0; i < transactionArray.length; i++) {
-            if(transactionArray[i].id === id) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
+    
     removeSignature = (id : number) => {
         let transactionArray : transcation[] = this.state.transactions;
-        let index = this.getIndex(transactionArray, id);
-        let t : transcation = transactionArray[index];
+        let t : transcation = transactionArray[id];
 
         t.signed = false;
         t.signatureArray = undefined;
         t.signature = undefined;
 
-        transactionArray[index] = t;
+        transactionArray[id] = t;
 
         this.setState({transactions: transactionArray});
     }
