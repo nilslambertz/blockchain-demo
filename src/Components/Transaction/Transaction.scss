@@ -3,6 +3,9 @@
 .transaction {
   display: inline-block;
   width: 100%;
+}
+
+.transactionDragging {
   background-color: $default-background-color;
 }
 

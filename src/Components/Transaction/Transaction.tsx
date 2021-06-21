@@ -57,10 +57,11 @@ class Transaction extends React.Component<TransactionProps, {}> {
 
         return <Draggable draggableId={"transaction" + this.props.transaction.id} index={this.props.index}>
             {(provided, snapshot) => (
-                    <div className={"transaction listElement"}
+                    <div className={"transaction listElement" + (snapshot.isDragging ? " transactionDragging" : "")}
                          ref={provided.innerRef}
                          {...provided.draggableProps}
-                         {...provided.dragHandleProps}>
+                         {...provided.dragHandleProps}
+                    >
                         <table className={"transactionTable listTable"}>
                             <tbody>
                             <tr>
