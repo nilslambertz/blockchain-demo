@@ -127,17 +127,28 @@ class App extends React.Component<AppProps, AppState> {
         let transactions = [...this.state.transactions];
         let accounts = [...this.state.accounts];
 
+        let changed = false;
+
         for(let i = 0; i < blocks.length; i++) {
             let hash = generateBlockHash(blocks[i], transactions, accounts);
             if(hash === "") {
                 console.log("Error while generating hash, see previous error-messages!");
                 return;
             }
+            if(hash !== blocks[i].hash) {
+                changed = true;
+            }
+            if(changed) {
+                blocks[i].confirmed = false;
+            }
+
             blocks[i].hash = hash;
             if(i !== blocks.length-1) {
                 blocks[i+1].prevHash = hash;
             }
         }
+
+        this.setState({blocks: blocks});
     }
 
     onDragEnd = (result : any) => {
