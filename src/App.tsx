@@ -142,6 +142,8 @@ class App extends React.Component<AppProps, AppState> {
 
                 this.setState({unusedTransactions: unusedTransactions});
             } else {
+                let transactionList = this.state.transactions;
+
                 let source = result.source.droppableId.replace("block", "");
                 let blockId = parseInt(source);
 
@@ -151,12 +153,14 @@ class App extends React.Component<AppProps, AppState> {
                 let unusedTransactions = this.state.unusedTransactions;
                 unusedTransactions.splice(destinationIndex, 0, transactionId);
 
-                this.setState({blocks: blocks, unusedTransactions: unusedTransactions});
+                transactionList[transactionId].editable = true;
+
+                this.setState({blocks: blocks, unusedTransactions: unusedTransactions, transactions: transactionList});
             }
         } else {
             if(result.source.droppableId === "transactionList") {
-                let transaction = this.state.transactions[transactionId];
-                if(!transaction.signed) {
+                let transactionList = this.state.transactions;
+                if(!transactionList[transactionId].signed) {
                     showError("Transaction must be signed to be included in a block!");
                     return;
                 }
@@ -169,7 +173,9 @@ class App extends React.Component<AppProps, AppState> {
                 let blockIndex = result.destination.index;
                 blocks[blockId].transactions.splice(blockIndex, 0, transactionId);
 
-                this.setState({unusedTransactions: unusedTransactions, blocks: blocks});
+                transactionList[transactionId].editable = false;
+
+                this.setState({unusedTransactions: unusedTransactions, blocks: blocks, transactions: transactionList});
             }  else {
                 // Source and destination are blocks
                 let sourceBlockId = parseInt(result.source.droppableId.replace("block", ""));
