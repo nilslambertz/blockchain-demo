@@ -11,12 +11,6 @@ interface BlockProps {
 
 class Block extends React.Component<BlockProps, {}> {
     printTransactionList = () => {
-        let transactions : transcation[] = [];
-        let blockTransactions : number[] = this.props.block.transactions;
-        for(let i = 0; i < blockTransactions.length; i++) {
-            transactions.push(this.props.transactions[blockTransactions[i]]);
-        }
-
         return  <Droppable droppableId={"block" + this.props.block.id}>
                 {(provided, snapshot) => (
                     <UpperList
