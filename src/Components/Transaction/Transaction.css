@@ -27,6 +27,9 @@
 
 .transactionTable .from, .transactionTable .to {
   width: 100px;
+}
+
+.transactionTable .biggerText.from, .transactionTable .biggerText.to {
   font-size: 130%;
 }
 

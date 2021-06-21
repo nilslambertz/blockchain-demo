@@ -66,7 +66,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                             <tbody>
                             <tr>
                                 <td className={"id"}>{this.props.transaction.id}</td>
-                                <td className={"from smallText"}>
+                                <td className={"from" + (!this.props.transaction.editable ? " biggerText" : "")}>
                                     {
                                         this.props.transaction.editable ?
                                             <Select
@@ -89,7 +89,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                             this.props.transaction.from
                                     }
                                 </td>
-                                <td className={"to smallText"}>
+                                <td className={"to" + (!this.props.transaction.editable ? " biggerText" : "")}>
                                     {
                                         this.props.transaction.editable ?
                                             <Select
