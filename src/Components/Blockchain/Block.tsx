@@ -11,19 +11,13 @@ interface BlockProps {
 
 class Block extends React.Component<BlockProps, {}> {
     printTransactionList = () => {
-        return  <Droppable droppableId={"block" + this.props.block.id}>
-                {(provided, snapshot) => (
-                    <UpperList
-                        innerRef={provided.innerRef}
-                        {...provided.droppableProps}
-                        isDraggingOver={snapshot.isDraggingOver}
+        return  <UpperList
+                        droppableId={"block" + this.props.block.id}
                         title={"transactions"}
                         transactions={this.props.transactions}
                         transactionOrder={this.props.block.transactions}
                         className={"transactionListContainer"}
-                        blockList={true}
-                        placeholder={provided.placeholder}
-                    />)}</Droppable>
+                        blockList={true}/>
     }
 
     render() {

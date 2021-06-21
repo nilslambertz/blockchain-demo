@@ -4,7 +4,6 @@
   height: calc(100% - 20px);
   width: calc(100% - 20px);
   background-color: #153138;
-  overflow: auto;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -49,11 +48,11 @@
 }
 
 .block .transactions {
-  flex: 1;
   display: flex;
   padding: 0;
   flex-direction: column;
-  overflow: auto;
+  height: 100%;
+  overflow: hidden;
 }
 
 .block .transactions .transactionList {
@@ -69,7 +68,7 @@
 }
 
 .block .upperListContainer {
-  width: calc(100% - 20px);
+  width: 100%;
 }
 
 .block .blockDescription {

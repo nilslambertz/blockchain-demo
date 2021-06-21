@@ -6,7 +6,7 @@
   height: calc(100% - 20px);
   flex: 1;
   min-width: 500px;
-  padding: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid $default-color;
   border-right: 1px solid $default-color;
 
@@ -16,13 +16,13 @@
 }
 
 .upperListContainer {
-  overflow: auto;
   position: relative;
 }
 
 .upperListContainer .addButtonContainer {
   text-align: center;
   width: 100%;
+  padding-top: 10px;
   position: -webkit-sticky; /* Safari */
   position: sticky;
   bottom: 0;
@@ -59,9 +59,11 @@
 
 .upperList {
   flex: 1;
+  padding: 0 10px;
+  overflow: auto;
+  overflow-x: hidden;
   text-align: center;
   min-height: 100px;
-  padding-bottom: 60px;
   transition: background-color 0.1s;
 }
 

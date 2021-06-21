@@ -214,25 +214,21 @@ class App extends React.Component<AppProps, AppState> {
                 <UpperList
                     title={"accounts"}
                     accounts={this.state.accounts}
+                    droppableId={"accountList"}
                     className={"accountListContainer"}
                     addFunction={this.addAccount}
                 />
-                    <Droppable droppableId={"transactionList"}>
-                        {(provided, snapshot) => (
                 <UpperList
-                    innerRef={provided.innerRef}
-                    {...provided.droppableProps}
-                    isDraggingOver={snapshot.isDraggingOver}
                     title={"transactions"}
                     transactions={this.state.transactions}
                     transactionOrder={this.state.unusedTransactions}
                     numberOfAccounts={this.state.accountIdCount}
                     className={"transactionListContainer"}
+                    droppableId={"transactionList"}
                     addFunction={this.addTransaction}
                     signFunction={this.signTransaction}
                     removeSignatureFunction={this.removeSignature}
-                    placeholder={provided.placeholder}
-                />)}</Droppable>
+                />
             </div>
             <div id={"blockchainContent"}>
                 <Blockchain

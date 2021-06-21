@@ -3,6 +3,7 @@ import './UpperList.scss';
 import {account, settings, transcation} from "../../Utils/Interfaces";
 import Account from "../Account/Account";
 import Transaction from "../Transaction/Transaction";
+import {Droppable} from "react-beautiful-dnd";
 
 interface UpperListProps {
     title: string;
@@ -18,7 +19,8 @@ interface UpperListProps {
     placeholder?: any,
     innerRef?: any,
     blockList?: boolean,
-    isDraggingOver?: any
+    isDraggingOver?: any,
+    droppableId: string
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
@@ -51,10 +53,17 @@ class UpperList extends React.Component<UpperListProps, {}> {
                     <div className={"upperListTitle"}>{this.props.title}</div>
 
             }
-                        <div className={"upperList"} style={{backgroundColor: this.props.isDraggingOver ? "rgba(255,255,255,0.05)" : ""}}>
-                            {printFunction(arg)}
-                            {p}
-                        </div>
+                            <Droppable droppableId={this.props.droppableId}>
+                                {(provided, snapshot) => (
+                                    <div ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        className={"upperList"}
+                                         style={{backgroundColor: snapshot.isDraggingOver ? "rgba(255,255,255,0.05)" : ""}}
+                                    >
+                                        {printFunction(arg)}
+                                        {provided.placeholder}
+                                    </div>
+                                    )}</Droppable>
             {
                 this.props.blockList ?
                     ""
