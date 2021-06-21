@@ -31,7 +31,7 @@ class Block extends React.Component<BlockProps, {}> {
 
         return <div className={"blockContainer"}>
             <div className={"block " + confirmed}>
-                <div className={"prevHash"}>
+                <div className={"prevHash blockSmallText"}>
                     {this.props.block?.prevHash}
                     <div className={"blockDescription"}>Previous hash</div>
                 </div>
@@ -49,7 +49,7 @@ class Block extends React.Component<BlockProps, {}> {
                     {confirmed}
                     <div className={"blockDescription"}>Confirmation</div>
                 </div>
-                <div className={"hash"}>
+                <div className={"hash blockSmallText"}>
                     {this.props.block?.hash}
                     <div className={"blockDescription"}>Hash</div>
                 </div>

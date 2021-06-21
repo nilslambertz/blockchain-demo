@@ -3,6 +3,7 @@
 .blockchain {
   height: calc(100% - 20px);
   width: calc(100% - 20px);
+  background-color: #153138;
   overflow: auto;
   padding: 10px;
   display: flex;
@@ -50,6 +51,7 @@
 .block .transactions {
   flex: 1;
   display: flex;
+  padding: 0;
   flex-direction: column;
   overflow: auto;
 }
@@ -57,7 +59,17 @@
 .block .transactions .transactionList {
   padding: 0;
   border: none;
+  width: 600px;
+  height: calc(100% - 20px);
   flex: 1;
+}
+
+.block .transactionTable .id, .block .transactionTable .from, .block .transactionTable .to, .block .transactionTable .amount {
+  width: 50px;
+}
+
+.block .upperListContainer {
+  width: calc(100% - 20px);
 }
 
 .block .blockDescription {
@@ -67,4 +79,9 @@
   color: #cbcbcb;
   font-size: 12px;
   bottom: 0;
+}
+
+.block .blockSmallText {
+  overflow-wrap: break-word;
+  font-size: 13px;
 }
