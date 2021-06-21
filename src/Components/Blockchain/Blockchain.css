@@ -27,6 +27,7 @@
   height: calc(100% - 2px);
 }
 
+/*
 .block.unconfirmed {
   background-color: brown;
 }
@@ -34,7 +35,7 @@
 .block.confirmed {
   background-color: #04490b;
 }
-
+*/
 .block div {
   padding: 5px;
   border-bottom: 1px solid white;
@@ -61,7 +62,7 @@
   padding: 0;
   width: 100%;
   text-align: right;
-  color: black;
+  color: #cbcbcb;
   font-size: 12px;
   bottom: 0;
 }
