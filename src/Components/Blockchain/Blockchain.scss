@@ -26,6 +26,7 @@
   border: 1px solid white;
   display: flex;
   flex-direction: column;
+  max-width: 800px;
   height: calc(100% - 2px);
 }
 /*
@@ -37,7 +38,7 @@
   background-color: #04490b;
 }
 */
-.block div {
+.block>div {
   padding: 5px;
   border-bottom: 1px solid white;
 }
