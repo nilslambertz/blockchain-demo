@@ -4,6 +4,8 @@ import "./Transaction.scss"
 import "../UpperList/UpperList.scss";
 import Select from "react-select";
 import {Draggable} from "react-beautiful-dnd";
+import {toast} from "react-toastify";
+import {showError} from "../../Utils/ToastFunctions";
 
 interface TransactionProps {
     transaction: transcation,
@@ -44,8 +46,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
 
             this.props.signFunction(t);
         } else {
-            console.log("Error: One of the transaction-values isn't set!");
-            // TODO
+            showError("All values must be set to sign a transaction!");
         }
     }
 
