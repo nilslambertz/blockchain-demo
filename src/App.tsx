@@ -4,8 +4,8 @@ import UpperList from "./Components/UpperList/UpperList";
 import {account, block, signaturePair, transcation} from "./Utils/Interfaces";
 import {generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
 import Blockchain from "./Components/Blockchain/Blockchain";
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
-import { ToastContainer, toast } from 'react-toastify';
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {showError} from "./Utils/ToastFunctions";
 
