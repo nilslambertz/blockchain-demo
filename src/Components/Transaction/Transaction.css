@@ -29,6 +29,16 @@
   width: 100px;
 }
 
+.transactionTable .selectStyle {
+  width: 100%;
+  -moz-padding-start: calc(10px - 3px);
+  padding-left: 10px;
+  background-color: white;
+  color: black;
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+}
+
 .transactionTable .biggerText.from, .transactionTable .biggerText.to {
   font-size: 130%;
 }
