@@ -16,18 +16,12 @@ interface UpperListProps {
     addFunction?: any
     signFunction?: any,
     removeSignatureFunction?: any,
-    placeholder?: any,
-    innerRef?: any,
     blockList?: boolean,
-    isDraggingOver?: any,
-    droppableId: string
+    droppableId: string,
+    dropDisabled?: boolean
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
-    setRef = (ref : any) => {
-        if(this.props.innerRef) this.props.innerRef(ref);
-    }
-
     render() {
         let printFunction : any = (err : any) => {return <div className={"listError"}>{err}</div>};
         let arg : any = "Error";
@@ -42,10 +36,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
         let addFunction = this.props.addFunction;
         if(!addFunction) addFunction = () => {console.log("Error: function is not defined")};
 
-        let p = "";
-        if(this.props.placeholder) p = this.props.placeholder;
-
-        return (<div className={"upperListContainer " + this.props.className} ref={this.setRef}>
+        return (<div className={"upperListContainer " + this.props.className}>
             {
                 this.props.blockList ?
                     ""
@@ -53,7 +44,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
                     <div className={"upperListTitle"}>{this.props.title}</div>
 
             }
-                            <Droppable droppableId={this.props.droppableId}>
+                            <Droppable droppableId={this.props.droppableId} isDropDisabled={this.props.dropDisabled}>
                                 {(provided, snapshot) => (
                                     <div ref={provided.innerRef}
                                         {...provided.droppableProps}

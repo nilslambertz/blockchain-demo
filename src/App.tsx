@@ -217,6 +217,7 @@ class App extends React.Component<AppProps, AppState> {
                     droppableId={"accountList"}
                     className={"accountListContainer"}
                     addFunction={this.addAccount}
+                    dropDisabled={true}
                 />
                 <UpperList
                     title={"transactions"}
