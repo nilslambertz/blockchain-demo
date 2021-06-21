@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Blockchain.scss";
 import {block, transcation} from "../../Utils/Interfaces";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import {Droppable} from "react-beautiful-dnd";
 import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
@@ -24,7 +24,7 @@ class Block extends React.Component<BlockProps, {}> {
                         {...provided.droppableProps}
                         isDraggingOver={snapshot.isDraggingOver}
                         title={"transactions"}
-                        transactions={transactions}
+                        transactions={this.props.transactions}
                         transactionOrder={this.props.block.transactions}
                         className={"transactionListContainer"}
                         blockList={true}

@@ -52,7 +52,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
     render() {
         let options = Array.from({length: this.props.numberOfAccounts}, (item, index) => {
             return {value: index, label: index};
-        })
+        });
 
         return <Draggable draggableId={"transaction" + this.props.transaction.id} index={this.props.index}>
             {(provided, snapshot) => (

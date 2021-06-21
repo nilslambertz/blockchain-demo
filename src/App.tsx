@@ -137,41 +137,69 @@ class App extends React.Component<AppProps, AppState> {
         if(result.destination === null) return;
         if(destination.droppableId === source.droppableId && destination.index  === source.index) return;
 
-        let id : number = parseInt(draggableId.replace("transaction", ""));
+        let sourceIndex = result.source.index;
+        let destinationIndex = result.destination.index;
+        let transactionId : number = parseInt(draggableId.replace("transaction", ""));
 
         if(result.destination.droppableId === "transactionList") {
             if(result.source.droppableId === "transactionList") {
-                let firstIndex = source.index;
-                let secondIndex = destination.index;
-
                 let unusedTransactions = this.state.unusedTransactions;
 
-                let temp : number = unusedTransactions[firstIndex];
-                unusedTransactions[firstIndex] = unusedTransactions[secondIndex];
-                unusedTransactions[secondIndex] = temp;
+                unusedTransactions.splice(sourceIndex, 1);
+                unusedTransactions.splice(destinationIndex, 0, transactionId);
 
                 this.setState({unusedTransactions: unusedTransactions});
             } else {
                 let source = result.source.droppableId.replace("block", "");
                 let blockId = parseInt(source);
+
+                let blocks = this.state.blocks;
+                blocks[blockId].transactions.splice(sourceIndex, 1);
+
+                let unusedTransactions = this.state.unusedTransactions;
+                unusedTransactions.splice(destinationIndex, 0, transactionId);
+
+                this.setState({blocks: blocks, unusedTransactions: unusedTransactions});
             }
         } else {
-            let unusedTransactions = this.state.unusedTransactions;
-            let index = -1;
-            for(let i = 0; i < unusedTransactions.length; i++) {
-                if(unusedTransactions[i] === id) {
-                    index = i;
+            if(result.source.droppableId === "transactionList") {
+                let unusedTransactions = this.state.unusedTransactions;
+                unusedTransactions.splice(sourceIndex, 1);
+
+                let blocks = this.state.blocks;
+                let blockId = parseInt(result.destination.droppableId.replace("block", ""));
+                let blockIndex = result.destination.index;
+                blocks[blockId].transactions.splice(blockIndex, 0, transactionId);
+
+                this.setState({unusedTransactions: unusedTransactions, blocks: blocks});
+            }  else {
+                // Source and destination are blocks
+                let sourceBlockId = parseInt(result.source.droppableId.replace("block", ""));
+                let destinationBlockId = parseInt(result.destination.droppableId.replace("block", ""));
+
+                if(sourceBlockId === destinationBlockId) {
+                    let blocks = this.state.blocks;
+                    let transactions = blocks[sourceBlockId].transactions;
+
+                    transactions.splice(sourceIndex, 1);
+                    transactions.splice(destinationIndex, 0, transactionId);
+
+                    blocks[sourceBlockId].transactions = transactions;
+                    this.setState({blocks: blocks});
+                } else {
+                    let blocks = this.state.blocks;
+
+                    let sourceTransactions = blocks[sourceBlockId].transactions;
+                    sourceTransactions.splice(sourceIndex, 1);
+                    blocks[sourceBlockId].transactions = sourceTransactions;
+
+                    let destinationTransactions = blocks[destinationBlockId].transactions;
+                    destinationTransactions.splice(destinationIndex, 0, transactionId);
+                    blocks[destinationBlockId].transactions = destinationTransactions;
+
+                    this.setState({blocks: blocks});
                 }
             }
-
-            unusedTransactions.splice(index, 1);
-
-            let blocks = this.state.blocks;
-            let blockId = parseInt(result.destination.droppableId.replace("block", ""));
-            let blockIndex = result.destination.index;
-            blocks[blockId].transactions.splice(blockIndex, 0, id);
-
-            this.setState({unusedTransactions: unusedTransactions, blocks: blocks});
         }
     }
 
