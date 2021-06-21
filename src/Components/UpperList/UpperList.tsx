@@ -74,10 +74,6 @@ class UpperList extends React.Component<UpperListProps, {}> {
         });
     }
 
-    onDragEnd = () => {
-        // TODO
-    }
-
     printTransactionList = (transactions : transcation[]) => {
         let numberOfAccounts = 0;
         if(this.props?.numberOfAccounts) {
