@@ -4,7 +4,7 @@ import UpperList from "./Components/UpperList/UpperList";
 import {account, block, signaturePair, transcation} from "./Utils/Interfaces";
 import {generateKeyAddressPair, signTransaction, verifyTransaction} from "./Utils/Functions";
 import Blockchain from "./Components/Blockchain/Blockchain";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 
 interface AppProps {
 }
@@ -137,26 +137,47 @@ class App extends React.Component<AppProps, AppState> {
         if(result.destination === null) return;
         if(destination.droppableId === source.droppableId && destination.index  === source.index) return;
 
-        if(result.destination.droppableId === "transactionListDroppable") {
-            let firstIndex = source.index;
-            let secondIndex = destination.index;
+        let id : number = parseInt(draggableId.replace("transaction", ""));
 
+        if(result.destination.droppableId === "transactionList") {
+            if(result.source.droppableId === "transactionList") {
+                let firstIndex = source.index;
+                let secondIndex = destination.index;
+
+                let unusedTransactions = this.state.unusedTransactions;
+
+                let temp : number = unusedTransactions[firstIndex];
+                unusedTransactions[firstIndex] = unusedTransactions[secondIndex];
+                unusedTransactions[secondIndex] = temp;
+
+                this.setState({unusedTransactions: unusedTransactions});
+            } else {
+                let source = result.source.droppableId.replace("block", "");
+                let blockId = parseInt(source);
+            }
+        } else {
             let unusedTransactions = this.state.unusedTransactions;
-            let newTransactionArray : any[] = [];
-            unusedTransactions.forEach((id : number) => {
-                newTransactionArray.push(this.state.transactions[id]);
-            });
+            let index = -1;
+            for(let i = 0; i < unusedTransactions.length; i++) {
+                if(unusedTransactions[i] === id) {
+                    index = i;
+                }
+            }
 
-            let temp : transcation = newTransactionArray[firstIndex];
-            newTransactionArray[firstIndex] = newTransactionArray[secondIndex];
-            newTransactionArray[secondIndex] = temp;
+            unusedTransactions.splice(index, 1);
 
-            this.setState({transactions: newTransactionArray});
+            let blocks = this.state.blocks;
+            let blockId = parseInt(result.destination.droppableId.replace("block", ""));
+            let blockIndex = result.destination.index;
+            blocks[blockId].transactions.splice(blockIndex, 0, id);
+
+            this.setState({unusedTransactions: unusedTransactions, blocks: blocks});
         }
     }
 
     render() {
         return <div className="App">
+            <DragDropContext onDragEnd={this.onDragEnd}>
             <div id={"upperContent"}>
                 <UpperList
                     title={"accounts"}
@@ -164,28 +185,32 @@ class App extends React.Component<AppProps, AppState> {
                     className={"accountListContainer"}
                     addFunction={this.addAccount}
                 />
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Droppable droppableId={"transactionListDroppable"}>
-                        {provided => (
+                    <Droppable droppableId={"transactionList"}>
+                        {(provided, snapshot) => (
                 <UpperList
                     innerRef={provided.innerRef}
                     {...provided.droppableProps}
+                    isDraggingOver={snapshot.isDraggingOver}
                     title={"transactions"}
                     transactions={this.state.transactions}
+                    transactionOrder={this.state.unusedTransactions}
                     numberOfAccounts={this.state.accountIdCount}
                     className={"transactionListContainer"}
                     addFunction={this.addTransaction}
                     signFunction={this.signTransaction}
                     removeSignatureFunction={this.removeSignature}
                     placeholder={provided.placeholder}
-                />)}</Droppable></DragDropContext>
+                />)}</Droppable>
             </div>
             <div id={"blockchainContent"}>
-                <Blockchain blocks={this.state.blocks} />
+                <Blockchain
+                    blocks={this.state.blocks}
+                    transactions={this.state.transactions}
+                />
             </div>
             <div id={"footer"}>
                 by nils lambertz
-            </div>
+            </div></DragDropContext>
         </div>;
     };
 }

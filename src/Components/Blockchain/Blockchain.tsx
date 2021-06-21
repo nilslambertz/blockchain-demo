@@ -1,11 +1,12 @@
 import React from 'react';
 import "./Blockchain.scss";
-import {block} from "../../Utils/Interfaces";
+import {block, transcation} from "../../Utils/Interfaces";
 import Block from "./Block";
 import {ReactComponent as Arrow} from "../../res/arrowright.svg";
 
 interface BlockchainProps {
-    blocks: block[]
+    blocks: block[],
+    transactions: transcation[]
 }
 
 class Blockchain extends React.Component<BlockchainProps, {}> {
@@ -14,12 +15,16 @@ class Blockchain extends React.Component<BlockchainProps, {}> {
             {this.printBlocks()}
         </div>;
     }
-
     printBlocks = () => {
+        let transactions = this.props.transactions;
+
         return this.props.blocks.map(function (value, index, array) {
             return (
                 <React.Fragment key={index}>
-                    <Block block={value}/>
+                    <Block
+                        block={value}
+                        transactions={transactions}
+                    />
                     {index !== array.length -1 ? <div className={"arrows"}><Arrow /></div> : "" }
                 </React.Fragment>
             );

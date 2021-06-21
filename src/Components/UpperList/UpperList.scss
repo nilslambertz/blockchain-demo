@@ -5,7 +5,7 @@
   flex-direction: column;
   height: calc(100% - 20px);
   flex: 1;
-  min-width: 600px;
+  min-width: 500px;
   padding: 10px;
   border-bottom: 1px solid $default-color;
   border-right: 1px solid $default-color;
@@ -60,7 +60,9 @@
 .upperList {
   flex: 1;
   text-align: center;
+  min-height: 100px;
   padding-bottom: 60px;
+  transition: background-color 0.1s;
 }
 
 .upperList .listElement {

@@ -54,7 +54,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
             return {value: index, label: index};
         })
 
-        return <Draggable draggableId={this.props.transaction.id + ""} index={this.props.index}>
+        return <Draggable draggableId={"transaction" + this.props.transaction.id} index={this.props.index}>
             {(provided, snapshot) => (
                     <div className={"transaction listElement"}
                          ref={provided.innerRef}

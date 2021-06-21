@@ -8,6 +8,7 @@ interface UpperListProps {
     title: string;
     accounts?: account[],
     transactions?: transcation[],
+    transactionOrder?: number[],
     numberOfAccounts?: number,
     settings?: settings[],
     className?: string
@@ -15,7 +16,9 @@ interface UpperListProps {
     signFunction?: any,
     removeSignatureFunction?: any,
     placeholder?: any,
-    innerRef?: any
+    innerRef?: any,
+    blockList?: boolean,
+    isDraggingOver?: any
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
@@ -41,17 +44,27 @@ class UpperList extends React.Component<UpperListProps, {}> {
         if(this.props.placeholder) p = this.props.placeholder;
 
         return (<div className={"upperListContainer " + this.props.className} ref={this.setRef}>
-            <div className={"upperListTitle"}>{this.props.title}</div>
-                        <div className={"upperList"}>
+            {
+                this.props.blockList ?
+                    ""
+                    :
+                    <div className={"upperListTitle"}>{this.props.title}</div>
+
+            }
+                        <div className={"upperList"} style={{backgroundColor: this.props.isDraggingOver ? "rgba(255,255,255,0.05)" : ""}}>
                             {printFunction(arg)}
                             {p}
                         </div>
-
+            {
+                this.props.blockList ?
+                    ""
+                    :
             <div className={"addButtonContainer"}>
                 <div className={"addButton"} onClick={() => addFunction()}>
                     Add
                 </div>
             </div>
+            }
         </div>);
     }
 
@@ -70,11 +83,13 @@ class UpperList extends React.Component<UpperListProps, {}> {
         if(this.props?.numberOfAccounts) {
             numberOfAccounts = this.props.numberOfAccounts
         }
+        let transactionOrder = this.props.transactionOrder;
+        if(transactionOrder === undefined) transactionOrder = [];
         let signFunction = this.props.signFunction;
         let removeSignatureFunction = this.props.removeSignatureFunction;
 
-        return (transactions.map(function (value, index, array) {
-            return <Transaction transaction={value} numberOfAccounts={numberOfAccounts} key={value.id}
+        return (transactionOrder.map(function (value, index, array) {
+            return <Transaction transaction={transactions[value]} numberOfAccounts={numberOfAccounts} key={value}
                                 signFunction={signFunction} removeSignatureFunction={removeSignatureFunction} index={index}/>
         }));
     }

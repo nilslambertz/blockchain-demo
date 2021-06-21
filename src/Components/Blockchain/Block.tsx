@@ -1,12 +1,37 @@
 import React from 'react';
 import "./Blockchain.scss";
-import {block} from "../../Utils/Interfaces";
+import {block, transcation} from "../../Utils/Interfaces";
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
-    block: block
+    block: block,
+    transactions: transcation[]
 }
 
 class Block extends React.Component<BlockProps, {}> {
+    printTransactionList = () => {
+        let transactions : transcation[] = [];
+        let blockTransactions : number[] = this.props.block.transactions;
+        for(let i = 0; i < blockTransactions.length; i++) {
+            transactions.push(this.props.transactions[blockTransactions[i]]);
+        }
+
+        return  <Droppable droppableId={"block" + this.props.block.id}>
+                {(provided, snapshot) => (
+                    <UpperList
+                        innerRef={provided.innerRef}
+                        {...provided.droppableProps}
+                        isDraggingOver={snapshot.isDraggingOver}
+                        title={"transactions"}
+                        transactions={transactions}
+                        transactionOrder={this.props.block.transactions}
+                        className={"transactionListContainer"}
+                        blockList={true}
+                        placeholder={provided.placeholder}
+                    />)}</Droppable>
+    }
+
     render() {
         let confirmed : string = this.props.block.confirmed ? "confirmed" : "unconfirmed";
 
@@ -18,11 +43,7 @@ class Block extends React.Component<BlockProps, {}> {
                 </div>
                 <div className={"transactions"}>
                     <div className={"transactionList"}>
-                        {this.props.block.transactions?.length === 0 ?
-                            "Drag and drop transactions here!"
-                            :
-                            "Error"
-                        }
+                        {this.printTransactionList()}
                     </div>
                     <div className={"blockDescription"}>Transactions</div>
                 </div>
