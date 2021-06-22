@@ -1,4 +1,5 @@
 export const firstHash = "0000";
+export const validStartHash = "00";
 
 export interface account {
     id: number,
@@ -45,6 +46,5 @@ export interface block {
     transactions: number[],
     nonce?: number,
     hash?: string,
-    valid?: boolean,
     confirmed: boolean
 }
