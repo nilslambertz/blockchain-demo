@@ -3,12 +3,14 @@
   width: calc(100% - 20px);
   padding: 10px;
   display: flex;
+  overflow-x: scroll;
   flex-direction: row;
 }
 
 .arrows {
   height: 100%;
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   width: 80px;
