@@ -139,6 +139,18 @@ class App extends React.Component<AppProps, AppState> {
     recalculateBlocks = () => {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
+        
+        let lastUnused = this.state.lastUnusedBlock;
+        let nextId = this.state.blockIdCount;
+        if(blocks[blocks.length-1].confirmed || blocks[blocks.length-1].transactions.length !== 0) {
+            blocks.push({
+                id: nextId,
+                nonce: 0,
+                transactions: [],
+                confirmed: false
+            });
+            lastUnused = nextId++;
+        }
 
         let changed = false;
 
@@ -159,18 +171,6 @@ class App extends React.Component<AppProps, AppState> {
             if(i !== blocks.length-1) {
                 blocks[i+1].prevHash = hash;
             }
-        }
-
-        let lastUnused = this.state.lastUnusedBlock;
-        let nextId = this.state.blockIdCount;
-        if(blocks[blocks.length-1].confirmed || blocks[blocks.length-1].transactions.length !== 0) {
-            blocks.push({
-                id: nextId,
-                nonce: 0,
-                transactions: [],
-                confirmed: false
-            });
-            lastUnused = nextId++;
         }
 
         this.setState({blocks: blocks, lastUnusedBlock: lastUnused, blockIdCount: nextId});
