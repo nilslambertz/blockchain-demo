@@ -12,7 +12,7 @@ import Blockchain from "./Components/Blockchain/Blockchain";
 import {DragDropContext} from "react-beautiful-dnd";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {showError} from "./Utils/ToastFunctions";
+import {showError, showWarning} from "./Utils/ToastFunctions";
 
 interface AppProps {
 }
@@ -91,10 +91,17 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     signTransaction = (t: transcation) => {
-        let sender : number = -1;
-        if(t.from !== undefined){
-            sender = t.from;
+        if(this.state.accounts.length === 0) {
+            showError("At least one account is needed to set all transaction values!");
+            return;
         }
+
+        if(t.from === undefined || t.to === undefined) {
+            showError("All values have to be set to sign a transaction!");
+            return;
+        }
+
+        let sender : number = t.from;
 
         let privateKey = this.state.accounts[sender].privateKeyArray;
         let address = this.state.accounts[sender].addressArray;
@@ -157,6 +164,11 @@ class App extends React.Component<AppProps, AppState> {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
         let accounts = [...this.state.accounts];
+
+        if(id !== 0 && !blocks[id-1].confirmed) {
+            showWarning("All previous blocks need to be confirmed first!");
+            return;
+        }
 
         let transactionsValidated = verifyAllBlockTransactions(blocks[id], transactions, accounts);
 
