@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Blockchain.scss";
-import {block, transcation} from "../../Utils/Interfaces";
+import {block, transcation, validStartHash} from "../../Utils/Interfaces";
 import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
@@ -44,7 +44,7 @@ class Block extends React.Component<BlockProps, {}> {
                 <div className={"confirmContainer"}>
                     {
                         this.props.block.confirmed ?
-                            "confirmed"
+                            <span className={"confirmedString"}>confirmed</span>
                             :
                             <div className={"confirmButton"} onClick={() => this.confirmFunction()}>
                                 Confirm
@@ -53,7 +53,15 @@ class Block extends React.Component<BlockProps, {}> {
                     <div className={"blockDescription"}>Confirmation</div>
                 </div>
                 <div className={"hash blockSmallText"}>
-                    {this.props.block?.hash}
+                    {
+                        this.props.block.confirmed ?
+                            <span>
+                                <span className={"confirmedString"}>{validStartHash}</span>
+                                {this.props.block?.hash?.substr(validStartHash.length)}
+                            </span>
+                            :
+                            this.props.block?.hash
+                    }
                     <div className={"blockDescription"}>Hash</div>
                 </div>
             </div>
