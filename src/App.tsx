@@ -1,8 +1,13 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {account, block, firstHash, signaturePair, transcation} from "./Utils/Interfaces";
-import {generateBlockHash, generateKeyAddressPair, signTransaction} from "./Utils/Functions";
+import {account, block, firstHash, signaturePair, transcation, validStartHash} from "./Utils/Interfaces";
+import {
+    generateBlockHash,
+    generateKeyAddressPair,
+    signTransaction,
+    verifyAllBlockTransactions
+} from "./Utils/Functions";
 import Blockchain from "./Components/Blockchain/Blockchain";
 import {DragDropContext} from "react-beautiful-dnd";
 import { ToastContainer } from 'react-toastify';
@@ -36,13 +41,11 @@ class App extends React.Component<AppProps, AppState> {
                 prevHash: firstHash,
                 nonce: 0,
                 transactions: [],
-                valid: false,
                 confirmed: false
             },{
                 id: 1,
                 nonce: 0,
                 transactions: [],
-                valid: false,
                 confirmed: false
             }]
         };
@@ -125,12 +128,11 @@ class App extends React.Component<AppProps, AppState> {
     recalculateBlocks = () => {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
-        let accounts = [...this.state.accounts];
 
         let changed = false;
 
         for(let i = 0; i < blocks.length; i++) {
-            let hash = generateBlockHash(blocks[i], transactions, accounts);
+            let hash = generateBlockHash(blocks[i], transactions);
             if(hash === "") {
                 console.log("Error while generating hash, see previous error-messages!");
                 return;
@@ -149,6 +151,42 @@ class App extends React.Component<AppProps, AppState> {
         }
 
         this.setState({blocks: blocks});
+    }
+
+    confirmBlock = (id : number) => {
+        let blocks = [...this.state.blocks];
+        let transactions = [...this.state.transactions];
+        let accounts = [...this.state.accounts];
+
+        let transactionsValidated = verifyAllBlockTransactions(blocks[id], transactions, accounts);
+
+        if(!transactionsValidated) {
+            showError("Some transactions could not be verified!");
+            return;
+        }
+
+        let hash = "";
+        let block = blocks[id];
+        block.nonce = -1;
+
+        do {
+            block.nonce++;
+            hash = generateBlockHash(block, transactions);
+        } while(!hash.startsWith(validStartHash) || block.nonce > 10000)
+
+        if(block.nonce > 10000 && !hash.startsWith(validStartHash)) {
+            showError("Could not validate block!");
+            console.log("Didn't find nonce in 10000 iterations");
+            return;
+        }
+
+        block.confirmed = true;
+        block.hash = hash;
+        blocks[id] = block;
+
+        this.setState({blocks: blocks}, () => {
+            this.recalculateBlocks();
+        });
     }
 
     onDragEnd = (result : any) => {
@@ -265,6 +303,7 @@ class App extends React.Component<AppProps, AppState> {
                 <Blockchain
                     blocks={this.state.blocks}
                     transactions={this.state.transactions}
+                    confirmFunction={this.confirmBlock}
                 />
             </div>
             <div id={"footer"}>
