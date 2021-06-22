@@ -28,15 +28,6 @@
   height: calc(100% - 2px);
 }
 
-/*
-.block.unconfirmed {
-  background-color: brown;
-}
-
-.block.confirmed {
-  background-color: #04490b;
-}
-*/
 .block > div {
   padding: 5px;
   border-bottom: 1px solid white;
@@ -82,6 +73,24 @@
 .block .blockSmallText {
   overflow-wrap: break-word;
   font-size: 13px;
+}
+
+.block .confirmContainer {
+  text-align: center;
+}
+
+.block .confirmButton {
+  background-color: #973c0c;
+  border-radius: 2px;
+  padding: 10px 50px;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+.block .confirmButton:hover {
+  background-color: #ad510f;
 }
 
 /*# sourceMappingURL=Blockchain.css.map */

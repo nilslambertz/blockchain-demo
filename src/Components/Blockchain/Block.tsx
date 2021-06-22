@@ -5,7 +5,8 @@ import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
     block: block,
-    transactions: transcation[]
+    transactions: transcation[],
+    confirmFunction: any
 }
 
 class Block extends React.Component<BlockProps, {}> {
@@ -19,11 +20,13 @@ class Block extends React.Component<BlockProps, {}> {
                         blockList={true}/>
     }
 
-    render() {
-        let confirmed : string = this.props.block.confirmed ? "confirmed" : "unconfirmed";
+    confirmFunction = () => {
+        this.props.confirmFunction(this.props.block.id);
+    }
 
+    render() {
         return <div className={"blockContainer"}>
-            <div className={"block " + confirmed}>
+            <div className={"block"}>
                 <div className={"prevHash blockSmallText"}>
                     {this.props.block?.prevHash}
                     <div className={"blockDescription"}>Previous hash</div>
@@ -38,8 +41,15 @@ class Block extends React.Component<BlockProps, {}> {
                     {this.props.block?.nonce}
                     <div className={"blockDescription"}>Nonce</div>
                 </div>
-                <div className={"confirmed"}>
-                    {confirmed}
+                <div className={"confirmContainer"}>
+                    {
+                        this.props.block.confirmed ?
+                            "confirmed"
+                            :
+                            <div className={"confirmButton"} onClick={() => this.confirmFunction()}>
+                                Confirm
+                            </div>
+                    }
                     <div className={"blockDescription"}>Confirmation</div>
                 </div>
                 <div className={"hash blockSmallText"}>
