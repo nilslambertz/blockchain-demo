@@ -1,7 +1,6 @@
 .blockchain {
   height: calc(100% - 20px);
   width: calc(100% - 20px);
-  background-color: #153138;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -94,7 +93,7 @@
 }
 
 .block .confirmedString {
-  color: #2e952e;
+  color: #38bb38;
   font-weight: bold;
 }
 
