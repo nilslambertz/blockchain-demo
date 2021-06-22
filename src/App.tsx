@@ -23,7 +23,9 @@ interface AppState {
     transactionIdCount: number,
     transactions: transcation[],
     unusedTransactions: number[],
-    blocks: block[]
+    blockIdCount: number,
+    blocks: block[],
+    lastUnusedBlock: number
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -36,6 +38,7 @@ class App extends React.Component<AppProps, AppState> {
             transactionIdCount: 0,
             transactions: [],
             unusedTransactions: [],
+            blockIdCount: 2,
             blocks: [{
                 id: 0,
                 prevHash: firstHash,
@@ -47,7 +50,8 @@ class App extends React.Component<AppProps, AppState> {
                 nonce: 0,
                 transactions: [],
                 confirmed: false
-            }]
+            }],
+            lastUnusedBlock: 1
         };
 
         this.recalculateBlocks();
@@ -157,7 +161,19 @@ class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        this.setState({blocks: blocks});
+        let lastUnused = this.state.lastUnusedBlock;
+        let nextId = this.state.blockIdCount;
+        if(blocks[blocks.length-1].confirmed || blocks[blocks.length-1].transactions.length !== 0) {
+            blocks.push({
+                id: nextId,
+                nonce: 0,
+                transactions: [],
+                confirmed: false
+            });
+            lastUnused = nextId++;
+        }
+
+        this.setState({blocks: blocks, lastUnusedBlock: lastUnused, blockIdCount: nextId});
     }
 
     confirmBlock = (id : number) => {
