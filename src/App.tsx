@@ -25,6 +25,7 @@ interface AppState {
     unusedTransactions: number[],
     blockIdCount: number,
     blocks: block[],
+    lastConfirmedBlock: number,
     lastUnusedBlock: number
 }
 
@@ -51,6 +52,7 @@ class App extends React.Component<AppProps, AppState> {
                 transactions: [],
                 confirmed: false
             }],
+            lastConfirmedBlock: -1,
             lastUnusedBlock: 1
         };
 
@@ -139,7 +141,7 @@ class App extends React.Component<AppProps, AppState> {
     recalculateBlocks = () => {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
-        
+
         let lastUnused = this.state.lastUnusedBlock;
         let nextId = this.state.blockIdCount;
         if(blocks[blocks.length-1].confirmed || blocks[blocks.length-1].transactions.length !== 0) {
@@ -153,6 +155,7 @@ class App extends React.Component<AppProps, AppState> {
         }
 
         let changed = false;
+        let lastConfirmed = this.state.lastConfirmedBlock;
 
         for(let i = 0; i < blocks.length; i++) {
             let hash = generateBlockHash(blocks[i], transactions);
@@ -161,6 +164,10 @@ class App extends React.Component<AppProps, AppState> {
                 return;
             }
             if(hash !== blocks[i].hash) {
+                if(!changed) {
+                    lastConfirmed = i-1;
+                }
+
                 changed = true;
             }
             if(changed) {
@@ -173,7 +180,9 @@ class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        this.setState({blocks: blocks, lastUnusedBlock: lastUnused, blockIdCount: nextId});
+        console.log(lastConfirmed);
+
+        this.setState({blocks: blocks, lastUnusedBlock: lastUnused, lastConfirmedBlock: lastConfirmed,blockIdCount: nextId});
     }
 
     confirmBlock = (id : number) => {
@@ -212,7 +221,7 @@ class App extends React.Component<AppProps, AppState> {
         block.hash = hash;
         blocks[id] = block;
 
-        this.setState({blocks: blocks}, () => {
+        this.setState({blocks: blocks, lastConfirmedBlock: block.id}, () => {
             this.recalculateBlocks();
         });
     }
