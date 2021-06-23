@@ -4,7 +4,8 @@ import "./Account.scss"
 import "../UpperList/UpperList.scss"
 
 interface AccountProps {
-    account: account
+    account: account,
+    lastConfirmedBlock: number
 }
 
 class Account extends React.Component<AccountProps, {}> {
@@ -16,7 +17,7 @@ class Account extends React.Component<AccountProps, {}> {
                         <td className={"id"}>{this.props.account.id}</td>
                         <td className={"privateKey smallText"}>{this.props.account.privateKey}</td>
                         <td className={"address smallText"}>{this.props.account.address}</td>
-                        <td className={"balance"}>{this.props.account.balance}</td>
+                        <td className={"balance"}>{this.props.account.balanceBeforeBlock[this.props.lastConfirmedBlock+1]}</td>
                     </tr>
                     <tr className={"description"}>
                         <td>ID</td>

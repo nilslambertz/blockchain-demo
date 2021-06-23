@@ -63,16 +63,17 @@ class App extends React.Component<AppProps, AppState> {
         let keys = generateKeyAddressPair();
         let count = this.state.accountIdCount;
 
+        let balance = Math.floor(Math.random() * 1001);
+
         let a : account = {
             id: count,
             privateKey: keys.privateKey,
             privateKeyArray: keys.privateKeyArray,
             address: keys.address,
-            addressArray: keys.addressArray
+            addressArray: keys.addressArray,
+            balanceBeforeBlock: [balance]
         }
         this.setState({accountIdCount: count + 1});
-
-        a.balance = Math.floor(Math.random() * 1001);
 
         let arr : account[] = this.state.accounts;
         arr.push(a);
@@ -180,8 +181,6 @@ class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        console.log(lastConfirmed);
-
         this.setState({blocks: blocks, lastUnusedBlock: lastUnused, lastConfirmedBlock: lastConfirmed,blockIdCount: nextId});
     }
 
@@ -200,6 +199,34 @@ class App extends React.Component<AppProps, AppState> {
         if(!transactionsValidated) {
             showError("Some transactions could not be verified!");
             return;
+        }
+
+        let balancesAfterBlock : number[] = [];
+        for(let i = 0; i < accounts.length; i++) {
+            balancesAfterBlock[i] = accounts[i].balanceBeforeBlock[id];
+        }
+
+        for(let i = 0; i < blocks[id].transactions.length; i++) {
+            let t = transactions[blocks[id].transactions[i]];
+
+            if(t.from === undefined || t.to === undefined || t.amount === undefined) return;
+
+            let newFromValue = balancesAfterBlock[t.from] - t.amount;
+            if(newFromValue < 0) {
+                showError("Transaction " + id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!");
+                for(let j = 0; j < accounts.length; j++) {
+                    accounts[j].balanceBeforeBlock = accounts[j].balanceBeforeBlock.slice(0, id+1);
+                }
+                this.setState({accounts: accounts});
+                return;
+            }
+
+            balancesAfterBlock[t.from] = balancesAfterBlock[t.from] - t.amount;
+            balancesAfterBlock[t.to] = balancesAfterBlock[t.to] + t.amount;
+        }
+
+        for(let i = 0; i < accounts.length; i++) {
+            accounts[i].balanceBeforeBlock[id+1] = balancesAfterBlock[i];
         }
 
         let hash = "";
@@ -221,7 +248,9 @@ class App extends React.Component<AppProps, AppState> {
         block.hash = hash;
         blocks[id] = block;
 
-        this.setState({blocks: blocks, lastConfirmedBlock: block.id}, () => {
+        console.log(accounts);
+
+        this.setState({blocks: blocks, lastConfirmedBlock: block.id, accounts: accounts}, () => {
             this.recalculateBlocks();
         });
     }
@@ -320,6 +349,7 @@ class App extends React.Component<AppProps, AppState> {
                     title={"accounts"}
                     accounts={this.state.accounts}
                     droppableId={"accountList"}
+                    lastConfirmedBlock={this.state.lastConfirmedBlock}
                     className={"accountListContainer"}
                     addFunction={this.addAccount}
                     dropDisabled={true}
