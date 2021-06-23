@@ -7,7 +7,7 @@ export interface account {
     privateKeyArray?: Uint8Array
     address?: string,
     addressArray?: Uint8Array
-    balance?: number
+    balanceBeforeBlock: number[]
 }
 
 export interface transcation {
