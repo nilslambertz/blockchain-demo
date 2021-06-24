@@ -1,4 +1,3 @@
-export const firstHash = "0000";
 export const validStartHash = "00";
 
 export interface account {

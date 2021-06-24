@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {account, block, firstHash, signaturePair, transcation, validStartHash} from "./Utils/Interfaces";
+import {account, block, signaturePair, transcation, validStartHash} from "./Utils/Interfaces";
 import {
     generateBlockHash,
     generateKeyAddressPair,
@@ -42,7 +42,7 @@ class App extends React.Component<AppProps, AppState> {
             blockIdCount: 2,
             blocks: [{
                 id: 0,
-                prevHash: firstHash,
+                prevHash: validStartHash,
                 nonce: 0,
                 transactions: [],
                 confirmed: false
