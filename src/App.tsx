@@ -71,7 +71,7 @@ class App extends React.Component<AppProps, AppState> {
             privateKeyArray: keys.privateKeyArray,
             address: keys.address,
             addressArray: keys.addressArray,
-            balanceBeforeBlock: [balance]
+            balanceBeforeBlock: Array(this.state.lastConfirmedBlock+2).fill(balance)
         }
         this.setState({accountIdCount: count + 1});
 
