@@ -3,7 +3,7 @@
   width: calc(100% - 20px);
   padding: 10px;
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
   flex-direction: row;
 }
 
