@@ -248,8 +248,6 @@ class App extends React.Component<AppProps, AppState> {
         block.hash = hash;
         blocks[id] = block;
 
-        console.log(accounts);
-
         this.setState({blocks: blocks, lastConfirmedBlock: block.id, accounts: accounts}, () => {
             this.recalculateBlocks();
         });
