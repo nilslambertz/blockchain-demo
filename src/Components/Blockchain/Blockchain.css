@@ -54,6 +54,16 @@
   flex: 1;
 }
 
+.block .transactions .transactionList .transactionListContainer {
+  padding-bottom: 0;
+  height: calc(100% - 10px);
+}
+
+.block .transactions .blockDescription {
+  width: calc(100% - 10px);
+  padding: 0 5px 5px;
+}
+
 .block .transactionTable .id, .block .transactionTable .from, .block .transactionTable .to, .block .transactionTable .amount {
   width: 50px;
 }
