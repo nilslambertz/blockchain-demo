@@ -17,13 +17,10 @@
 }
 
 .upperListContainer .addButtonContainer {
+  position: absolute;
   text-align: center;
   width: 100%;
-  padding-top: 10px;
-  position: -webkit-sticky;
-  /* Safari */
-  position: sticky;
-  bottom: 0;
+  bottom: 10px;
 }
 
 .addButtonContainer .addButton {
@@ -55,7 +52,7 @@
 
 .upperList {
   flex: 1;
-  padding: 0 10px;
+  padding: 0 10px 40px;
   overflow: auto;
   overflow-x: hidden;
   text-align: center;
