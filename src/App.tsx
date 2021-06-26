@@ -3,6 +3,7 @@ import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
 import {account, block, signaturePair, transcation, validStartHash} from "./Utils/Interfaces";
 import {
+    blockToString,
     generateBlockHash,
     generateKeyAddressPair,
     signTransaction,
@@ -13,6 +14,7 @@ import {DragDropContext} from "react-beautiful-dnd";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {showError, showWarning} from "./Utils/ToastFunctions";
+import {sha256} from "js-sha256";
 
 interface AppProps {
 }
@@ -231,19 +233,22 @@ class App extends React.Component<AppProps, AppState> {
 
         let hash = "";
         let block = blocks[id];
-        block.nonce = -1;
+        let nonce = -1;
+
+        let blockString = blockToString(block, transactions);
 
         do {
-            block.nonce++;
-            hash = generateBlockHash(block, transactions);
-        } while(!hash.startsWith(validStartHash) || block.nonce > 10000)
+            nonce++;
+            hash = sha256(blockString + nonce);
+        } while(!hash.startsWith(validStartHash) && nonce < 1000000)
 
-        if(block.nonce > 10000 && !hash.startsWith(validStartHash)) {
+        if(nonce >= 1000000 && !hash.startsWith(validStartHash)) {
             showError("Could not validate block!");
             console.log("Didn't find nonce in 10000 iterations");
             return;
         }
 
+        block.nonce = nonce;
         block.confirmed = true;
         block.hash = hash;
         blocks[id] = block;
