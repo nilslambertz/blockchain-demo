@@ -159,7 +159,6 @@ class App extends React.Component<AppProps, AppState> {
         let lastConfirmed = this.state.lastConfirmedBlock;
 
         for(let i = 0; i < blocks.length; i++) {
-            console.log(lastConfirmed);
             let hash = generateBlockHash(blocks[i], transactions);
             if(hash === "") {
                 console.log("Error while generating hash, see previous error-messages!");
