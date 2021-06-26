@@ -1,6 +1,6 @@
 import React from 'react';
 import './UpperList.scss';
-import {account, settings, transcation} from "../../Utils/Interfaces";
+import {account, transcation} from "../../Utils/Interfaces";
 import Account from "../Account/Account";
 import Transaction from "../Transaction/Transaction";
 import {Droppable} from "react-beautiful-dnd";
@@ -11,7 +11,6 @@ interface UpperListProps {
     transactions?: transcation[],
     transactionOrder?: number[],
     numberOfAccounts?: number,
-    settings?: settings[],
     className?: string
     addFunction?: any
     signFunction?: any,

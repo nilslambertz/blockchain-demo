@@ -20,13 +20,6 @@ export interface transcation {
     editable: boolean
 }
 
-export interface settings {
-    name: string,
-    toggle: boolean,
-    possibleValues?: string[],
-    currentState: string | boolean
-}
-
 export interface keyAddressPair {
     privateKey: string,
     privateKeyArray?: Uint8Array
