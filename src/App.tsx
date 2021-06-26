@@ -159,13 +159,14 @@ class App extends React.Component<AppProps, AppState> {
         let lastConfirmed = this.state.lastConfirmedBlock;
 
         for(let i = 0; i < blocks.length; i++) {
+            console.log(lastConfirmed);
             let hash = generateBlockHash(blocks[i], transactions);
             if(hash === "") {
                 console.log("Error while generating hash, see previous error-messages!");
                 return;
             }
             if(hash !== blocks[i].hash) {
-                if(!changed) {
+                if(!changed && lastConfirmed > i-1) {
                     lastConfirmed = i-1;
                 }
 
@@ -213,7 +214,7 @@ class App extends React.Component<AppProps, AppState> {
 
             let newFromValue = balancesAfterBlock[t.from] - t.amount;
             if(newFromValue < 0) {
-                showError("Transaction " + id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!");
+                showError("Transaction " + t.id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!");
                 for(let j = 0; j < accounts.length; j++) {
                     accounts[j].balanceBeforeBlock = accounts[j].balanceBeforeBlock.slice(0, id+1);
                 }
