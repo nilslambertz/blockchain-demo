@@ -259,28 +259,26 @@ class App extends React.Component<AppProps, AppState> {
         if(result.destination === null) return;
         if(destination.droppableId === source.droppableId && destination.index  === source.index) return;
 
-        let sourceIndex = result.source.index;
-        let destinationIndex = result.destination.index;
+        let sourceIndex : number = result.source.index;
+        let destinationIndex : number = result.destination.index;
         let transactionId : number = parseInt(draggableId.replace("transaction", ""));
+
+        let transactionList = this.state.transactions;
+        let unusedTransactions = this.state.unusedTransactions;
+        let blocks = this.state.blocks;
 
         if(result.destination.droppableId === "transactionList") {
             if(result.source.droppableId === "transactionList") {
-                let unusedTransactions = this.state.unusedTransactions;
-
                 unusedTransactions.splice(sourceIndex, 1);
                 unusedTransactions.splice(destinationIndex, 0, transactionId);
 
                 this.setState({unusedTransactions: unusedTransactions});
             } else {
-                let transactionList = this.state.transactions;
-
                 let source = result.source.droppableId.replace("block", "");
                 let blockId = parseInt(source);
 
-                let blocks = this.state.blocks;
                 blocks[blockId].transactions.splice(sourceIndex, 1);
 
-                let unusedTransactions = this.state.unusedTransactions;
                 unusedTransactions.splice(destinationIndex, 0, transactionId);
 
                 transactionList[transactionId].editable = true;
@@ -295,10 +293,8 @@ class App extends React.Component<AppProps, AppState> {
                     return;
                 }
 
-                let unusedTransactions = this.state.unusedTransactions;
                 unusedTransactions.splice(sourceIndex, 1);
 
-                let blocks = this.state.blocks;
                 let blockId = parseInt(result.destination.droppableId.replace("block", ""));
                 let blockIndex = result.destination.index;
                 blocks[blockId].transactions.splice(blockIndex, 0, transactionId);
@@ -321,8 +317,6 @@ class App extends React.Component<AppProps, AppState> {
                     blocks[sourceBlockId].transactions = transactions;
                     this.setState({blocks: blocks});
                 } else {
-                    let blocks = this.state.blocks;
-
                     let sourceTransactions = blocks[sourceBlockId].transactions;
                     sourceTransactions.splice(sourceIndex, 1);
                     blocks[sourceBlockId].transactions = sourceTransactions;
