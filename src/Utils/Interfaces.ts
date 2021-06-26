@@ -1,4 +1,4 @@
-export const validStartHash = "00";
+export const validStartHash = "0".repeat(3);
 
 export interface account {
     id: number,

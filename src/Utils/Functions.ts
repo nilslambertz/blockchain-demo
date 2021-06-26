@@ -64,6 +64,11 @@ export function verifyAllBlockTransactions(b : block, transactions: transcation[
 }
 
 export function generateBlockHash(b : block, transactions: transcation[]) : string {
+    let blockString = blockToString(b, transactions) + b.nonce;
+    return sha256(blockString);
+}
+
+export function blockToString(b : block, transactions: transcation[]) : string {
     let transactionArray = [];
     for(let i = 0; i < b.transactions.length; i++) {
         let t = transactions[b.transactions[i]];
@@ -72,12 +77,10 @@ export function generateBlockHash(b : block, transactions: transcation[]) : stri
 
     let obj = {
         prevHash: b.prevHash,
-        transactions: transactionArray,
-        nonce: b.nonce
+        transactions: transactionArray
     }
 
-    let blockString = JSON.stringify(obj);
-    return sha256(blockString);
+    return JSON.stringify(obj);
 }
 
 function transactionToString(t :transcation) : string {
