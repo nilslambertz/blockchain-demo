@@ -11,13 +11,14 @@ interface BlockProps {
 
 class Block extends React.Component<BlockProps, {}> {
     printTransactionList = () => {
-        return  <UpperList
-                        droppableId={"block" + this.props.block.id}
-                        title={"transactions"}
-                        transactions={this.props.transactions}
-                        transactionOrder={this.props.block.transactions}
-                        className={"transactionListContainer"}
-                        blockList={true}/>
+        return <UpperList
+            droppableId={"block" + this.props.block.id}
+            title={"transactions"}
+            transactions={this.props.transactions}
+            transactionOrder={this.props.block.transactions}
+            className={"transactionListContainer"}
+            emptyText={"Drag and drop transactions here!"}
+            blockList={true}/>
     }
 
     confirmFunction = () => {

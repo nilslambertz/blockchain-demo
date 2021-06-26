@@ -349,6 +349,7 @@ class App extends React.Component<AppProps, AppState> {
                     lastConfirmedBlock={this.state.lastConfirmedBlock}
                     className={"accountListContainer"}
                     addFunction={this.addAccount}
+                    emptyText={"Add some accounts!"}
                     dropDisabled={true}
                 />
                 <UpperList

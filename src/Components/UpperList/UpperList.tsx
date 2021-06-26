@@ -19,7 +19,8 @@ interface UpperListProps {
     blockList?: boolean,
     droppableId: string,
     dropDisabled?: boolean,
-    lastConfirmedBlock?: number
+    lastConfirmedBlock?: number,
+    emptyText?: string
 }
 
 class UpperList extends React.Component<UpperListProps, {}> {
@@ -72,6 +73,10 @@ class UpperList extends React.Component<UpperListProps, {}> {
     printAccountList = (accounts : account[]) => {
         let lastConfirmedBlock = this.props.lastConfirmedBlock ?? -1;
 
+        if(accounts.length === 0) {
+            return <div style={{color: "#575757"}}>{this.props.emptyText}</div>
+        }
+
         return accounts.map(function (value, index, array) {
             return <Account account={value} key={value.id} lastConfirmedBlock={lastConfirmedBlock}/>;
         });
@@ -86,6 +91,10 @@ class UpperList extends React.Component<UpperListProps, {}> {
         if(transactionOrder === undefined) transactionOrder = [];
         let signFunction = this.props.signFunction;
         let removeSignatureFunction = this.props.removeSignatureFunction;
+
+        if(transactionOrder.length === 0) {
+            return <div style={{color: "#575757"}}>{this.props.emptyText}</div>
+        }
 
         return (transactionOrder.map(function (value, index, array) {
             return <Transaction transaction={transactions[value]} numberOfAccounts={numberOfAccounts} key={value}
