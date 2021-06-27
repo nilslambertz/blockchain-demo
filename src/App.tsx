@@ -74,11 +74,10 @@ class App extends React.Component<AppProps, AppState> {
             addressArray: keys.addressArray,
             balanceBeforeBlock: Array(this.state.lastConfirmedBlock+2).fill(balance)
         }
-        this.setState({accountIdCount: count + 1});
 
         let arr : account[] = this.state.accounts;
         arr.push(a);
-        this.setState({accounts: arr});
+        this.setState({accounts: arr, accountIdCount: count + 1});
     }
 
     addTransaction = () : void => {
@@ -89,13 +88,12 @@ class App extends React.Component<AppProps, AppState> {
             signed: false,
             editable: true
         }
-        this.setState({transactionIdCount: count + 1});
 
         let arr : transaction[] = this.state.transactions;
         let unusedArr : number[] = this.state.unusedTransactions;
         arr.push(t);
         unusedArr.push(t.id);
-        this.setState({transactions: arr, unusedTransactions: unusedArr});
+        this.setState({transactions: arr, unusedTransactions: unusedArr, transactionIdCount: count + 1});
     }
 
     signTransaction = (t: transaction) => {
