@@ -9,7 +9,7 @@ export interface account {
     balanceBeforeBlock: number[]
 }
 
-export interface transcation {
+export interface transaction {
     id: number,
     from?: number,
     to?: number,

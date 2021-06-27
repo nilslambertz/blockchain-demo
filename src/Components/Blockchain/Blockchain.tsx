@@ -1,12 +1,12 @@
 import React from 'react';
 import "./Blockchain.scss";
-import {block, transcation} from "../../Utils/Interfaces";
+import {block, transaction} from "../../Utils/Interfaces";
 import Block from "./Block";
 import {ReactComponent as Arrow} from "../../res/arrowright.svg";
 
 interface BlockchainProps {
     blocks: block[],
-    transactions: transcation[],
+    transactions: transaction[],
     confirmFunction: any
 }
 

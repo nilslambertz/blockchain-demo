@@ -1,4 +1,4 @@
-import {account, block, keyAddressPair, signaturePair, transcation} from "./Interfaces";
+import {account, block, keyAddressPair, signaturePair, transaction} from "./Interfaces";
 import nacl, {BoxKeyPair} from "tweetnacl";
 import util from "tweetnacl-util";
 import {encode} from "@stablelib/utf8";
@@ -26,7 +26,7 @@ export function generateKeyAddressPair() : keyAddressPair {
     }
 }
 
-export function signTransaction(t : transcation, privateKeyArray : Uint8Array) : signaturePair {
+export function signTransaction(t : transaction, privateKeyArray : Uint8Array) : signaturePair {
     let message : string = transactionToString(t);
     let messageArr = getArrayfromString(message);
 
@@ -38,14 +38,14 @@ export function signTransaction(t : transcation, privateKeyArray : Uint8Array) :
     };
 }
 
-export function verifyTransaction(t: transcation, signatureArray : Uint8Array, addressArray : Uint8Array) : boolean {
+export function verifyTransaction(t: transaction, signatureArray : Uint8Array, addressArray : Uint8Array) : boolean {
     let message : string = transactionToString(t);
     let messageArr = getArrayfromString(message);
 
     return nacl.sign.detached.verify(messageArr, signatureArray, addressArray);
 }
 
-export function verifyAllBlockTransactions(b : block, transactions: transcation[], accounts: account[]) : boolean {
+export function verifyAllBlockTransactions(b : block, transactions: transaction[], accounts: account[]) : boolean {
     for(let i = 0; i < b.transactions.length; i++) {
         let t = transactions[b.transactions[i]];
         if (t.from !== undefined) {
@@ -63,7 +63,7 @@ export function verifyAllBlockTransactions(b : block, transactions: transcation[
     return true;
 }
 
-export function generateBlockHash(b : block, transactions: transcation[]) : string {
+export function generateBlockHash(b : block, transactions: transaction[]) : string {
     if(b.nonce === undefined) return "";
 
     let blockString = blockToString(b, transactions);
@@ -74,7 +74,7 @@ export function generateBlockHashFromString(blockString : string, nonce : number
     return sha256(blockString + nonce);
 }
 
-export function blockToString(b : block, transactions: transcation[]) : string {
+export function blockToString(b : block, transactions: transaction[]) : string {
     let transactionArray = [];
     for(let i = 0; i < b.transactions.length; i++) {
         let t = transactions[b.transactions[i]];
@@ -89,7 +89,7 @@ export function blockToString(b : block, transactions: transcation[]) : string {
     return JSON.stringify(obj);
 }
 
-function transactionToString(t :transcation) : string {
+function transactionToString(t :transaction) : string {
     let obj = {
         id: t.id,
         from: t.from,

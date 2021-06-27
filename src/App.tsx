@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import {account, block, signaturePair, transcation, validStartHash} from "./Utils/Interfaces";
+import {account, block, signaturePair, transaction, validStartHash} from "./Utils/Interfaces";
 import {
     blockToString,
     generateBlockHash, generateBlockHashFromString,
@@ -14,7 +14,6 @@ import {DragDropContext} from "react-beautiful-dnd";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {showError, showWarning} from "./Utils/ToastFunctions";
-import {sha256} from "js-sha256";
 
 interface AppProps {
 }
@@ -23,7 +22,7 @@ interface AppState {
     accountIdCount: number,
     accounts: account[],
     transactionIdCount: number,
-    transactions: transcation[],
+    transactions: transaction[],
     unusedTransactions: number[],
     blockIdCount: number,
     blocks: block[],
@@ -85,21 +84,21 @@ class App extends React.Component<AppProps, AppState> {
     addTransaction = () : void => {
         let count = this.state.transactionIdCount;
 
-        let t : transcation = {
+        let t : transaction = {
             id: count,
             signed: false,
             editable: true
         }
         this.setState({transactionIdCount: count + 1});
 
-        let arr : transcation[] = this.state.transactions;
+        let arr : transaction[] = this.state.transactions;
         let unusedArr : number[] = this.state.unusedTransactions;
         arr.push(t);
         unusedArr.push(t.id);
         this.setState({transactions: arr, unusedTransactions: unusedArr});
     }
 
-    signTransaction = (t: transcation) => {
+    signTransaction = (t: transaction) => {
         if(this.state.accounts.length === 0) {
             showError("At least one account is needed to set all transaction values!");
             return;
@@ -129,8 +128,8 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     removeSignature = (id : number) => {
-        let transactionArray : transcation[] = this.state.transactions;
-        let t : transcation = transactionArray[id];
+        let transactionArray : transaction[] = this.state.transactions;
+        let t : transaction = transactionArray[id];
 
         t.signed = false;
         t.signatureArray = undefined;

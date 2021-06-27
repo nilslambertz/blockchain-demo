@@ -1,11 +1,11 @@
 import React from 'react';
 import "./Blockchain.scss";
-import {block, transcation, validStartHash} from "../../Utils/Interfaces";
+import {block, transaction, validStartHash} from "../../Utils/Interfaces";
 import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
     block: block,
-    transactions: transcation[],
+    transactions: transaction[],
     confirmFunction: any
 }
 

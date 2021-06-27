@@ -1,12 +1,12 @@
 import React from 'react';
-import {transcation} from "../../Utils/Interfaces";
+import {transaction} from "../../Utils/Interfaces";
 import "./Transaction.scss"
 import "../UpperList/UpperList.scss";
 import {Draggable} from "react-beautiful-dnd";
 import {showError} from "../../Utils/ToastFunctions";
 
 interface TransactionProps {
-    transaction: transcation,
+    transaction: transaction,
     numberOfAccounts: number,
     signFunction: any,
     removeSignatureFunction: any,

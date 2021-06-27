@@ -1,6 +1,6 @@
 import React from 'react';
 import './UpperList.scss';
-import {account, transcation} from "../../Utils/Interfaces";
+import {account, transaction} from "../../Utils/Interfaces";
 import Account from "../Account/Account";
 import Transaction from "../Transaction/Transaction";
 import {Droppable} from "react-beautiful-dnd";
@@ -8,7 +8,7 @@ import {Droppable} from "react-beautiful-dnd";
 interface UpperListProps {
     title: string;
     accounts?: account[],
-    transactions?: transcation[],
+    transactions?: transaction[],
     transactionOrder?: number[],
     numberOfAccounts?: number,
     className?: string
@@ -81,7 +81,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
         });
     }
 
-    printTransactionList = (transactions : transcation[]) => {
+    printTransactionList = (transactions : transaction[]) => {
         let numberOfAccounts = 0;
         if(this.props?.numberOfAccounts) {
             numberOfAccounts = this.props.numberOfAccounts
