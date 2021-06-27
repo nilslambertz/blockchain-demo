@@ -64,8 +64,14 @@ export function verifyAllBlockTransactions(b : block, transactions: transcation[
 }
 
 export function generateBlockHash(b : block, transactions: transcation[]) : string {
-    let blockString = blockToString(b, transactions) + b.nonce;
-    return sha256(blockString);
+    if(b.nonce === undefined) return "";
+
+    let blockString = blockToString(b, transactions);
+    return generateBlockHashFromString(blockString, b.nonce);
+}
+
+export function generateBlockHashFromString(blockString : string, nonce : number) {
+    return sha256(blockString + nonce);
 }
 
 export function blockToString(b : block, transactions: transcation[]) : string {

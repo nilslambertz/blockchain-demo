@@ -4,7 +4,7 @@ import UpperList from "./Components/UpperList/UpperList";
 import {account, block, signaturePair, transcation, validStartHash} from "./Utils/Interfaces";
 import {
     blockToString,
-    generateBlockHash,
+    generateBlockHash, generateBlockHashFromString,
     generateKeyAddressPair,
     signTransaction,
     verifyAllBlockTransactions
@@ -239,7 +239,7 @@ class App extends React.Component<AppProps, AppState> {
 
         do {
             nonce++;
-            hash = sha256(blockString + nonce);
+            hash = generateBlockHashFromString(blockString, nonce);
         } while(!hash.startsWith(validStartHash) && nonce < 1000000)
 
         if(nonce >= 1000000 && !hash.startsWith(validStartHash)) {
