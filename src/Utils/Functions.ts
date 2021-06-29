@@ -4,19 +4,19 @@ import util from "tweetnacl-util";
 import {encode} from "@stablelib/utf8";
 import {sha256} from "js-sha256";
 
-function getStringfromArray(array : Uint8Array) {
+function getStringFromArray(array : Uint8Array) {
     return Buffer.from(util.encodeBase64(array), "base64").toString("hex");
 }
 
-function getArrayfromString(str : string) : Uint8Array {
+function getArrayFromString(str : string) : Uint8Array {
     return encode(str);
 }
 
 export function generateKeyAddressPair() : keyAddressPair {
     let pair : BoxKeyPair = nacl.sign.keyPair();
 
-    let privateKey = getStringfromArray(pair.secretKey);
-    let address = getStringfromArray(pair.publicKey);
+    let privateKey = getStringFromArray(pair.secretKey);
+    let address = getStringFromArray(pair.publicKey);
 
     return {
         privateKey: privateKey,
@@ -28,19 +28,19 @@ export function generateKeyAddressPair() : keyAddressPair {
 
 export function signTransaction(t : transaction, privateKeyArray : Uint8Array) : signaturePair {
     let message : string = transactionToString(t);
-    let messageArr = getArrayfromString(message);
+    let messageArr = getArrayFromString(message);
 
     let sig : Uint8Array = nacl.sign.detached(messageArr, privateKeyArray);
 
     return {
-        signature: getStringfromArray(sig),
+        signature: getStringFromArray(sig),
         signatureArray: sig
     };
 }
 
 export function verifyTransaction(t: transaction, signatureArray : Uint8Array, addressArray : Uint8Array) : boolean {
     let message : string = transactionToString(t);
-    let messageArr = getArrayfromString(message);
+    let messageArr = getArrayFromString(message);
 
     return nacl.sign.detached.verify(messageArr, signatureArray, addressArray);
 }
