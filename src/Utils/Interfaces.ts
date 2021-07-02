@@ -42,6 +42,7 @@ export interface block {
 }
 
 export interface logElem {
+    time?: string,
     type: "error" | "warning" | "success" | "info"
     message: string
 }
