@@ -1,12 +1,13 @@
 import React from 'react';
 import "./Blockchain.scss";
-import {block, transaction, validStartHash} from "../../Utils/Interfaces";
+import { block, transaction, validStartHash } from "../../Utils/Interfaces";
 import UpperList from "../UpperList/UpperList";
 
 interface BlockProps {
     block: block,
     transactions: transaction[],
-    confirmFunction: any
+    confirmFunction: any,
+    addLogFunction: any
 }
 
 class Block extends React.Component<BlockProps, {}> {
@@ -18,7 +19,8 @@ class Block extends React.Component<BlockProps, {}> {
             transactionOrder={this.props.block.transactions}
             className={"transactionListContainer"}
             emptyText={"Drag and drop transactions here!"}
-            blockList={true}/>
+            blockList={true}
+            addLogFunction={this.props.addLogFunction} />
     }
 
     confirmFunction = () => {
