@@ -1,0 +1,29 @@
+#logList {
+    padding: 10px;
+    font-size: 12px;
+}
+
+#logList div {
+    width: 100%;
+    margin-bottom: 5px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+#logList .error {
+    color: red;
+}
+
+#logList .warning {
+    color: rgb(255, 136, 0);
+}
+
+#logList .success {
+    color: rgb(25, 221, 68);
+}
+
+#logList .info {
+    color: rgb(179, 179, 179);
+}
