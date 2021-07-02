@@ -40,3 +40,8 @@ export interface block {
     hash?: string,
     confirmed: boolean
 }
+
+export interface logElem {
+    type: "error" | "warning" | "success" | "info"
+    message: string
+}
