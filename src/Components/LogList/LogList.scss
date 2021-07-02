@@ -1,6 +1,12 @@
+#log {
+    overflow: hidden;
+}
+
 #logList {
+    width: 480px;
     padding: 10px;
     font-size: 12px;
+    overflow: auto;
 }
 
 #logList div {
