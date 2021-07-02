@@ -59,7 +59,7 @@ class App extends React.Component<AppProps, AppState> {
             lastConfirmedBlock: -1,
             lastUnusedBlock: 1,
             logs: [],
-            logsVisible: true
+            logsVisible: false
         };
 
         this.recalculateBlocks();
