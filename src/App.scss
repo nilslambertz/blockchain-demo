@@ -15,7 +15,7 @@
   width: 100%;
   height: calc(45% - 1px);
   display: flex;
-  border-bottom: 1px solid $default-color;
+  border-bottom: 1px solid $default-border-color;
   min-height: 300px;
 }
 
@@ -36,7 +36,7 @@
 
 #logs.visible {
   border-left: 1px solid;
-  border-color: white;
+  border-color: $default-border-color;
   width: 500px;
 }
 
@@ -48,6 +48,7 @@
   display: flex;
   align-items:center;
   justify-content:space-between;
+  border-top: 1px solid $default-border-color;
 }
 
 #footer .logsToggle {
