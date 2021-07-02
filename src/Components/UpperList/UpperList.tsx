@@ -96,9 +96,11 @@ class UpperList extends React.Component<UpperListProps, {}> {
             return <div style={{ color: "#575757" }}>{this.props.emptyText}</div>
         }
 
+        let addLogFunction = this.props.addLogFunction;
+
         return (transactionOrder.map(function (value, index, array) {
             return <Transaction transaction={transactions[value]} numberOfAccounts={numberOfAccounts} key={value}
-                signFunction={signFunction} removeSignatureFunction={removeSignatureFunction} index={index} />
+                signFunction={signFunction} removeSignatureFunction={removeSignatureFunction} index={index} addLogFunction={addLogFunction} />
         }));
     }
 }
