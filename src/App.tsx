@@ -405,7 +405,10 @@ class App extends React.Component<AppProps, AppState> {
 
     addLog = (log: logElem) => {
         let date = new Date();
-        log.time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        let h = date.getHours();
+        let m = date.getMinutes();
+        let s = date.getSeconds();
+        log.time = ((h < 10) ? ("0" + h) : h) + ":" + ((m < 10) ? ("0" + m) : m) + ":" + ((s < 10) ? ("0" + s) : s);
 
         let logs = this.state.logs;
         logs.push(log);
