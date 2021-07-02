@@ -82,7 +82,12 @@ class App extends React.Component<AppProps, AppState> {
 
         let arr: account[] = this.state.accounts;
         arr.push(a);
-        this.setState({ accounts: arr, accountIdCount: count + 1 });
+        this.setState({ accounts: arr, accountIdCount: count + 1 }, () => {
+            this.addLog({
+                type: "info",
+                message: "Added account " + a.id
+            })
+        });
     }
 
     addTransaction = (): void => {
@@ -98,7 +103,12 @@ class App extends React.Component<AppProps, AppState> {
         let unusedArr: number[] = this.state.unusedTransactions;
         arr.push(t);
         unusedArr.push(t.id);
-        this.setState({ transactions: arr, unusedTransactions: unusedArr, transactionIdCount: count + 1 });
+        this.setState({ transactions: arr, unusedTransactions: unusedArr, transactionIdCount: count + 1 }, () => {
+            this.addLog({
+                type: "info",
+                message: "Added transaction " + t.id
+            })
+        });
     }
 
     signTransaction = (t: transaction) => {
@@ -113,6 +123,10 @@ class App extends React.Component<AppProps, AppState> {
 
         if (t.from === undefined || t.to === undefined) {
             showError("All values have to be set to sign a transaction!");
+            this.addLog({
+                type: "error",
+                message: "Transaction " + t.id + ": All values have to be set to sign the transaction!"
+            })
             return;
         }
 
@@ -130,7 +144,12 @@ class App extends React.Component<AppProps, AppState> {
             transactionArray[t.id].signatureArray = sig.signatureArray;
             transactionArray[t.id].signature = sig.signature;
 
-            this.setState({ transactions: transactionArray });
+            this.setState({ transactions: transactionArray }, () => {
+                this.addLog({
+                    type: "success",
+                    message: "Signed transaction " + t.id
+                })
+            });
         }
     }
 
@@ -138,13 +157,20 @@ class App extends React.Component<AppProps, AppState> {
         let transactionArray: transaction[] = this.state.transactions;
         let t: transaction = transactionArray[id];
 
-        t.signed = false;
-        t.signatureArray = undefined;
-        t.signature = undefined;
+        if (t.signed) {
+            t.signed = false;
+            t.signatureArray = undefined;
+            t.signature = undefined;
 
-        transactionArray[id] = t;
+            transactionArray[id] = t;
 
-        this.setState({ transactions: transactionArray });
+            this.setState({ transactions: transactionArray }, () => {
+                this.addLog({
+                    type: "info",
+                    message: "Removed signature of transaction " + t.id + " because some values changed"
+                })
+            });
+        }
     }
 
     recalculateBlocks = () => {
@@ -160,6 +186,10 @@ class App extends React.Component<AppProps, AppState> {
                 transactions: [],
                 confirmed: false
             });
+            this.addLog({
+                type: "info",
+                message: "Added new block"
+            })
             lastUnused = nextId++;
         }
 
@@ -175,6 +205,10 @@ class App extends React.Component<AppProps, AppState> {
             if (hash !== blocks[i].hash) {
                 if (!changed && lastConfirmed > i - 1) {
                     lastConfirmed = i - 1;
+                    this.addLog({
+                        type: "warning",
+                        message: "Hash of block " + i + " changed, all following blocks are set to unconfirmed"
+                    })
                 }
 
                 changed = true;
@@ -199,6 +233,10 @@ class App extends React.Component<AppProps, AppState> {
 
         if (id !== 0 && !blocks[id - 1].confirmed) {
             showWarning("All previous blocks need to be confirmed first!");
+            this.addLog({
+                type: "error",
+                message: "All previous blocks need to be confirmed first!"
+            })
             return;
         }
 
@@ -206,8 +244,16 @@ class App extends React.Component<AppProps, AppState> {
 
         if (!transactionsValidated) {
             showError("Some transactions could not be verified!");
+            this.addLog({
+                type: "error",
+                message: "Some transactions in block " + id + " could not be verified!"
+            })
             return;
         }
+        this.addLog({
+            type: "info",
+            message: "All transactions in block " + id + " are valid"
+        })
 
         let balancesAfterBlock: number[] = [];
         for (let i = 0; i < accounts.length; i++) {
@@ -222,6 +268,10 @@ class App extends React.Component<AppProps, AppState> {
             let newFromValue = balancesAfterBlock[t.from] - t.amount;
             if (newFromValue < 0) {
                 showError("Transaction " + t.id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!");
+                this.addLog({
+                    type: "error",
+                    message: "Transaction " + t.id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!"
+                })
                 for (let j = 0; j < accounts.length; j++) {
                     accounts[j].balanceBeforeBlock = accounts[j].balanceBeforeBlock.slice(0, id + 1);
                 }
@@ -243,14 +293,19 @@ class App extends React.Component<AppProps, AppState> {
 
         let blockString = blockToString(block, transactions);
 
+        let iterations = 1000000;
+
         do {
             nonce++;
             hash = generateBlockHashFromString(blockString, nonce);
-        } while (!hash.startsWith(validStartHash) && nonce < 1000000)
+        } while (!hash.startsWith(validStartHash) && nonce < iterations)
 
-        if (nonce >= 1000000 && !hash.startsWith(validStartHash)) {
+        if (nonce >= iterations && !hash.startsWith(validStartHash)) {
             showError("Could not validate block!");
-            console.log("Didn't find nonce in 10000 iterations");
+            this.addLog({
+                type: "error",
+                message: "Didn't find a valid nonce in " + iterations + " iterations!"
+            })
             return;
         }
 
@@ -260,6 +315,10 @@ class App extends React.Component<AppProps, AppState> {
         blocks[id] = block;
 
         this.setState({ blocks: blocks, lastConfirmedBlock: block.id, accounts: accounts }, () => {
+            this.addLog({
+                type: "success",
+                message: "Confirmed block " + id + " with nonce " + nonce
+            })
             this.recalculateBlocks();
         });
     }
