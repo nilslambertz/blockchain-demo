@@ -27,7 +27,8 @@ interface AppState {
     blockIdCount: number,
     blocks: block[],
     lastConfirmedBlock: number,
-    lastUnusedBlock: number
+    lastUnusedBlock: number,
+    logsVisible: boolean
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -54,7 +55,8 @@ class App extends React.Component<AppProps, AppState> {
                 confirmed: false
             }],
             lastConfirmedBlock: -1,
-            lastUnusedBlock: 1
+            lastUnusedBlock: 1,
+            logsVisible: true
         };
 
         this.recalculateBlocks();
@@ -361,15 +363,22 @@ class App extends React.Component<AppProps, AppState> {
                     removeSignatureFunction={this.removeSignature}
                 />
             </div>
-            <div id={"blockchainContent"}>
+            <div id={"lowerContent"}>
                 <Blockchain
                     blocks={this.state.blocks}
                     transactions={this.state.transactions}
                     confirmFunction={this.confirmBlock}
                 />
+                <div id={"logs"} className={this.state.logsVisible ? "visible" : ""}>
+                </div>
             </div>
             <div id={"footer"}>
-                by nils lambertz
+                <span/>
+                <span>by nils lambertz</span>
+                <div className={"logsToggle"} onClick={() => {
+                    let curr = this.state.logsVisible;
+                    this.setState({logsVisible: !curr});}
+                }>Logs: <span>{this.state.logsVisible ? "ON" : "OFF"}</span></div>
             </div></DragDropContext>
             <ToastContainer />
         </div>;

@@ -16,19 +16,45 @@
   min-height: 300px;
 }
 
-#blockchainContent {
+#lowerContent {
   height: 50%;
   width: 100%;
+  display: flex;
   min-height: 300px;
 }
 
+#logs {
+  width: 0;
+  overflow: auto;
+  border-left: 1px solid;
+  border-color: rgba(0, 0, 0, 0);
+  transition: width 0.2s, border 0.3s;
+}
+
+#logs.visible {
+  border-left: 1px solid;
+  border-color: white;
+  width: 500px;
+}
+
 #footer {
+  padding: 0 100px;
   background-color: #191e1f;
   height: 5%;
   min-height: 50px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+#footer .logsToggle {
+  text-align: center;
+  width: 100px;
+  cursor: pointer;
+}
+
+#footer .logsToggle span {
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=App.css.map */
