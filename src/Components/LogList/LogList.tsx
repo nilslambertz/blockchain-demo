@@ -1,8 +1,10 @@
 import React from 'react';
+import { logElem } from '../../Utils/Interfaces';
 import "../UpperList/UpperList.scss";
 import "./LogList.scss";
 
 interface LogListProps {
+    logs: logElem[]
     logsVisible: boolean
 }
 
@@ -10,10 +12,9 @@ class LogList extends React.Component<LogListProps, {}> {
     render() {
         return <div id={"logs"} className={this.props.logsVisible ? "visible" : ""}>
             <div id={"logList"}>
-                <div className="error">error</div>
-                <div className="warning">warning</div>
-                <div className="success">success</div>
-                <div className="info">info</div>
+                {this.props.logs.map((v, i, a) => {
+                    return <div key={i} className={v.type}><span style={{ color: "white" }}>{v.time}</span> {v.message}</div>
+                })}
             </div>
         </div>
     }
