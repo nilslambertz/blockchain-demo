@@ -1,16 +1,17 @@
 import React from 'react';
-import {transaction} from "../../Utils/Interfaces";
+import { transaction } from "../../Utils/Interfaces";
 import "./Transaction.scss"
 import "../UpperList/UpperList.scss";
-import {Draggable} from "react-beautiful-dnd";
-import {showError} from "../../Utils/ToastFunctions";
+import { Draggable } from "react-beautiful-dnd";
+import { showError } from "../../Utils/ToastFunctions";
 
 interface TransactionProps {
     transaction: transaction,
     numberOfAccounts: number,
     signFunction: any,
     removeSignatureFunction: any,
-    index: number
+    index: number,
+    addLogFunction: any
 }
 
 interface transactionState {
@@ -22,7 +23,7 @@ interface transactionState {
 class Transaction extends React.Component<TransactionProps, {}> {
     componentDidMount() {
         let t = this.props.transaction;
-        if(t.from !== undefined && t.to !== undefined && t.amount !== undefined) {
+        if (t.from !== undefined && t.to !== undefined && t.amount !== undefined) {
             this.setState({
                 from: t.from,
                 to: t.to,
@@ -31,14 +32,14 @@ class Transaction extends React.Component<TransactionProps, {}> {
         }
     }
 
-    state : transactionState = {
+    state: transactionState = {
         from: 0,
         to: 0,
         amount: 0
     }
 
     sign = () => {
-        if(this.state.from !== -1 && this.state.to !== -1 && this.state.amount !== -1) {
+        if (this.state.from !== -1 && this.state.to !== -1 && this.state.amount !== -1) {
             let t = this.props.transaction;
             t.from = this.state.from;
             t.to = this.state.to;
@@ -47,6 +48,10 @@ class Transaction extends React.Component<TransactionProps, {}> {
             this.props.signFunction(t);
         } else {
             showError("All values must be set to sign a transaction!");
+            this.props.addLogFunction({
+                type: "error",
+                message: "Transaction " + this.props.transaction.id + ": All values must be set to sign the transaction!"
+            })
         }
     }
 
@@ -55,31 +60,31 @@ class Transaction extends React.Component<TransactionProps, {}> {
     render() {
         return <Draggable draggableId={"transaction" + this.props.transaction.id} index={this.props.index}>
             {(provided, snapshot) => (
-                    <div className={"transaction listElement" + (snapshot.isDragging ? " transactionDragging" : "")}
-                         ref={provided.innerRef}
-                         {...provided.draggableProps}
-                         {...provided.dragHandleProps}
-                    >
-                        <table className={"transactionTable listTable"}>
-                            <tbody>
+                <div className={"transaction listElement" + (snapshot.isDragging ? " transactionDragging" : "")}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                >
+                    <table className={"transactionTable listTable"}>
+                        <tbody>
                             <tr>
                                 <td className={"id"}>{this.props.transaction.id}</td>
                                 <td className={"from" + (!this.props.transaction.editable ? " biggerText" : "")}>
                                     {
                                         this.props.transaction.editable ?
                                             <select className={"selectStyle"}
-                                                    value={this.state.from}
+                                                value={this.state.from}
                                                 onChange={(v) => {
-                                                let newValue = parseInt(v.target.value);
-                                                if(this.state.from !== newValue) {
-                                                    this.props.removeSignatureFunction(this.props.transaction.id);
-                                                    this.setState({from: newValue});
-                                                }
-                                            }}>
+                                                    let newValue = parseInt(v.target.value);
+                                                    if (this.state.from !== newValue) {
+                                                        this.props.removeSignatureFunction(this.props.transaction.id);
+                                                        this.setState({ from: newValue });
+                                                    }
+                                                }}>
                                                 {
                                                     Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
-                                                    return <option value={x} key={x}>{x}</option>
-                                                })}
+                                                        return <option value={x} key={x}>{x}</option>
+                                                    })}
                                             </select>
                                             :
                                             this.props.transaction.from
@@ -89,14 +94,14 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                     {
                                         this.props.transaction.editable ?
                                             <select className={"selectStyle"}
-                                                    value={this.state.to}
-                                                    onChange={(v) => {
-                                                        let newValue = parseInt(v.target.value);
-                                                        if(this.state.to !== newValue) {
-                                                            this.props.removeSignatureFunction(this.props.transaction.id);
-                                                            this.setState({to: newValue});
-                                                        }
-                                                    }}>
+                                                value={this.state.to}
+                                                onChange={(v) => {
+                                                    let newValue = parseInt(v.target.value);
+                                                    if (this.state.to !== newValue) {
+                                                        this.props.removeSignatureFunction(this.props.transaction.id);
+                                                        this.setState({ to: newValue });
+                                                    }
+                                                }}>
                                                 {
                                                     Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
                                                         return <option value={x} key={x}>{x}</option>
@@ -118,13 +123,13 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                                 onChange={(event) => {
                                                     let val = parseInt(event.target.value);
 
-                                                    if(!isNaN(val)) {
+                                                    if (!isNaN(val)) {
                                                         let oldValue = this.state.amount;
                                                         if (oldValue !== val) {
                                                             this.props.removeSignatureFunction(this.props.transaction.id);
                                                         }
 
-                                                        this.setState({amount: val});
+                                                        this.setState({ amount: val });
                                                     }
                                                 }}
                                             />
@@ -148,9 +153,9 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                 <td>Amount</td>
                                 <td>Signature</td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
+                </div>
             )}
         </Draggable>;
     }
