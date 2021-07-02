@@ -104,6 +104,10 @@ class App extends React.Component<AppProps, AppState> {
     signTransaction = (t: transaction) => {
         if (this.state.accounts.length === 0) {
             showError("At least one account is needed to set all transaction values!");
+            this.addLog({
+                type: "error",
+                message: "At least one account is needed to set all transaction values!"
+            })
             return;
         }
 
@@ -341,6 +345,9 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     addLog = (log: logElem) => {
+        let date = new Date();
+        log.time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
         let logs = this.state.logs;
         logs.push(log);
         this.setState({ logs: logs });
@@ -381,7 +388,9 @@ class App extends React.Component<AppProps, AppState> {
                         confirmFunction={this.confirmBlock}
                         addLogFunction={this.addLog}
                     />
-                    <LogList logsVisible={this.state.logsVisible} />
+                    <LogList
+                        logsVisible={this.state.logsVisible}
+                        logs={this.state.logs} />
                 </div>
                 <div id={"footer"}>
                     <span />
