@@ -29,14 +29,10 @@
 #logs {
   width: 0;
   overflow: auto;
-  border-left: 1px solid;
-  border-color: rgba(0,0,0,0);
   transition: width 0.2s, border 0.3s;
 }
 
 #logs.visible {
-  border-left: 1px solid;
-  border-color: $default-border-color;
   width: 500px;
 }
 
