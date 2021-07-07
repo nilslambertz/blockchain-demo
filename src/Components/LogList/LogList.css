@@ -1,0 +1,36 @@
+#log {
+  overflow: hidden;
+}
+
+#logList {
+  max-width: 480px;
+  padding: 10px;
+  font-size: 12px;
+  overflow: auto;
+}
+
+#logList div {
+  width: 100%;
+  margin-bottom: 5px;
+}
+#logList div:last-child {
+  margin-bottom: 0;
+}
+
+#logList .error {
+  color: red;
+}
+
+#logList .warning {
+  color: #ff8800;
+}
+
+#logList .success {
+  color: #19dd44;
+}
+
+#logList .info {
+  color: #b3b3b3;
+}
+
+/*# sourceMappingURL=LogList.css.map */
