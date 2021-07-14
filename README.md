@@ -1,4 +1,4 @@
 # Blockchain Demo
-Introduction to blockchain-technology via a simple demo.
+Introduction to blockchain-technology via an [interactive example](https://nilslambertz.github.io/BlockchainDemo).
 
 Add transactions and include them in blocks to see how the system works.
