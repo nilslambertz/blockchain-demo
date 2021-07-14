@@ -295,10 +295,12 @@ class App extends React.Component<AppProps, AppState> {
 
         let iterations = 1000000;
 
+        let startTime = performance.now();
         do {
             nonce++;
             hash = generateBlockHashFromString(blockString, nonce);
         } while (!hash.startsWith(validStartHash) && nonce < iterations)
+        let endTime = performance.now();
 
         if (nonce >= iterations && !hash.startsWith(validStartHash)) {
             showError("Could not validate block!");
@@ -317,7 +319,7 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ blocks: blocks, lastConfirmedBlock: block.id, accounts: accounts }, () => {
             this.addLog({
                 type: "success",
-                message: "Confirmed block " + id + " with nonce " + nonce
+                message: "Confirmed block " + id + " with nonce " + nonce + "; calculation time: " + (endTime - startTime) + "ms"
             })
             this.recalculateBlocks();
         });
