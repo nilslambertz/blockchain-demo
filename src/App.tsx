@@ -252,7 +252,7 @@ class App extends React.Component<AppProps, AppState> {
         }
         this.addLog({
             type: "info",
-            message: "All transactions in block " + id + " are valid"
+            message: "All transactions in block " + id + " have valid signatures"
         })
 
         let balancesAfterBlock: number[] = [];
