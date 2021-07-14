@@ -1,11 +1,11 @@
-#log {
+#logs {
   overflow: hidden;
 }
 
 #logList {
   border-left: 1px solid #e32ce8;
   height: calc(100% - 20px);
-  max-width: 480px;
+  min-width: 400px;
   padding: 10px;
   font-size: 12px;
   overflow: auto;
