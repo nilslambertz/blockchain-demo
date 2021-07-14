@@ -1,7 +1,5 @@
 @import "../../Utils/variables";
 
-$block-border-color: rgba(255, 255, 255, 0.2);
-
 .blockchain {
   height: calc(100% - 20px);
   width: calc(100% - 20px);
@@ -27,7 +25,7 @@ $block-border-color: rgba(255, 255, 255, 0.2);
 }
 
 .block {
-  border: 1px solid $block-border-color;
+  border: 1px solid $default-element-border-color;
   display: flex;
   flex-direction: column;
   max-width: 800px;
@@ -36,7 +34,7 @@ $block-border-color: rgba(255, 255, 255, 0.2);
 
 .block>div {
   padding: 5px;
-  border-bottom: 1px solid $block-border-color;
+  border-bottom: 1px solid $default-element-border-color;
 }
 
 .block div:last-child {
