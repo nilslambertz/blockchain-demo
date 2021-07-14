@@ -15,7 +15,7 @@
   width: 100%;
   height: calc(45% - 1px);
   display: flex;
-  border-bottom: 1px solid $default-border-color;
+  border-bottom: 1px solid $default-divider-border-color;
   min-height: 300px;
 }
 
@@ -44,7 +44,7 @@
   display: flex;
   align-items:center;
   justify-content:space-between;
-  border-top: 1px solid $default-border-color;
+  border-top: 1px solid $default-divider-border-color;
 }
 
 #footer .logsToggle {
