@@ -457,7 +457,7 @@ class App extends React.Component<AppProps, AppState> {
                     />
                 </div>
                 <div id={"footer"}>
-                    <span />
+                    <span><a href="https://github.com/nilslambertz/BlockchainDemo" target="_blank">source code</a></span>
                     <span>by nils lambertz</span>
                     <div className={"logsToggle"} onClick={() => {
                         let curr = this.state.logsVisible;

@@ -9,6 +9,16 @@
   color: #c4c4c4;
 }
 
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #bdbdbd;
+  transition: color 0.3s;
+}
+a:hover {
+  color: white;
+}
+
 #upperContent {
   width: 100%;
   height: calc(45% - 1px);

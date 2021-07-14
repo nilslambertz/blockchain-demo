@@ -11,6 +11,18 @@
   color: $default-color;
 }
 
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #bdbdbd;
+
+  &:hover {
+    color: white;
+  }
+
+  transition: color 0.3s;
+}
+
 #upperContent {
   width: 100%;
   height: calc(45% - 1px);
