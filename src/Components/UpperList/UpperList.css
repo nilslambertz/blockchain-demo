@@ -5,10 +5,9 @@
   flex: 1;
   min-width: 500px;
   padding: 10px 0;
-  border-right: 1px solid #e32ce8;
 }
-.upperListContainer:last-child {
-  border-right: none;
+.upperListContainer:first-child {
+  border-right: 1px solid #e32ce8;
 }
 
 .upperListContainer {

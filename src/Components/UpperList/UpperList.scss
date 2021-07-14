@@ -7,10 +7,9 @@
   flex: 1;
   min-width: 500px;
   padding: 10px 0;
-  border-right: 1px solid $default-divider-border-color;
 
-  &:last-child {
-    border-right: none;
+  &:first-child {
+    border-right: 1px solid $default-divider-border-color;
   }
 }
 

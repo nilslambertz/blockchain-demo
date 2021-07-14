@@ -442,6 +442,9 @@ class App extends React.Component<AppProps, AppState> {
                         removeSignatureFunction={this.removeSignature}
                         addLogFunction={this.addLog}
                     />
+                    <LogList
+                        logsVisible={this.state.logsVisible}
+                        logs={this.state.logs} />
                 </div>
                 <div id={"lowerContent"}>
                     <Blockchain
@@ -450,9 +453,6 @@ class App extends React.Component<AppProps, AppState> {
                         confirmFunction={this.confirmBlock}
                         addLogFunction={this.addLog}
                     />
-                    <LogList
-                        logsVisible={this.state.logsVisible}
-                        logs={this.state.logs} />
                 </div>
                 <div id={"footer"}>
                     <span />
