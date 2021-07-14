@@ -12,11 +12,17 @@ class LogList extends React.Component<LogListProps, {}> {
     render() {
         return <div id={"logs"} className={this.props.logsVisible ? "visible" : ""}>
             <div id={"logList"}>
-                {this.props.logs.map((v, i, a) => {
-                    return <div key={i} className={v.type}><span style={{ color: "white", fontWeight: "bold" }}>{v.time}</span> {v.message}</div>
-                })}
+                <table>
+                    <tbody>
+                        {this.props.logs.map((v, i, a) => {
+                            return <tr><td>{v.time}</td><td key={i} className={v.type}>{v.message}</td></tr>;
+
+                            //return <div key={i} className={v.type}><span style={{ color: "white", fontWeight: "bold" }}>{v.time}</span> {v.message}</div>
+                        })}
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </div>;
     }
 }
 

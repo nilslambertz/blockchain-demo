@@ -11,12 +11,24 @@
   overflow: auto;
 }
 
-#logList div {
+#logList table {
   width: 100%;
-  margin-bottom: 5px;
+  border-collapse: collapse;
 }
-#logList div:last-child {
-  margin-bottom: 0;
+
+#logList table td {
+  padding: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#logList table tr td:first-child {
+  color: white;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+#logList table tr td:last-child {
+  width: 100%;
 }
 
 #logList .error {
