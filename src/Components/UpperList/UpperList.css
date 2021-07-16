@@ -1,4 +1,8 @@
+/* Background-color */
+/* Text-color */
+/* Border-color */
 .upperListContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: calc(100% - 20px);
@@ -8,10 +12,6 @@
 }
 .upperListContainer:first-child {
   border-right: 1px solid #e32ce8;
-}
-
-.upperListContainer {
-  position: relative;
 }
 
 .upperListContainer .addButtonContainer {

@@ -1,6 +1,7 @@
 @import "../../Utils/variables";
 
 .upperListContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: calc(100% - 20px);
@@ -11,10 +12,6 @@
   &:first-child {
     border-right: 1px solid $default-divider-border-color;
   }
-}
-
-.upperListContainer {
-  position: relative;
 }
 
 .upperListContainer .addButtonContainer {
