@@ -16,8 +16,6 @@ class LogList extends React.Component<LogListProps, {}> {
                     <tbody>
                         {this.props.logs.map((v, i, a) => {
                             return <tr><td>{v.time}</td><td key={i} className={v.type}>{v.message}</td></tr>;
-
-                            //return <div key={i} className={v.type}><span style={{ color: "white", fontWeight: "bold" }}>{v.time}</span> {v.message}</div>
                         })}
                     </tbody>
                 </table>
