@@ -39,7 +39,6 @@ a:hover {
   overflow: auto;
   transition: width 0.2s, border 0.3s;
 }
-
 #logs.visible {
   width: 500px;
 }
@@ -54,14 +53,12 @@ a:hover {
   justify-content: space-between;
   border-top: 1px solid #e32ce8;
 }
-
 #footer .logsToggle {
   text-align: center;
   width: 100px;
   cursor: pointer;
   user-select: none;
 }
-
 #footer .logsToggle span {
   font-weight: bold;
 }

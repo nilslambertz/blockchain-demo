@@ -15,12 +15,11 @@ a {
   text-decoration: none;
   font-weight: bold;
   color: #bdbdbd;
+  transition: color 0.3s;
 
   &:hover {
     color: white;
   }
-
-  transition: color 0.3s;
 }
 
 #upperContent {
@@ -42,10 +41,10 @@ a {
   width: 0;
   overflow: auto;
   transition: width 0.2s, border 0.3s;
-}
 
-#logs.visible {
-  width: 500px;
+  &.visible {
+    width: 500px;
+  }
 }
 
 #footer {
@@ -57,15 +56,15 @@ a {
   align-items:center;
   justify-content:space-between;
   border-top: 1px solid $default-divider-border-color;
-}
 
-#footer .logsToggle {
-  text-align: center;
-  width: 100px;
-  cursor: pointer;
-  user-select: none;
-}
+  .logsToggle {
+    text-align: center;
+    width: 100px;
+    cursor: pointer;
+    user-select: none;
 
-#footer .logsToggle span{
-  font-weight: bold;
+    span {
+      font-weight: bold;
+    }
+  }
 }
