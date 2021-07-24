@@ -4,10 +4,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  height: calc(100% - 20px);
+  height: calc(100% - 10px);
   flex: 1;
   min-width: 500px;
-  padding: 10px 0;
+  padding-top: 10px;
 
   &:first-child {
     border-right: 1px solid $default-divider-border-color;
@@ -44,7 +44,7 @@
 
 .upperList {
   flex: 1;
-  padding: 0 10px 40px;
+  padding: 0 10px 50px;
   overflow: auto;
   overflow-x: hidden;
   text-align: center;
