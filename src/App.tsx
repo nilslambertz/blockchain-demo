@@ -2,11 +2,17 @@ import React from 'react';
 import './App.scss';
 import './Style/Buttons.scss';
 import UpperList from "./Components/UpperList/UpperList";
-import { account, block, logElem, signaturePair, transaction, validStartHash } from "./Utils/Interfaces";
 import {
-    blockToString,
+    account,
+    block,
+    logElem,
+    signaturePair,
+    transaction,
+    validStartHash
+} from "./Utils/Interfaces";
+import {
+    blockToString, generateAccount,
     generateBlockHash, generateBlockHashFromString,
-    generateKeyAddressPair,
     signTransaction,
     verifyAllBlockTransactions
 } from "./Utils/Functions";
@@ -66,32 +72,26 @@ class App extends React.Component<AppProps, AppState> {
         this.recalculateBlocks();
     }
 
+    /**
+     * Creates a new account and appends it to the account-list
+     */
     addAccount = (): void => {
-        let keys = generateKeyAddressPair();
         let count = this.state.accountIdCount;
-
-        let balance = Math.floor(Math.random() * 1001);
-
-        let a: account = {
-            id: count,
-            idString: "a" + count,
-            privateKey: keys.privateKey,
-            privateKeyArray: keys.privateKeyArray,
-            address: keys.address,
-            addressArray: keys.addressArray,
-            balanceBeforeBlock: Array(this.state.lastConfirmedBlock + 2).fill(balance)
-        }
+        let a = generateAccount(count, this.state.lastConfirmedBlock);
 
         let arr: account[] = this.state.accounts;
         arr.push(a);
         this.setState({ accounts: arr, accountIdCount: count + 1 }, () => {
             this.addLog({
                 type: "info",
-                message: "Added account " + a.id
+                message: "Added account " + a.idString
             })
         });
     }
 
+    /**
+     * Creates a new transaction and appends it to the unused-transactions-list
+     */
     addTransaction = (): void => {
         let count = this.state.transactionIdCount;
 
@@ -109,7 +109,7 @@ class App extends React.Component<AppProps, AppState> {
         this.setState({ transactions: arr, unusedTransactions: unusedArr, transactionIdCount: count + 1 }, () => {
             this.addLog({
                 type: "info",
-                message: "Added transaction " + t.id
+                message: "Added transaction " + t.idString
             })
         });
     }
@@ -150,7 +150,7 @@ class App extends React.Component<AppProps, AppState> {
             this.setState({ transactions: transactionArray }, () => {
                 this.addLog({
                     type: "success",
-                    message: "Signed transaction " + t.id
+                    message: "Signed transaction " + t.idString
                 })
             });
         }
@@ -170,7 +170,7 @@ class App extends React.Component<AppProps, AppState> {
             this.setState({ transactions: transactionArray }, () => {
                 this.addLog({
                     type: "info",
-                    message: "Removed signature of transaction " + t.id + " because some values changed"
+                    message: "Removed signature of transaction " + t.idString + " because some values changed"
                 })
             });
         }
@@ -270,10 +270,10 @@ class App extends React.Component<AppProps, AppState> {
 
             let newFromValue = balancesAfterBlock[t.from] - t.amount;
             if (newFromValue < 0) {
-                showError("Transaction " + t.id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!");
+                showError("Transaction " + t.idString + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!");
                 this.addLog({
                     type: "error",
-                    message: "Transaction " + t.id + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!"
+                    message: "Transaction " + t.idString + " could not be confirmed, account " + t.from + " doesn't have enough balance for this transaction!"
                 })
                 for (let j = 0; j < accounts.length; j++) {
                     accounts[j].balanceBeforeBlock = accounts[j].balanceBeforeBlock.slice(0, id + 1);

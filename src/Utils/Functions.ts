@@ -1,4 +1,4 @@
-import {account, block, keyAddressPair, signaturePair, transaction} from "./Interfaces";
+import {account, block, keyAddressPair, maxInitialBalance, signaturePair, transaction} from "./Interfaces";
 import nacl, {BoxKeyPair} from "tweetnacl";
 import util from "tweetnacl-util";
 import {encode} from "@stablelib/utf8";
@@ -148,4 +148,19 @@ function transactionToString(t :transaction) : string {
     }
 
     return JSON.stringify(obj);
+}
+
+export function generateAccount(id: number, lastConfirmedBlock : number): account {
+    let keys = generateKeyAddressPair();
+    let balance = Math.floor(Math.random() * (maxInitialBalance + 1));
+
+    return {
+        id: id,
+        idString: "a" + id,
+        privateKey: keys.privateKey,
+        privateKeyArray: keys.privateKeyArray,
+        address: keys.address,
+        addressArray: keys.addressArray,
+        balanceBeforeBlock: Array(lastConfirmedBlock + 2).fill(balance)
+    }
 }
