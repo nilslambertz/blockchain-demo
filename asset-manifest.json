@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/BlockchainDemo/static/css/main.88ff86b6.chunk.css",
-    "main.js": "/BlockchainDemo/static/js/main.1a3ed2c5.chunk.js",
-    "main.js.map": "/BlockchainDemo/static/js/main.1a3ed2c5.chunk.js.map",
+    "main.css": "/BlockchainDemo/static/css/main.b23db516.chunk.css",
+    "main.js": "/BlockchainDemo/static/js/main.0e29c013.chunk.js",
+    "main.js.map": "/BlockchainDemo/static/js/main.0e29c013.chunk.js.map",
     "runtime-main.js": "/BlockchainDemo/static/js/runtime-main.9a83fdb4.js",
     "runtime-main.js.map": "/BlockchainDemo/static/js/runtime-main.9a83fdb4.js.map",
     "static/css/2.97503911.chunk.css": "/BlockchainDemo/static/css/2.97503911.chunk.css",
-    "static/js/2.e4999dc8.chunk.js": "/BlockchainDemo/static/js/2.e4999dc8.chunk.js",
-    "static/js/2.e4999dc8.chunk.js.map": "/BlockchainDemo/static/js/2.e4999dc8.chunk.js.map",
+    "static/js/2.4b5533df.chunk.js": "/BlockchainDemo/static/js/2.4b5533df.chunk.js",
+    "static/js/2.4b5533df.chunk.js.map": "/BlockchainDemo/static/js/2.4b5533df.chunk.js.map",
     "index.html": "/BlockchainDemo/index.html",
     "static/css/2.97503911.chunk.css.map": "/BlockchainDemo/static/css/2.97503911.chunk.css.map",
-    "static/css/main.88ff86b6.chunk.css.map": "/BlockchainDemo/static/css/main.88ff86b6.chunk.css.map",
-    "static/js/2.e4999dc8.chunk.js.LICENSE.txt": "/BlockchainDemo/static/js/2.e4999dc8.chunk.js.LICENSE.txt",
+    "static/css/main.b23db516.chunk.css.map": "/BlockchainDemo/static/css/main.b23db516.chunk.css.map",
+    "static/js/2.4b5533df.chunk.js.LICENSE.txt": "/BlockchainDemo/static/js/2.4b5533df.chunk.js.LICENSE.txt",
     "static/media/arrowright.8349a54a.svg": "/BlockchainDemo/static/media/arrowright.8349a54a.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.9a83fdb4.js",
     "static/css/2.97503911.chunk.css",
-    "static/js/2.e4999dc8.chunk.js",
-    "static/css/main.88ff86b6.chunk.css",
-    "static/js/main.1a3ed2c5.chunk.js"
+    "static/js/2.4b5533df.chunk.js",
+    "static/css/main.b23db516.chunk.css",
+    "static/js/main.0e29c013.chunk.js"
   ]
 }
