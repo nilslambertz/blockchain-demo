@@ -68,7 +68,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                     <table className={"transactionTable listTable"}>
                         <tbody>
                             <tr>
-                                <td className={"id"}>{this.props.transaction.id}</td>
+                                <td className={"id"}>{this.props.transaction.idString}</td>
                                 <td className={"from" + (!this.props.transaction.editable ? " biggerText" : "")}>
                                     {
                                         this.props.transaction.editable ?
@@ -83,11 +83,11 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                                 }}>
                                                 {
                                                     Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
-                                                        return <option value={x} key={x}>{x}</option>
+                                                        return <option value={x} key={x}>a{x}</option>
                                                     })}
                                             </select>
                                             :
-                                            this.props.transaction.from
+                                            "a" + this.props.transaction.from
                                     }
                                 </td>
                                 <td className={"to" + (!this.props.transaction.editable ? " biggerText" : "")}>
@@ -104,11 +104,11 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                                 }}>
                                                 {
                                                     Array.from(Array(this.props.numberOfAccounts).keys()).map(x => {
-                                                        return <option value={x} key={x}>{x}</option>
+                                                        return <option value={x} key={x}>a{x}</option>
                                                     })}
                                             </select>
                                             :
-                                            this.props.transaction.to
+                                            "a" + this.props.transaction.to
                                     }
                                 </td>
                                 <td className={"amount"}>

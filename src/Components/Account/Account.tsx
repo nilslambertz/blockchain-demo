@@ -14,7 +14,7 @@ class Account extends React.Component<AccountProps, {}> {
             <table className={"accountTable listTable"}>
                 <tbody>
                     <tr>
-                        <td className={"id"}>{this.props.account.id}</td>
+                        <td className={"id"}>{this.props.account.idString}</td>
                         <td className={"privateKey smallText"}>{this.props.account.privateKey}</td>
                         <td className={"address smallText"}>{this.props.account.address}</td>
                         <td className={"balance"}>{this.props.account.balanceBeforeBlock[this.props.lastConfirmedBlock + 1]}</td>

@@ -73,6 +73,7 @@ class App extends React.Component<AppProps, AppState> {
 
         let a: account = {
             id: count,
+            idString: "a" + count,
             privateKey: keys.privateKey,
             privateKeyArray: keys.privateKeyArray,
             address: keys.address,
@@ -95,6 +96,7 @@ class App extends React.Component<AppProps, AppState> {
 
         let t: transaction = {
             id: count,
+            idString: "t" + count,
             signed: false,
             editable: true
         }

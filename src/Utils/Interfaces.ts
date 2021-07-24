@@ -2,6 +2,7 @@ export const validStartHash = "0".repeat(3);
 
 export interface account {
     id: number,
+    idString: string,
     privateKey?: string,
     privateKeyArray?: Uint8Array
     address?: string,
@@ -11,6 +12,7 @@ export interface account {
 
 export interface transaction {
     id: number,
+    idString: string,
     from?: number,
     to?: number,
     amount?: number,
