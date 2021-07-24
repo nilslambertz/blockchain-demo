@@ -142,7 +142,7 @@ class Transaction extends React.Component<TransactionProps, {}> {
                                         this.props.transaction.signed ?
                                             this.props.transaction.signature
                                             :
-                                            <div className={"signButton"} onClick={() => this.sign()}>Sign</div>
+                                            <div className={"signButton button"} onClick={() => this.sign()}>Sign</div>
                                     }
                                 </td>
                             </tr>

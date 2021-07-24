@@ -16,17 +16,6 @@
 
 .transaction .signButton {
   background-color: #12537f;
-  border-radius: 2px;
-  padding: 10px 10px;
-  width: calc(100% - 20px);
-  min-width: 60px;
-  max-width: 100px;
-  text-align: center;
-  color: white;
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.2s;
 }
 .transaction .signButton:hover {
   background-color: #1a5f93;

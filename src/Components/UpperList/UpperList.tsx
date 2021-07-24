@@ -62,7 +62,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
                     ""
                     :
                     <div className={"addButtonContainer"}>
-                        <div className={"addButton"} onClick={() => addFunction()}>
+                        <div className={"addButton button"} onClick={() => addFunction()}>
                             Add
                         </div>
                     </div>

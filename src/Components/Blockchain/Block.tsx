@@ -49,7 +49,7 @@ class Block extends React.Component<BlockProps, {}> {
                         this.props.block.confirmed ?
                             <span className={"confirmedString"}>confirmed</span>
                             :
-                            <div className={"confirmButton"} onClick={() => this.confirmFunction()}>
+                            <div className={"confirmButton button"} onClick={() => this.confirmFunction()}>
                                 Confirm
                             </div>
                     }

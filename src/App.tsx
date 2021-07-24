@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import './Style/Buttons.scss';
 import UpperList from "./Components/UpperList/UpperList";
 import { account, block, logElem, signaturePair, transaction, validStartHash } from "./Utils/Interfaces";
 import {
