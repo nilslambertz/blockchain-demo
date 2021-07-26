@@ -114,6 +114,10 @@ class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    /**
+     * Signs a transaction with the private key
+     * @param t transaction
+     */
     signTransaction = (t: transaction) => {
         if (this.state.accounts.length === 0) {
             showError("At least one account is needed to set all transaction values!");
@@ -156,6 +160,10 @@ class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    /**
+     * Removes signature of transaction
+     * @param id transactionId
+     */
     removeSignature = (id: number) => {
         let transactionArray: transaction[] = this.state.transactions;
         let t: transaction = transactionArray[id];
@@ -176,12 +184,16 @@ class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    /**
+     * Calculates the hashes of every block and sets them to unconfirmed if previous hashes changed
+     */
     recalculateBlocks = () => {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
-
         let lastUnused = this.state.lastUnusedBlock;
         let nextId = this.state.blockIdCount;
+
+        // If the last block is confirmed or transactions are put into it, an empty block is appended to the list
         if (blocks[blocks.length - 1].confirmed || blocks[blocks.length - 1].transactions.length !== 0) {
             blocks.push({
                 id: nextId,
@@ -193,7 +205,7 @@ class App extends React.Component<AppProps, AppState> {
                 type: "info",
                 message: "Added new block"
             })
-            lastUnused = nextId++;
+            lastUnused = nextId+1;
         }
 
         let changed = false;
