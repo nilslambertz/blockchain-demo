@@ -77,7 +77,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
             return <div style={{ color: "#575757" }}>{this.props.emptyText}</div>
         }
 
-        return accounts.map(function (value, index, array) {
+        return accounts.map(function (value) {
             return <Account account={value} key={value.id} lastConfirmedBlock={lastConfirmedBlock} />;
         });
     }
@@ -98,7 +98,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
 
         let addLogFunction = this.props.addLogFunction;
 
-        return (transactionOrder.map(function (value, index, array) {
+        return (transactionOrder.map(function (value, index) {
             return <Transaction transaction={transactions[value]} numberOfAccounts={numberOfAccounts} key={value}
                 signFunction={signFunction} removeSignatureFunction={removeSignatureFunction} index={index} addLogFunction={addLogFunction} />
         }));

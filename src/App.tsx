@@ -482,7 +482,7 @@ class App extends React.Component<AppProps, AppState> {
                 </div></DragDropContext>
             <ToastContainer />
         </div>;
-    };
+    }
 }
 
 export default App;
