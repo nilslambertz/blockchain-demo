@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/BlockchainDemo/static/css/main.ecf76586.chunk.css",
-    "main.js": "/BlockchainDemo/static/js/main.9bdfe606.chunk.js",
-    "main.js.map": "/BlockchainDemo/static/js/main.9bdfe606.chunk.js.map",
+    "main.js": "/BlockchainDemo/static/js/main.b9749852.chunk.js",
+    "main.js.map": "/BlockchainDemo/static/js/main.b9749852.chunk.js.map",
     "runtime-main.js": "/BlockchainDemo/static/js/runtime-main.9a83fdb4.js",
     "runtime-main.js.map": "/BlockchainDemo/static/js/runtime-main.9a83fdb4.js.map",
     "static/css/2.97503911.chunk.css": "/BlockchainDemo/static/css/2.97503911.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.97503911.chunk.css",
     "static/js/2.04e66e4a.chunk.js",
     "static/css/main.ecf76586.chunk.css",
-    "static/js/main.9bdfe606.chunk.js"
+    "static/js/main.b9749852.chunk.js"
   ]
 }
