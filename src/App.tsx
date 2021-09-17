@@ -190,13 +190,12 @@ class App extends React.Component<AppProps, AppState> {
     recalculateBlocks = () => {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
-        let lastUnused = this.state.lastUnusedBlock;
         let nextId = this.state.blockIdCount;
 
         // If the last block is confirmed or transactions are put into it, an empty block is appended to the list
         if (blocks[blocks.length - 1].confirmed || blocks[blocks.length - 1].transactions.length !== 0) {
             blocks.push({
-                id: nextId,
+                id: nextId-1,
                 nonce: 0,
                 transactions: [],
                 confirmed: false
@@ -204,8 +203,7 @@ class App extends React.Component<AppProps, AppState> {
             this.addLog({
                 type: "info",
                 message: "Added new block"
-            })
-            lastUnused = nextId+1;
+            });
         }
 
         let changed = false;
@@ -238,7 +236,7 @@ class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        this.setState({ blocks: blocks, lastUnusedBlock: lastUnused, lastConfirmedBlock: lastConfirmed, blockIdCount: nextId });
+        this.setState({ blocks: blocks, lastUnusedBlock: nextId, lastConfirmedBlock: lastConfirmed, blockIdCount: nextId+1 });
     }
 
     confirmBlock = (id: number) => {
