@@ -99,7 +99,8 @@ class App extends React.Component<AppProps, AppState> {
             id: count,
             idString: "t" + count,
             signed: false,
-            editable: true
+            editable: true,
+            amount: 0
         }
 
         let arr: transaction[] = this.state.transactions;
