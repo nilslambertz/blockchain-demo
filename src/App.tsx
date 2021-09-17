@@ -191,8 +191,8 @@ class App extends React.Component<AppProps, AppState> {
     recalculateBlocks = () => {
         let blocks = [...this.state.blocks];
         let transactions = [...this.state.transactions];
-        let lastUnused = this.state.lastUnusedBlock;
         let nextId = this.state.blockIdCount;
+        let lastUnusedBlock = this.state.lastUnusedBlock;
 
         // If the last block is confirmed or transactions are put into it, an empty block is appended to the list
         if (blocks[blocks.length - 1].confirmed || blocks[blocks.length - 1].transactions.length !== 0) {
@@ -205,8 +205,8 @@ class App extends React.Component<AppProps, AppState> {
             this.addLog({
                 type: "info",
                 message: "Added new block"
-            })
-            lastUnused = nextId+1;
+            });
+            lastUnusedBlock = nextId;
         }
 
         let changed = false;
@@ -239,7 +239,7 @@ class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        this.setState({ blocks: blocks, lastUnusedBlock: lastUnused, lastConfirmedBlock: lastConfirmed, blockIdCount: nextId });
+        this.setState({ blocks: blocks, lastUnusedBlock: lastUnusedBlock, lastConfirmedBlock: lastConfirmed, blockIdCount: lastUnusedBlock+1 });
     }
 
     confirmBlock = (id: number) => {
@@ -383,7 +383,10 @@ class App extends React.Component<AppProps, AppState> {
 
                 unusedTransactions.splice(sourceIndex, 1);
 
+               // console.log(this.state.blocks);
+
                 let blockId = parseInt(result.destination.droppableId.replace("block", ""));
+                //console.log(blockId);
                 let blockIndex = result.destination.index;
                 blocks[blockId].transactions.splice(blockIndex, 0, transactionId);
 
