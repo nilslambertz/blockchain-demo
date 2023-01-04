@@ -8,13 +8,13 @@ interface LogListProps {
 
 export default function LogList({ logElements, logsVisible }: LogListProps) {
   const visibilityClasses = logsVisible
-    ? "flex-1 border-l border-l-pink-500"
+    ? "p-4 flex-1 border-l border-l-pink-500"
     : "w-0";
 
   return (
     <div
       className={
-        "p-4 overflow-y-scroll flex flex-col items-stretch " + visibilityClasses
+        "overflow-y-scroll flex flex-col items-stretch " + visibilityClasses
       }
     >
       {logElements.map((logElem, index) => (
