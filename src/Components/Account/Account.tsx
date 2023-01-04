@@ -22,20 +22,25 @@ export default function Account({ account, lastConfirmedBlock }: AccountProps) {
       ></GridElem>
       <GridElem
         content={account.balanceBeforeBlock[lastConfirmedBlock + 1]}
+        hideBorder={true}
       ></GridElem>
       <div
-        className={"col-span-6 h-0 border-opacity-50 border-b " + BORDER_COLOR}
+        className={"col-span-6 h-0 border-b border-opacity-50 " + BORDER_COLOR}
       ></div>
-      <GridElem extraClasses="text-xs opacity-50" content="ID"></GridElem>
+      <GridElem extraClasses="text-xs text-opacity-50" content="ID"></GridElem>
       <GridElem
-        extraClasses="col-span-2 text-xs opacity-50"
+        extraClasses="col-span-2 text-xs text-opacity-50"
         content="Private Key"
       ></GridElem>
       <GridElem
-        extraClasses="col-span-2 text-xs opacity-50"
+        extraClasses="col-span-2 text-xs text-opacity-50"
         content="Address"
       ></GridElem>
-      <GridElem extraClasses="text-xs opacity-50" content="Balance"></GridElem>
+      <GridElem
+        extraClasses="text-xs text-opacity-50"
+        content="Balance"
+        hideBorder={true}
+      ></GridElem>
     </div>
   );
 }
