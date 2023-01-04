@@ -1,7 +1,7 @@
 import React from "react";
 import { account } from "../../Utils/Interfaces";
-import "./Account.scss";
-import "../UpperList/UpperList.scss";
+import "./Account.css";
+import "../UpperList/UpperList.css";
 
 interface AccountProps {
   account: account;

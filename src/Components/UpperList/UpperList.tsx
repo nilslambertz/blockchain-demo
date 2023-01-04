@@ -1,5 +1,5 @@
 import React from "react";
-import "./UpperList.scss";
+import "./UpperList.css";
 import { account, transaction } from "../../Utils/Interfaces";
 import Account from "../Account/Account";
 import Transaction from "../Transaction/Transaction";

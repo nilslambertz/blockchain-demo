@@ -1,6 +1,6 @@
 import React from "react";
-import "./App.scss";
-import "./Style/Buttons.scss";
+import "./App.css";
+import "./Style/Buttons.css";
 import UpperList from "./Components/UpperList/UpperList";
 import {
   account,

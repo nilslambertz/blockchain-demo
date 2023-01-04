@@ -1,7 +1,7 @@
 import React from "react";
 import { transaction } from "../../Utils/Interfaces";
-import "./Transaction.scss";
-import "../UpperList/UpperList.scss";
+import "./Transaction.css";
+import "../UpperList/UpperList.css";
 import { Draggable } from "react-beautiful-dnd";
 import { showError } from "../../Utils/ToastFunctions";
 

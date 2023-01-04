@@ -1,7 +1,7 @@
 import React from "react";
 import { logElem } from "../../Utils/Interfaces";
-import "../UpperList/UpperList.scss";
-import "./LogList.scss";
+import "../UpperList/UpperList.css";
+import "./LogList.css";
 
 interface LogListProps {
   logs: logElem[];

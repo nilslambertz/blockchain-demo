@@ -1,5 +1,5 @@
 import React from "react";
-import "./Blockchain.scss";
+import "./Blockchain.css";
 import { block, transaction, validStartHash } from "../../Utils/Interfaces";
 import UpperList from "../UpperList/UpperList";
 
