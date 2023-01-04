@@ -1,45 +1,38 @@
 import React from "react";
-import "./Blockchain.css";
-import { Block, Transaction } from "../../Utils/Interfaces";
+import { Block, LogElem, Transaction } from "../../Utils/Interfaces";
 import BlockElem from "./BlockElem";
 import { ReactComponent as Arrow } from "../../res/arrowright.svg";
 
 interface BlockchainProps {
   blocks: Block[];
   transactions: Transaction[];
-  confirmFunction: any;
-  addLogFunction: any;
+  onConfirm: (id: number) => void;
+  onAddLog: (logElem: LogElem) => void;
 }
 
-class Blockchain extends React.Component<BlockchainProps, {}> {
-  render() {
-    return <div className={"blockchain"}>{this.printBlocks()}</div>;
-  }
-  printBlocks = () => {
-    let transactions = this.props.transactions;
-    let confirmFunction = this.props.confirmFunction;
-    let addLogFunction = this.props.addLogFunction;
-
-    return this.props.blocks.map(function (value, index, array) {
-      return (
-        <React.Fragment key={index}>
+export default function Blockchain({
+  blocks,
+  transactions,
+  onConfirm,
+  onAddLog,
+}: BlockchainProps) {
+  return (
+    <div className="w-full overflow-x-scroll p-2 flex flex-row items-center">
+      {blocks.map((block, index, array) => (
+        <>
           <BlockElem
-            block={value}
+            block={block}
             transactions={transactions}
-            confirmFunction={confirmFunction}
-            addLogFunction={addLogFunction}
+            confirmFunction={onConfirm}
+            addLogFunction={onAddLog}
           />
-          {index !== array.length - 1 ? (
-            <div className={"arrows"}>
+          {index !== array.length - 1 && (
+            <div className="h-full flex flex-row flex-shrink-0 w-20 items-center">
               <Arrow />
             </div>
-          ) : (
-            ""
           )}
-        </React.Fragment>
-      );
-    });
-  };
+        </>
+      ))}
+    </div>
+  );
 }
-
-export default Blockchain;
