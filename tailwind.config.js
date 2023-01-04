@@ -9,6 +9,9 @@ module.exports = {
       fontSize: {
         "2xs": "0.7rem",
       },
+      colors: {
+        base: "#1c2326",
+      },
     },
   },
   plugins: [],

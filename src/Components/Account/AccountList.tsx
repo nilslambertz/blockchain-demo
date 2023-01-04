@@ -1,5 +1,4 @@
 import React from "react";
-import { BACKGROUND_COLOR } from "../../shared/Colors";
 import { account, logElem } from "../../Utils/Interfaces";
 import Button from "../Button";
 import Account from "./Account";
@@ -19,11 +18,7 @@ export default function AccountList({
   return (
     <div className="relative flex-1 flex flex-col overflow-hidden items-stretch border-r border-r-pink-500">
       <div className="flex-1 px-3 overflow-y-scroll overflow-x-hidden flex flex-col items-stretch gap-2 pb-16">
-        <div
-          className={
-            "sticky top-0 w-full text-center text-2xl py-2 " + BACKGROUND_COLOR
-          }
-        >
+        <div className="sticky top-0 w-full text-center text-2xl py-2 bg-base">
           accounts
         </div>
         {accounts.map((account) => (
