@@ -6,6 +6,9 @@ module.exports = {
       fontFamily: {
         sans: ["Arial"],
       },
+      fontSize: {
+        "2xs": "0.7rem",
+      },
     },
   },
   plugins: [],
