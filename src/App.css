@@ -45,23 +45,3 @@ a:hover {
 #logs.visible {
   width: 500px;
 }
-
-#footer {
-  padding: 0 100px;
-  background-color: #191e1f;
-  height: 5%;
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid #e32ce8;
-}
-#footer .logsToggle {
-  text-align: center;
-  width: 100px;
-  cursor: pointer;
-  user-select: none;
-}
-#footer .logsToggle span {
-  font-weight: bold;
-}

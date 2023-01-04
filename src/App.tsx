@@ -24,6 +24,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showError, showWarning } from "./Utils/ToastFunctions";
 import LogList from "./Components/LogList/LogList";
+import Footer from "./Components/Footer";
 
 interface AppProps {}
 
@@ -563,36 +564,12 @@ class App extends React.Component<AppProps, AppState> {
               addLogFunction={this.addLog}
             />
           </div>
-          <div id={"footer"}>
-            <span>
-              <a
-                href="https://github.com/nilslambertz/BlockchainDemo"
-                target="_blank"
-                rel="noreferrer"
-              >
-                source code
-              </a>
-            </span>
-            <span>
-              by{" "}
-              <a
-                href="https://nilslambertz.github.io/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                nils lambertz
-              </a>
-            </span>
-            <div
-              className={"logsToggle"}
-              onClick={() => {
-                let curr = this.state.logsVisible;
-                this.setState({ logsVisible: !curr });
-              }}
-            >
-              Logs: <span>{this.state.logsVisible ? "ON" : "OFF"}</span>
-            </div>
-          </div>
+          <Footer
+            toggleLogs={() =>
+              this.setState({ logsVisible: !this.state.logsVisible })
+            }
+            logsVisible={this.state.logsVisible}
+          ></Footer>
         </DragDropContext>
         <ToastContainer />
       </div>
