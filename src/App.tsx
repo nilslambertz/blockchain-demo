@@ -25,6 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { showError, showWarning } from "./Utils/ToastFunctions";
 import LogList from "./Components/LogList/LogList";
 import Footer from "./Components/Footer";
+import AccountList from "./Components/Account/AccountList";
 
 interface AppProps {}
 
@@ -528,17 +529,12 @@ class App extends React.Component<AppProps, AppState> {
       <div className="App">
         <DragDropContext onDragEnd={this.onDragEnd}>
           <div id={"upperContent"}>
-            <UpperList
-              title={"accounts"}
+            <AccountList
               accounts={this.state.accounts}
-              droppableId={"accountList"}
+              addAccount={this.addAccount}
+              addLog={this.addLog}
               lastConfirmedBlock={this.state.lastConfirmedBlock}
-              className={"accountListContainer"}
-              addFunction={this.addAccount}
-              emptyText={"Add some accounts!"}
-              dropDisabled={true}
-              addLogFunction={this.addLog}
-            />
+            ></AccountList>
             <UpperList
               title={"transactions"}
               transactions={this.state.transactions}
