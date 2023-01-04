@@ -531,8 +531,7 @@ class App extends React.Component<AppProps, AppState> {
           <div id={"upperContent"}>
             <AccountList
               accounts={this.state.accounts}
-              addAccount={this.addAccount}
-              addLog={this.addLog}
+              onAddAccount={this.addAccount}
               lastConfirmedBlock={this.state.lastConfirmedBlock}
             ></AccountList>
             <UpperList
@@ -556,8 +555,8 @@ class App extends React.Component<AppProps, AppState> {
             <Blockchain
               blocks={this.state.blocks}
               transactions={this.state.transactions}
-              confirmFunction={this.confirmBlock}
-              addLogFunction={this.addLog}
+              onConfirm={this.confirmBlock}
+              onAddLog={this.addLog}
             />
           </div>
           <Footer

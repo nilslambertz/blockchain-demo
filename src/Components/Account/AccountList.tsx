@@ -5,14 +5,13 @@ import AccountElem from "./AccountElem";
 
 interface AccountListProps {
   accounts: Account[];
-  addAccount: () => void;
-  addLog: (elem: LogElem) => void;
+  onAddAccount: () => void;
   lastConfirmedBlock: number;
 }
 
 export default function AccountList({
   accounts,
-  addAccount,
+  onAddAccount,
   lastConfirmedBlock,
 }: AccountListProps) {
   return (
@@ -30,7 +29,7 @@ export default function AccountList({
         ))}
       </div>
       <div className="absolute w-full flex flex-row justify-center bottom-3">
-        <Button text="Add" onClick={addAccount} buttonColor="green"></Button>
+        <Button text="Add" onClick={onAddAccount} buttonColor="green"></Button>
       </div>
     </div>
   );
