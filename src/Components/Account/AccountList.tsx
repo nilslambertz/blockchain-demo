@@ -1,6 +1,6 @@
 import React from "react";
 import { account, logElem } from "../../Utils/Interfaces";
-import Button from "../Button";
+import Button from "../shared-components/Button";
 import Account from "./Account";
 
 interface AccountListProps {
