@@ -3,11 +3,11 @@ import "./App.css";
 import "./Style/Buttons.css";
 import UpperList from "./Components/UpperList/UpperList";
 import {
-  account,
-  block,
-  logElem,
-  signaturePair,
-  transaction,
+  Account,
+  Block,
+  LogElem,
+  SignaturePair,
+  Transaction,
   validStartHash,
 } from "./Utils/Interfaces";
 import {
@@ -31,15 +31,15 @@ interface AppProps {}
 
 interface AppState {
   accountIdCount: number;
-  accounts: account[];
+  accounts: Account[];
   transactionIdCount: number;
-  transactions: transaction[];
+  transactions: Transaction[];
   unusedTransactions: number[];
   blockIdCount: number;
-  blocks: block[];
+  blocks: Block[];
   lastConfirmedBlock: number;
   lastUnusedBlock: number;
-  logs: logElem[];
+  logs: LogElem[];
   logsVisible: boolean;
 }
 
@@ -85,7 +85,7 @@ class App extends React.Component<AppProps, AppState> {
     let count = this.state.accountIdCount;
     let a = generateAccount(count, this.state.lastConfirmedBlock);
 
-    let arr: account[] = this.state.accounts;
+    let arr: Account[] = this.state.accounts;
     arr.push(a);
     this.setState({ accounts: arr, accountIdCount: count + 1 }, () => {
       this.addLog({
@@ -101,14 +101,14 @@ class App extends React.Component<AppProps, AppState> {
   addTransaction = (): void => {
     let count = this.state.transactionIdCount;
 
-    let t: transaction = {
+    let t: Transaction = {
       id: count,
       idString: "t" + count,
       signed: false,
       editable: true,
     };
 
-    let arr: transaction[] = this.state.transactions;
+    let arr: Transaction[] = this.state.transactions;
     let unusedArr: number[] = this.state.unusedTransactions;
     arr.push(t);
     unusedArr.push(t.id);
@@ -131,7 +131,7 @@ class App extends React.Component<AppProps, AppState> {
    * Signs a transaction with the private key
    * @param t transaction
    */
-  signTransaction = (t: transaction) => {
+  signTransaction = (t: Transaction) => {
     if (this.state.accounts.length === 0) {
       showError(
         "At least one account is needed to set all transaction values!"
@@ -162,7 +162,7 @@ class App extends React.Component<AppProps, AppState> {
     let address = this.state.accounts[sender].addressArray;
 
     if (sender !== -1 && privateKey !== undefined && address !== undefined) {
-      let sig: signaturePair = signTransaction(t, privateKey);
+      let sig: SignaturePair = signTransaction(t, privateKey);
 
       let transactionArray = this.state.transactions;
 
@@ -184,8 +184,8 @@ class App extends React.Component<AppProps, AppState> {
    * @param id transactionId
    */
   removeSignature = (id: number) => {
-    let transactionArray: transaction[] = this.state.transactions;
-    let t: transaction = transactionArray[id];
+    let transactionArray: Transaction[] = this.state.transactions;
+    let t: Transaction = transactionArray[id];
 
     if (t.signed) {
       t.signed = false;
@@ -507,7 +507,7 @@ class App extends React.Component<AppProps, AppState> {
     this.recalculateBlocks();
   };
 
-  addLog = (log: logElem) => {
+  addLog = (log: LogElem) => {
     let date = new Date();
     let h = date.getHours();
     let m = date.getMinutes();

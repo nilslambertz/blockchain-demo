@@ -1,10 +1,10 @@
 import React from "react";
-import { logElem } from "../../Utils/Interfaces";
+import { LogElem } from "../../Utils/Interfaces";
 import "../UpperList/UpperList.css";
 import "./LogList.css";
 
 interface LogListProps {
-  logs: logElem[];
+  logs: LogElem[];
   logsVisible: boolean;
 }
 

@@ -1,16 +1,16 @@
 import React from "react";
 import "./Blockchain.css";
-import { block, transaction, validStartHash } from "../../Utils/Interfaces";
+import { Block, Transaction, validStartHash } from "../../Utils/Interfaces";
 import UpperList from "../UpperList/UpperList";
 
-interface BlockProps {
-  block: block;
-  transactions: transaction[];
+interface BlockElemProps {
+  block: Block;
+  transactions: Transaction[];
   confirmFunction: any;
   addLogFunction: any;
 }
 
-class Block extends React.Component<BlockProps, {}> {
+class BlockElem extends React.Component<BlockElemProps, {}> {
   printTransactionList = () => {
     return (
       <UpperList
@@ -78,4 +78,4 @@ class Block extends React.Component<BlockProps, {}> {
   }
 }
 
-export default Block;
+export default BlockElem;

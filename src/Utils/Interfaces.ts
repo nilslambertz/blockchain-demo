@@ -1,7 +1,7 @@
 export const validStartHash = "0".repeat(3);
 export const maxInitialBalance = 1000;
 
-export interface account {
+export interface Account {
   id: number;
   idString: string;
   privateKey?: string;
@@ -11,7 +11,7 @@ export interface account {
   balanceBeforeBlock: number[];
 }
 
-export interface transaction {
+export interface Transaction {
   id: number;
   idString: string;
   from?: number;
@@ -23,19 +23,19 @@ export interface transaction {
   editable: boolean;
 }
 
-export interface keyAddressPair {
+export interface KeyAddressPair {
   privateKey: string;
   privateKeyArray?: Uint8Array;
   address: string;
   addressArray: Uint8Array;
 }
 
-export interface signaturePair {
+export interface SignaturePair {
   signature: string;
   signatureArray: Uint8Array;
 }
 
-export interface block {
+export interface Block {
   id: number;
   prevHash?: string;
   transactions: number[];
@@ -44,7 +44,7 @@ export interface block {
   confirmed: boolean;
 }
 
-export interface logElem {
+export interface LogElem {
   time?: string;
   type: "error" | "warning" | "success" | "info";
   message: string;

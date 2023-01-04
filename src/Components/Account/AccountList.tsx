@@ -1,12 +1,12 @@
 import React from "react";
-import { account, logElem } from "../../Utils/Interfaces";
+import { Account, LogElem } from "../../Utils/Interfaces";
 import Button from "../shared-components/Button";
-import Account from "./Account";
+import AccountElem from "./AccountElem";
 
 interface AccountListProps {
-  accounts: account[];
+  accounts: Account[];
   addAccount: () => void;
-  addLog: (elem: logElem) => void;
+  addLog: (elem: LogElem) => void;
   lastConfirmedBlock: number;
 }
 
@@ -22,7 +22,7 @@ export default function AccountList({
           accounts
         </div>
         {accounts.map((account) => (
-          <Account
+          <AccountElem
             account={account}
             key={account.id}
             lastConfirmedBlock={lastConfirmedBlock}

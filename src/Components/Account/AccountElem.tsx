@@ -1,14 +1,17 @@
 import React from "react";
 import { BORDER_COLOR } from "../../shared/Colors";
-import { account } from "../../Utils/Interfaces";
+import { Account } from "../../Utils/Interfaces";
 import GridElem from "../shared-components/GridElem";
 
-interface AccountProps {
-  account: account;
+interface AccountElemProps {
+  account: Account;
   lastConfirmedBlock: number;
 }
 
-export default function Account({ account, lastConfirmedBlock }: AccountProps) {
+export default function AccountElem({
+  account,
+  lastConfirmedBlock,
+}: AccountElemProps) {
   return (
     <div className={"w-full grid grid-cols-6 border " + BORDER_COLOR}>
       <GridElem content={account.idString}></GridElem>

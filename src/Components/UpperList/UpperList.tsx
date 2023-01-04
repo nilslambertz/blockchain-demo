@@ -1,14 +1,14 @@
 import React from "react";
 import "./UpperList.css";
-import { account, transaction } from "../../Utils/Interfaces";
-import Account from "../Account/Account";
-import Transaction from "../Transaction/Transaction";
+import { Account, Transaction } from "../../Utils/Interfaces";
+import AccountElem from "../Account/AccountElem";
+import TransactionElem from "../Transaction/TransactionElem";
 import { Droppable } from "react-beautiful-dnd";
 
 interface UpperListProps {
   title: string;
-  accounts?: account[];
-  transactions?: transaction[];
+  accounts?: Account[];
+  transactions?: Transaction[];
   transactionOrder?: number[];
   numberOfAccounts?: number;
   className?: string;
@@ -83,7 +83,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
     );
   }
 
-  printAccountList = (accounts: account[]) => {
+  printAccountList = (accounts: Account[]) => {
     let lastConfirmedBlock = this.props.lastConfirmedBlock ?? -1;
 
     if (accounts.length === 0) {
@@ -92,7 +92,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
 
     return accounts.map(function (value) {
       return (
-        <Account
+        <AccountElem
           account={value}
           key={value.id}
           lastConfirmedBlock={lastConfirmedBlock}
@@ -101,7 +101,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
     });
   };
 
-  printTransactionList = (transactions: transaction[]) => {
+  printTransactionList = (transactions: Transaction[]) => {
     let numberOfAccounts = 0;
     if (this.props?.numberOfAccounts) {
       numberOfAccounts = this.props.numberOfAccounts;
@@ -119,7 +119,7 @@ class UpperList extends React.Component<UpperListProps, {}> {
 
     return transactionOrder.map(function (value, index) {
       return (
-        <Transaction
+        <TransactionElem
           transaction={transactions[value]}
           numberOfAccounts={numberOfAccounts}
           key={value}

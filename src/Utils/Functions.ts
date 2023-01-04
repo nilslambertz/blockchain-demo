@@ -1,10 +1,10 @@
 import {
-  account,
-  block,
-  keyAddressPair,
+  Account,
+  Block,
+  KeyAddressPair,
   maxInitialBalance,
-  signaturePair,
-  transaction,
+  SignaturePair,
+  Transaction,
 } from "./Interfaces";
 import nacl, { BoxKeyPair } from "tweetnacl";
 import util from "tweetnacl-util";
@@ -32,7 +32,7 @@ function getArrayFromString(str: string): Uint8Array {
  * Generates public-private-key pair and returns them
  * in hex-encoding and as Uint8-arrays
  */
-export function generateKeyAddressPair(): keyAddressPair {
+export function generateKeyAddressPair(): KeyAddressPair {
   let pair: BoxKeyPair = nacl.sign.keyPair();
 
   let privateKey = getStringFromArray(pair.secretKey);
@@ -52,9 +52,9 @@ export function generateKeyAddressPair(): keyAddressPair {
  * @param privateKeyArray Private key to sign the transaction
  */
 export function signTransaction(
-  t: transaction,
+  t: Transaction,
   privateKeyArray: Uint8Array
-): signaturePair {
+): SignaturePair {
   let message: string = transactionToString(t);
   let messageArr = getArrayFromString(message);
 
@@ -73,7 +73,7 @@ export function signTransaction(
  * @param addressArray Uint8Array of address (public key)
  */
 export function verifyTransaction(
-  t: transaction,
+  t: Transaction,
   signatureArray: Uint8Array,
   addressArray: Uint8Array
 ): boolean {
@@ -90,9 +90,9 @@ export function verifyTransaction(
  * @param accounts Array of all accounts
  */
 export function verifyAllBlockTransactions(
-  b: block,
-  transactions: transaction[],
-  accounts: account[]
+  b: Block,
+  transactions: Transaction[],
+  accounts: Account[]
 ): boolean {
   for (let i = 0; i < b.transactions.length; i++) {
     let t = transactions[b.transactions[i]];
@@ -130,8 +130,8 @@ export function verifyAllBlockTransactions(
  * @param transactions Array of all transactions
  */
 export function generateBlockHash(
-  b: block,
-  transactions: transaction[]
+  b: Block,
+  transactions: Transaction[]
 ): string {
   if (b.nonce === undefined) return "";
 
@@ -157,7 +157,7 @@ export function generateBlockHashFromString(
  * @param b Block
  * @param transactions Array of all transactions
  */
-export function blockToString(b: block, transactions: transaction[]): string {
+export function blockToString(b: Block, transactions: Transaction[]): string {
   let transactionArray = [];
   for (let i = 0; i < b.transactions.length; i++) {
     let t = transactions[b.transactions[i]];
@@ -177,7 +177,7 @@ export function blockToString(b: block, transactions: transaction[]): string {
  * the id, the sender, the receiver and the amount
  * @param t Transaction
  */
-function transactionToString(t: transaction): string {
+function transactionToString(t: Transaction): string {
   let obj = {
     id: t.id,
     from: t.from,
@@ -191,7 +191,7 @@ function transactionToString(t: transaction): string {
 export function generateAccount(
   id: number,
   lastConfirmedBlock: number
-): account {
+): Account {
   let keys = generateKeyAddressPair();
   let balance = Math.floor(Math.random() * (maxInitialBalance + 1));
 

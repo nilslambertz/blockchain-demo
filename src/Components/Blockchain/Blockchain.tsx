@@ -1,12 +1,12 @@
 import React from "react";
 import "./Blockchain.css";
-import { block, transaction } from "../../Utils/Interfaces";
-import Block from "./Block";
+import { Block, Transaction } from "../../Utils/Interfaces";
+import BlockElem from "./BlockElem";
 import { ReactComponent as Arrow } from "../../res/arrowright.svg";
 
 interface BlockchainProps {
-  blocks: block[];
-  transactions: transaction[];
+  blocks: Block[];
+  transactions: Transaction[];
   confirmFunction: any;
   addLogFunction: any;
 }
@@ -23,7 +23,7 @@ class Blockchain extends React.Component<BlockchainProps, {}> {
     return this.props.blocks.map(function (value, index, array) {
       return (
         <React.Fragment key={index}>
-          <Block
+          <BlockElem
             block={value}
             transactions={transactions}
             confirmFunction={confirmFunction}

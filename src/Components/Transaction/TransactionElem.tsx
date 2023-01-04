@@ -1,12 +1,12 @@
 import React from "react";
-import { transaction } from "../../Utils/Interfaces";
+import { Transaction } from "../../Utils/Interfaces";
 import "./Transaction.css";
 import "../UpperList/UpperList.css";
 import { Draggable } from "react-beautiful-dnd";
 import { showError } from "../../Utils/ToastFunctions";
 
-interface TransactionProps {
-  transaction: transaction;
+interface TransactionElemProps {
+  transaction: Transaction;
   numberOfAccounts: number;
   signFunction: any;
   removeSignatureFunction: any;
@@ -20,7 +20,7 @@ interface transactionState {
   amount: number;
 }
 
-class Transaction extends React.Component<TransactionProps, {}> {
+class TransactionElem extends React.Component<TransactionElemProps, {}> {
   componentDidMount() {
     let t = this.props.transaction;
     if (t.from !== undefined && t.to !== undefined && t.amount !== undefined) {
@@ -211,4 +211,4 @@ class Transaction extends React.Component<TransactionProps, {}> {
   }
 }
 
-export default Transaction;
+export default TransactionElem;
