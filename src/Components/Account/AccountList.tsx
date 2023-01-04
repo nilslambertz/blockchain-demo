@@ -18,7 +18,7 @@ export default function AccountList({
   return (
     <div className="relative flex-1 flex flex-col overflow-hidden items-stretch border-r border-r-pink-500">
       <div className="w-full text-center text-2xl py-2">accounts</div>
-      <div className="flex-1 px-3 overflow-y-scroll flex flex-col items-stretch gap-2 pb-16">
+      <div className="flex-1 px-3 overflow-y-scroll overflow-x-hidden flex flex-col items-stretch gap-2 pb-16">
         {accounts.map((account) => (
           <Account
             account={account}

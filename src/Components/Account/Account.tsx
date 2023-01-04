@@ -1,46 +1,41 @@
 import React from "react";
+import { BORDER_COLOR } from "../../shared/Colors";
 import { account } from "../../Utils/Interfaces";
-import "./Account.css";
-import "../UpperList/UpperList.css";
+import GridElem from "../shared-components/GridElem";
 
 interface AccountProps {
   account: account;
   lastConfirmedBlock: number;
 }
 
-class Account extends React.Component<AccountProps, {}> {
-  render() {
-    return (
-      <div className={"account listElement"}>
-        <table className={"accountTable listTable"}>
-          <tbody>
-            <tr>
-              <td className={"id"}>{this.props.account.idString}</td>
-              <td className={"privateKey smallText"}>
-                {this.props.account.privateKey}
-              </td>
-              <td className={"address smallText"}>
-                {this.props.account.address}
-              </td>
-              <td className={"balance"}>
-                {
-                  this.props.account.balanceBeforeBlock[
-                    this.props.lastConfirmedBlock + 1
-                  ]
-                }
-              </td>
-            </tr>
-            <tr className={"description"}>
-              <td>ID</td>
-              <td>Private Key</td>
-              <td>Address</td>
-              <td>Balance</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+export default function Account({ account, lastConfirmedBlock }: AccountProps) {
+  return (
+    <div className={"w-full grid grid-cols-6 border " + BORDER_COLOR}>
+      <GridElem content={account.idString}></GridElem>
+      <GridElem
+        extraClasses="col-span-2 text-2xs"
+        content={account.privateKey}
+      ></GridElem>
+      <GridElem
+        extraClasses="col-span-2 text-2xs"
+        content={account.address}
+      ></GridElem>
+      <GridElem
+        content={account.balanceBeforeBlock[lastConfirmedBlock + 1]}
+      ></GridElem>
+      <div
+        className={"col-span-6 h-0 border-opacity-50 border-b " + BORDER_COLOR}
+      ></div>
+      <GridElem extraClasses="text-xs opacity-50" content="ID"></GridElem>
+      <GridElem
+        extraClasses="col-span-2 text-xs opacity-50"
+        content="Private Key"
+      ></GridElem>
+      <GridElem
+        extraClasses="col-span-2 text-xs opacity-50"
+        content="Address"
+      ></GridElem>
+      <GridElem extraClasses="text-xs opacity-50" content="Balance"></GridElem>
+    </div>
+  );
 }
-
-export default Account;
