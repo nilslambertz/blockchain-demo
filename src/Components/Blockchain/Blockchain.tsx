@@ -19,7 +19,7 @@ export default function Blockchain({
   return (
     <div className="w-full overflow-x-scroll p-2 flex flex-row items-center">
       {blocks.map((block, index, array) => (
-        <>
+        <React.Fragment key={block.id}>
           <BlockElem
             block={block}
             transactions={transactions}
@@ -31,7 +31,7 @@ export default function Blockchain({
               <Arrow />
             </div>
           )}
-        </>
+        </React.Fragment>
       ))}
     </div>
   );
