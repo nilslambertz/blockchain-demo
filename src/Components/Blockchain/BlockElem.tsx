@@ -1,81 +1,99 @@
-import React from "react";
+import React, { ReactNode } from "react";
+import { BORDER_COLOR } from "../../shared/Colors";
 import "./Blockchain.css";
-import { Block, Transaction, validStartHash } from "../../Utils/Interfaces";
+import {
+  Block,
+  LogElem,
+  Transaction,
+  validStartHash,
+} from "../../Utils/Interfaces";
 import UpperList from "../UpperList/UpperList";
+import Button from "../shared-components/Button";
 
 interface BlockElemProps {
   block: Block;
   transactions: Transaction[];
-  confirmFunction: any;
-  addLogFunction: any;
+  onConfirm: (id: number) => void;
+  onAddLog: (logElem: LogElem) => void;
 }
 
-class BlockElem extends React.Component<BlockElemProps, {}> {
-  printTransactionList = () => {
-    return (
-      <UpperList
-        droppableId={"block" + this.props.block.id}
-        title={"transactions"}
-        transactions={this.props.transactions}
-        transactionOrder={this.props.block.transactions}
-        className={"transactionListContainer"}
-        emptyText={"Drag and drop transactions here!"}
-        blockList={true}
-        addLogFunction={this.props.addLogFunction}
-      />
-    );
-  };
-
-  confirmFunction = () => {
-    this.props.confirmFunction(this.props.block.id);
-  };
-
-  render() {
-    return (
-      <div className={"blockContainer"}>
-        <div className={"block"}>
-          <div className={"prevHash blockSmallText"}>
-            {this.props.block?.prevHash}
-            <div className={"blockDescription"}>Previous hash</div>
+export default function BlockElem({
+  block,
+  transactions,
+  onConfirm,
+  onAddLog,
+}: BlockElemProps) {
+  return (
+    <div
+      className={"h-full border flex flex-col w-full max-w-4xl " + BORDER_COLOR}
+    >
+      <BlockSection title="Previous hash" smallText={true}>
+        {block?.prevHash}
+      </BlockSection>
+      <BlockSection title="Transactions" className="flex-1 overflow-y-auto">
+        <UpperList
+          droppableId={"block" + block.id}
+          title={"transactions"}
+          transactions={transactions}
+          transactionOrder={block.transactions}
+          className={"transactionListContainer"}
+          emptyText={"Drag and drop transactions here!"}
+          blockList={true}
+          addLogFunction={onAddLog}
+        />
+      </BlockSection>
+      <BlockSection title="Nonce">{block?.nonce}</BlockSection>
+      <BlockSection title="Confirmation">
+        {block.confirmed ? (
+          <div className="w-full text-center text-green-500">confirmed</div>
+        ) : (
+          <div className="w-full flex flex-row justify-center">
+            <Button
+              buttonColor="orange"
+              onClick={() => onConfirm(block.id)}
+              text="Confirm"
+            ></Button>
           </div>
-          <div className={"transactions"}>
-            <div className={"transactionList"}>
-              {this.printTransactionList()}
-            </div>
-            <div className={"blockDescription"}>Transactions</div>
-          </div>
-          <div className={"nonce"}>
-            {this.props.block?.nonce}
-            <div className={"blockDescription"}>Nonce</div>
-          </div>
-          <div className={"confirmContainer"}>
-            {this.props.block.confirmed ? (
-              <span className={"confirmedString"}>confirmed</span>
-            ) : (
-              <div
-                className={"confirmButton button"}
-                onClick={() => this.confirmFunction()}
-              >
-                Confirm
-              </div>
-            )}
-            <div className={"blockDescription"}>Confirmation</div>
-          </div>
-          <div className={"hash blockSmallText"}>
-            {this.props.block.confirmed ? (
-              <span>
-                <span className={"confirmedString"}>{validStartHash}</span>
-                {this.props.block?.hash?.substr(validStartHash.length)}
-              </span>
-            ) : (
-              this.props.block?.hash
-            )}
-            <div className={"blockDescription"}>Hash</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        )}
+      </BlockSection>
+      <BlockSection title="Hash" smallText={true} hideBorder={true}>
+        {block.confirmed ? (
+          <span>
+            <b className="text-green-500">{validStartHash}</b>
+            {block?.hash?.substring(validStartHash.length)}
+          </span>
+        ) : (
+          block?.hash
+        )}
+      </BlockSection>
+    </div>
+  );
 }
 
-export default BlockElem;
+interface BlockSectionProps {
+  children: ReactNode;
+  title: string;
+  className?: string;
+  hideBorder?: boolean;
+  smallText?: boolean;
+}
+
+const BlockSection = ({
+  children,
+  title,
+  className,
+  hideBorder,
+  smallText,
+}: BlockSectionProps) => (
+  <div
+    className={
+      "p-1 flex flex-col items-stretch gap-1 " +
+      className +
+      " " +
+      (hideBorder ? "" : "border-b " + BORDER_COLOR)
+    }
+  >
+    <div className={smallText ? "text-sm" : ""}>{children}</div>
+    <div className="flex flex-row justify-end text-xs">{title}</div>
+  </div>
+);

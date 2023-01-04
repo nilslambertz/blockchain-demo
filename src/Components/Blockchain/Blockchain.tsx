@@ -23,8 +23,8 @@ export default function Blockchain({
           <BlockElem
             block={block}
             transactions={transactions}
-            confirmFunction={onConfirm}
-            addLogFunction={onAddLog}
+            onConfirm={onConfirm}
+            onAddLog={onAddLog}
           />
           {index !== array.length - 1 && (
             <div className="h-full flex flex-row flex-shrink-0 w-20 items-center">
