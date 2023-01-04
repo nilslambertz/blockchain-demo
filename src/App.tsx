@@ -23,7 +23,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showError, showWarning } from "./Utils/ToastFunctions";
-import LogList from "./Components/LogList/LogList";
+import LogList from "./Components/LogList";
 import Footer from "./Components/Footer";
 import AccountList from "./Components/Account/AccountList";
 
@@ -548,7 +548,7 @@ class App extends React.Component<AppProps, AppState> {
             />
             <LogList
               logsVisible={this.state.logsVisible}
-              logs={this.state.logs}
+              logElements={this.state.logs}
             />
           </div>
           <div id={"lowerContent"}>

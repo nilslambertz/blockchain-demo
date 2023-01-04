@@ -27,6 +27,7 @@ a:hover {
   height: calc(45% - 1px);
   display: flex;
   border-bottom: 1px solid #e32ce8;
+  overflow-x: hidden;
   min-height: 300px;
 }
 
