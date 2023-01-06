@@ -5,8 +5,8 @@ import AccountElem from "./AccountElem";
 
 interface AccountListProps {
   accounts: Account[];
-  onAddAccount: () => void;
   lastConfirmedBlock: number;
+  onAddAccount: () => void;
 }
 
 export default function AccountList({
@@ -27,6 +27,11 @@ export default function AccountList({
             lastConfirmedBlock={lastConfirmedBlock}
           />
         ))}
+        {accounts?.length === 0 && (
+          <div className="w-full text-center opacity-50">
+            Add some accounts!
+          </div>
+        )}
       </div>
       <div className="absolute w-full flex flex-row justify-center bottom-3">
         <Button
