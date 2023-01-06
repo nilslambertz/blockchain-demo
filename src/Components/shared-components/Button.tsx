@@ -1,6 +1,6 @@
 import React from "react";
 
-type ButtonColors = "green" | "orange";
+type ButtonColors = "green" | "orange" | "blue";
 
 interface ButtonProps {
   text: string;
@@ -24,7 +24,8 @@ export default function Button({ text, onClick, buttonColor }: ButtonProps) {
 
 const getColorClasses = (color: ButtonColors) => {
   if (color === "green") return "text-white bg-green-600 hover:bg-green-700";
-  if (color === "orange") return "bg-orange-700 hover:bg-orange-800";
+  if (color === "orange") return "text-white bg-orange-700 hover:bg-orange-800";
+  if (color === "blue") return "text-white bg-blue-700 hover:bg-blue-800";
 
   return "";
 };
