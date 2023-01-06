@@ -49,7 +49,7 @@ export default function BlockElem({
         ) : (
           <div className="w-full flex flex-row justify-center">
             <Button
-              buttonColor="orange"
+              extraClasses="btn-warning"
               onClick={() => onConfirm(block.id)}
               text="Confirm"
             ></Button>

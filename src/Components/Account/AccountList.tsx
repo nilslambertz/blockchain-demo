@@ -29,7 +29,11 @@ export default function AccountList({
         ))}
       </div>
       <div className="absolute w-full flex flex-row justify-center bottom-3">
-        <Button text="Add" onClick={onAddAccount} buttonColor="green"></Button>
+        <Button
+          text="Add"
+          onClick={onAddAccount}
+          extraClasses="btn-success"
+        ></Button>
       </div>
     </div>
   );
