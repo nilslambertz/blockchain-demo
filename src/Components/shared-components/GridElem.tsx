@@ -1,14 +1,14 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { BORDER_COLOR } from "../../shared/Colors";
 
 interface GridElemProps {
-  content?: string | number;
+  children?: ReactNode;
   extraClasses?: string;
   hideBorder?: boolean;
 }
 
 export default function GridElem({
-  content,
+  children,
   extraClasses,
   hideBorder,
 }: GridElemProps) {
@@ -20,7 +20,7 @@ export default function GridElem({
         (!hideBorder ? " border-r " + BORDER_COLOR : "")
       }
     >
-      {content}
+      {children}
     </div>
   );
 }
