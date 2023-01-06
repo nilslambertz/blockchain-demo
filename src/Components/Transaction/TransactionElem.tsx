@@ -1,214 +1,162 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Transaction } from "../../Utils/Interfaces";
-import "./Transaction.css";
-import "../UpperList/UpperList.css";
 import { Draggable } from "react-beautiful-dnd";
-import { showError } from "../../Utils/ToastFunctions";
+import Button from "../shared-components/Button";
+import GridElem from "../shared-components/GridElem";
+import { BORDER_COLOR } from "../../shared/Colors";
 
 interface TransactionElemProps {
   transaction: Transaction;
   numberOfAccounts: number;
-  signFunction: any;
-  removeSignatureFunction: any;
   index: number;
-  addLogFunction: any;
+  signFunction: (t: Transaction) => void;
+  removeSignatureFunction: (id: number) => void;
 }
 
-interface transactionState {
-  from: number;
-  to: number;
-  amount: number;
-}
+export default function TransactionElem({
+  transaction,
+  numberOfAccounts,
+  signFunction,
+  removeSignatureFunction,
+  index,
+}: TransactionElemProps) {
+  const [from, setFrom] = useState(transaction.from);
+  const [to, setTo] = useState(transaction.to);
+  const [amount, setAmount] = useState(transaction.amount ?? 0);
 
-class TransactionElem extends React.Component<TransactionElemProps, {}> {
-  componentDidMount() {
-    let t = this.props.transaction;
-    if (t.from !== undefined && t.to !== undefined && t.amount !== undefined) {
-      this.setState({
-        from: t.from,
-        to: t.to,
-        amount: t.amount,
-      });
+  useEffect(() => {
+    if (numberOfAccounts > 0) {
+      if (!transaction.from) setFrom(0);
+      if (!transaction.to) setTo(0);
     }
-  }
+  }, [numberOfAccounts]);
 
-  state: transactionState = {
-    from: 0,
-    to: 0,
-    amount: 0,
+  const sign = () => {
+    signFunction({ ...transaction, from, to, amount });
   };
 
-  sign = () => {
-    if (
-      this.state.from !== -1 &&
-      this.state.to !== -1 &&
-      this.state.amount !== -1
-    ) {
-      let t = this.props.transaction;
-      t.from = this.state.from;
-      t.to = this.state.to;
-      t.amount = this.state.amount;
+  return (
+    <Draggable draggableId={"transaction" + transaction.id} index={index}>
+      {(provided) => (
+        <div
+          className={"w-full bg-base grid grid-cols-7 border " + BORDER_COLOR}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <GridElem>{transaction.idString}</GridElem>
+          <GridElem extraClasses="text-2xs">
+            <TransactionSelect
+              disabled={!transaction.editable}
+              numberOfAccounts={numberOfAccounts}
+              value={from}
+              onNewValue={(newValue) => {
+                if (from !== newValue) {
+                  removeSignatureFunction(transaction.id);
+                  setFrom(newValue);
+                }
+              }}
+            ></TransactionSelect>
+          </GridElem>
+          <GridElem extraClasses="text-2xs">
+            <TransactionSelect
+              disabled={!transaction.editable}
+              numberOfAccounts={numberOfAccounts}
+              value={to}
+              onNewValue={(newValue) => {
+                if (to !== newValue) {
+                  removeSignatureFunction(transaction.id);
+                  setFrom(newValue);
+                }
+              }}
+            ></TransactionSelect>
+          </GridElem>
+          <GridElem>
+            <input
+              type="number"
+              className="w-full input input-sm"
+              min="0"
+              value={amount}
+              onChange={(event) => {
+                let val = parseInt(event.target.value);
 
-      this.props.signFunction(t);
-    } else {
-      showError("All values must be set to sign a transaction!");
-      this.props.addLogFunction({
-        type: "error",
-        message:
-          "Transaction " +
-          this.props.transaction.id +
-          ": All values must be set to sign the transaction!",
-      });
-    }
-  };
+                if (!isNaN(val)) {
+                  let oldValue = amount;
+                  if (oldValue !== val) {
+                    removeSignatureFunction(transaction.id);
+                  }
 
-  render() {
-    return (
-      <Draggable
-        draggableId={"transaction" + this.props.transaction.id}
-        index={this.props.index}
-      >
-        {(provided, snapshot) => (
+                  setAmount(val);
+                }
+              }}
+              disabled={!transaction.editable}
+            />
+          </GridElem>
+          <GridElem
+            hideBorder={true}
+            extraClasses="col-span-3 text-2xs text-left"
+          >
+            {transaction.signed ? (
+              transaction.signature
+            ) : (
+              <Button
+                extraClasses="btn-primary"
+                text="Sign"
+                onClick={sign}
+              ></Button>
+            )}
+          </GridElem>
           <div
             className={
-              "transaction listElement" +
-              (snapshot.isDragging ? " transactionDragging" : "")
+              "col-span-7 h-0 border-b border-opacity-50 " + BORDER_COLOR
             }
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
+          ></div>
+          <GridElem extraClasses="text-xs text-opacity-50">ID</GridElem>
+          <GridElem extraClasses="text-xs text-opacity-50">From</GridElem>
+          <GridElem extraClasses="text-xs text-opacity-50">To</GridElem>
+          <GridElem extraClasses="text-xs text-opacity-50">Amount</GridElem>
+          <GridElem
+            extraClasses="col-span-3 text-xs text-opacity-50"
+            hideBorder={true}
           >
-            <table className={"transactionTable listTable"}>
-              <tbody>
-                <tr>
-                  <td className={"id"}>{this.props.transaction.idString}</td>
-                  <td
-                    className={
-                      "from" +
-                      (!this.props.transaction.editable ? " biggerText" : "")
-                    }
-                  >
-                    {this.props.transaction.editable ? (
-                      <select
-                        className={"selectStyle"}
-                        value={this.state.from}
-                        onChange={(v) => {
-                          let newValue = parseInt(v.target.value);
-                          if (this.state.from !== newValue) {
-                            this.props.removeSignatureFunction(
-                              this.props.transaction.id
-                            );
-                            this.setState({ from: newValue });
-                          }
-                        }}
-                      >
-                        {Array.from(
-                          Array(this.props.numberOfAccounts).keys()
-                        ).map((x) => {
-                          return (
-                            <option value={x} key={x}>
-                              a{x}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    ) : (
-                      "a" + this.props.transaction.from
-                    )}
-                  </td>
-                  <td
-                    className={
-                      "to" +
-                      (!this.props.transaction.editable ? " biggerText" : "")
-                    }
-                  >
-                    {this.props.transaction.editable ? (
-                      <select
-                        className={"selectStyle"}
-                        value={this.state.to}
-                        onChange={(v) => {
-                          let newValue = parseInt(v.target.value);
-                          if (this.state.to !== newValue) {
-                            this.props.removeSignatureFunction(
-                              this.props.transaction.id
-                            );
-                            this.setState({ to: newValue });
-                          }
-                        }}
-                      >
-                        {Array.from(
-                          Array(this.props.numberOfAccounts).keys()
-                        ).map((x) => {
-                          return (
-                            <option value={x} key={x}>
-                              a{x}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    ) : (
-                      "a" + this.props.transaction.to
-                    )}
-                  </td>
-                  <td className={"amount"}>
-                    {this.props.transaction.editable ? (
-                      <input
-                        type="number"
-                        className={"amountInput"}
-                        min="0"
-                        max="1000"
-                        value={this.state.amount}
-                        onChange={(event) => {
-                          let val = parseInt(event.target.value);
-
-                          if (!isNaN(val)) {
-                            let oldValue = this.state.amount;
-                            if (oldValue !== val) {
-                              this.props.removeSignatureFunction(
-                                this.props.transaction.id
-                              );
-                            }
-
-                            this.setState({ amount: val });
-                          }
-                        }}
-                      />
-                    ) : (
-                      this.props.transaction.amount
-                    )}
-                  </td>
-                  <td
-                    className={
-                      "signature" +
-                      (this.props.transaction.signed ? " smallText" : "")
-                    }
-                  >
-                    {this.props.transaction.signed ? (
-                      this.props.transaction.signature
-                    ) : (
-                      <div
-                        className={"signButton button"}
-                        onClick={() => this.sign()}
-                      >
-                        Sign
-                      </div>
-                    )}
-                  </td>
-                </tr>
-                <tr className={"description"}>
-                  <td>ID</td>
-                  <td>From</td>
-                  <td>To</td>
-                  <td>Amount</td>
-                  <td>Signature</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-      </Draggable>
-    );
-  }
+            Signature
+          </GridElem>
+        </div>
+      )}
+    </Draggable>
+  );
 }
 
-export default TransactionElem;
+interface TransactionSelectProps {
+  value?: number;
+  numberOfAccounts: number;
+  onNewValue: (newValue: number) => void;
+  disabled: boolean;
+}
+
+export const TransactionSelect = ({
+  numberOfAccounts,
+  onNewValue,
+  value,
+  disabled,
+}: TransactionSelectProps) => (
+  <select
+    className="select select-sm"
+    value={value}
+    onChange={(v) => {
+      let newValue = parseInt(v.target.value);
+      if (!Number.isNaN(newValue) && newValue !== undefined) {
+        onNewValue(newValue);
+      }
+    }}
+    disabled={disabled}
+  >
+    {Array.from(Array(numberOfAccounts).keys()).map((x) => {
+      return (
+        <option value={x} key={x}>
+          a{x}
+        </option>
+      );
+    })}
+  </select>
+);
