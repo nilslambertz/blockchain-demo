@@ -14,5 +14,18 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  daisyui: {
+    themes: [
+      {
+        dark: {
+          ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
+          primary: "#2563eb",
+          success: "#147323",
+          warning: "#ea580c",
+          error: "#dc2626",
+        },
+      },
+    ],
+  },
+  plugins: [require("daisyui")],
 };
