@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { BORDER_COLOR } from "../../shared/Colors";
+import { BORDER_COLOR } from "../../shared/constants";
 
 interface GridElemProps {
   children?: ReactNode;

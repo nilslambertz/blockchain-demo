@@ -3,7 +3,7 @@ import { Transaction } from "../../Utils/Interfaces";
 import { Draggable } from "react-beautiful-dnd";
 import Button from "../shared-components/Button";
 import GridElem from "../shared-components/GridElem";
-import { BORDER_COLOR } from "../../shared/Colors";
+import { BORDER_COLOR } from "../../shared/constants";
 
 interface TransactionElemProps {
   transaction: Transaction;

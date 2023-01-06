@@ -1,5 +1,5 @@
 import React from "react";
-import { BORDER_COLOR } from "../../shared/Colors";
+import { BORDER_COLOR } from "../../shared/constants";
 import { Account } from "../../Utils/Interfaces";
 import GridElem from "../shared-components/GridElem";
 
