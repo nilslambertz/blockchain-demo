@@ -549,6 +549,8 @@ class App extends React.Component<AppProps, AppState> {
               onSign={this.signTransaction}
               transactions={this.state.transactions}
               unusedTransactions={this.state.unusedTransactions}
+              droppableId={TRANSACTION_LIST_DROPPABLE_ID}
+              emptyText="Add some transactions!"
             ></TransactionList>
             <LogList
               logsVisible={this.state.logsVisible}
