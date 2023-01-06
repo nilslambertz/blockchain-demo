@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { BORDER_COLOR } from "../../shared/constants";
+import { BLOCK_DROPPABLE_PREFIX, BORDER_COLOR } from "../../shared/constants";
 import "./Blockchain.css";
 import {
   Block,
@@ -32,7 +32,7 @@ export default function BlockElem({
       </BlockSection>
       <BlockSection title="Transactions" className="flex-1 overflow-y-auto">
         <UpperList
-          droppableId={"block" + block.id}
+          droppableId={BLOCK_DROPPABLE_PREFIX + block.id}
           title={"transactions"}
           transactions={transactions}
           transactionOrder={block.transactions}

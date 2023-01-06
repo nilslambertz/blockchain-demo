@@ -26,6 +26,11 @@ import { showError, showWarning } from "./Utils/ToastFunctions";
 import LogList from "./Components/LogList";
 import Footer from "./Components/Footer";
 import AccountList from "./Components/Account/AccountList";
+import TransactionList from "./Components/Transaction/TransactionList";
+import {
+  BLOCK_DROPPABLE_PREFIX,
+  TRANSACTION_LIST_DROPPABLE_ID,
+} from "./shared/constants";
 
 interface AppProps {}
 
@@ -424,14 +429,17 @@ class App extends React.Component<AppProps, AppState> {
     let unusedTransactions = this.state.unusedTransactions;
     let blocks = this.state.blocks;
 
-    if (result.destination.droppableId === "transactionList") {
-      if (result.source.droppableId === "transactionList") {
+    if (result.destination.droppableId === TRANSACTION_LIST_DROPPABLE_ID) {
+      if (result.source.droppableId === TRANSACTION_LIST_DROPPABLE_ID) {
         unusedTransactions.splice(sourceIndex, 1);
         unusedTransactions.splice(destinationIndex, 0, transactionId);
 
         this.setState({ unusedTransactions: unusedTransactions });
       } else {
-        let source = result.source.droppableId.replace("block", "");
+        let source = result.source.droppableId.replace(
+          BLOCK_DROPPABLE_PREFIX,
+          ""
+        );
         let blockId = parseInt(source);
 
         blocks[blockId].transactions.splice(sourceIndex, 1);
@@ -447,7 +455,7 @@ class App extends React.Component<AppProps, AppState> {
         });
       }
     } else {
-      if (result.source.droppableId === "transactionList") {
+      if (result.source.droppableId === TRANSACTION_LIST_DROPPABLE_ID) {
         let transactionList = this.state.transactions;
         if (!transactionList[transactionId].signed) {
           showError("Transaction must be signed to be included in a block!");
@@ -459,7 +467,7 @@ class App extends React.Component<AppProps, AppState> {
         // console.log(this.state.blocks);
 
         let blockId = parseInt(
-          result.destination.droppableId.replace("block", "")
+          result.destination.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
         );
         //console.log(blockId);
         let blockIndex = result.destination.index;
@@ -475,10 +483,10 @@ class App extends React.Component<AppProps, AppState> {
       } else {
         // Source and destination are blocks
         let sourceBlockId = parseInt(
-          result.source.droppableId.replace("block", "")
+          result.source.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
         );
         let destinationBlockId = parseInt(
-          result.destination.droppableId.replace("block", "")
+          result.destination.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
         );
 
         if (sourceBlockId === destinationBlockId) {
@@ -534,18 +542,14 @@ class App extends React.Component<AppProps, AppState> {
               onAddAccount={this.addAccount}
               lastConfirmedBlock={this.state.lastConfirmedBlock}
             ></AccountList>
-            <UpperList
-              title={"transactions"}
-              transactions={this.state.transactions}
-              transactionOrder={this.state.unusedTransactions}
+            <TransactionList
               numberOfAccounts={this.state.accountIdCount}
-              className={"transactionListContainer"}
-              droppableId={"transactionList"}
-              addFunction={this.addTransaction}
-              signFunction={this.signTransaction}
-              removeSignatureFunction={this.removeSignature}
-              addLogFunction={this.addLog}
-            />
+              onAddTransaction={this.addTransaction}
+              onRemoveSignature={this.removeSignature}
+              onSign={this.signTransaction}
+              transactions={this.state.transactions}
+              unusedTransactions={this.state.unusedTransactions}
+            ></TransactionList>
             <LogList
               logsVisible={this.state.logsVisible}
               logElements={this.state.logs}
