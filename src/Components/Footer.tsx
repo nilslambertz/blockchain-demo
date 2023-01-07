@@ -12,7 +12,7 @@ export default function Footer({ toggleLogs, logsVisible }: FooterProps) {
         href="https://github.com/nilslambertz/BlockchainDemo"
         target="_blank"
         rel="noreferrer"
-        className="link no-underline"
+        className="font-bold no-underline transition-colors hover:text-white"
       >
         source code
       </a>
@@ -22,7 +22,7 @@ export default function Footer({ toggleLogs, logsVisible }: FooterProps) {
           href="https://nilslambertz.de"
           target="_blank"
           rel="noreferrer"
-          className="link no-underline"
+          className="font-bold no-underline transition-colors hover:text-white"
         >
           nils lambertz
         </a>
