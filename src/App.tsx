@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./Style/Buttons.css";
 import {
   Account,
-  Block,
   LogElem,
-  SignaturePair,
   Transaction,
   validStartHash,
 } from "./Utils/Interfaces";
@@ -14,11 +12,11 @@ import {
   generateAccount,
   generateBlockHash,
   generateBlockHashFromString,
-  signTransaction,
+  signTransactionWithPrivateKey,
   verifyAllBlockTransactions,
 } from "./Utils/Functions";
 import Blockchain from "./Components/Blockchain/Blockchain";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showError, showWarning } from "./Utils/ToastFunctions";
@@ -28,553 +26,457 @@ import AccountList from "./Components/Account/AccountList";
 import TransactionList from "./Components/Transaction/TransactionList";
 import {
   BLOCK_DROPPABLE_PREFIX,
+  INITIAL_BLOCKS,
+  MAX_MINING_HASH_ITERATIONS,
+  TIME_FORMATTER_OPTIONS,
+  TRANSACTION_DRAGGABLE_PREFIX,
   TRANSACTION_LIST_DROPPABLE_ID,
 } from "./shared/constants";
 
-interface AppProps {}
+export default function App() {
+  const [logs, setLogs] = useState<LogElem[]>([]);
+  const [logsVisible, setLogsVisible] = useState(false);
 
-interface AppState {
-  accountIdCount: number;
-  accounts: Account[];
-  transactionIdCount: number;
-  transactions: Transaction[];
-  unusedTransactions: number[];
-  blockIdCount: number;
-  blocks: Block[];
-  lastConfirmedBlock: number;
-  lastUnusedBlock: number;
-  logs: LogElem[];
-  logsVisible: boolean;
-}
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [blocks, setBlocks] = useState(INITIAL_BLOCKS);
 
-class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props);
+  const [unusedTransactions, setUnusedTransactions] = useState<number[]>([]);
+  const [lastConfirmedBlock, setLastConfirmedBlock] = useState(-1);
 
-    this.state = {
-      accountIdCount: 0,
-      accounts: [],
-      transactionIdCount: 0,
-      transactions: [],
-      unusedTransactions: [],
-      blockIdCount: 2,
-      blocks: [
-        {
-          id: 0,
-          prevHash: validStartHash,
-          nonce: 0,
-          transactions: [],
-          confirmed: false,
-        },
-        {
-          id: 1,
-          nonce: 0,
-          transactions: [],
-          confirmed: false,
-        },
-      ],
-      lastConfirmedBlock: -1,
-      lastUnusedBlock: 1,
-      logs: [],
-      logsVisible: false,
-    };
-
-    this.recalculateBlocks();
-  }
-
-  /**
-   * Creates a new account and appends it to the account-list
-   */
-  addAccount = (): void => {
-    let count = this.state.accountIdCount;
-    let a = generateAccount(count, this.state.lastConfirmedBlock);
-
-    let arr: Account[] = this.state.accounts;
-    arr.push(a);
-    this.setState({ accounts: arr, accountIdCount: count + 1 }, () => {
-      this.addLog({
-        type: "info",
-        message: "Added account " + a.idString,
-      });
-    });
-  };
-
-  /**
-   * Creates a new transaction and appends it to the unused-transactions-list
-   */
-  addTransaction = (): void => {
-    let count = this.state.transactionIdCount;
-
-    let t: Transaction = {
-      id: count,
-      idString: "t" + count,
-      signed: false,
-      editable: true,
-    };
-
-    let arr: Transaction[] = this.state.transactions;
-    let unusedArr: number[] = this.state.unusedTransactions;
-    arr.push(t);
-    unusedArr.push(t.id);
-    this.setState(
-      {
-        transactions: arr,
-        unusedTransactions: unusedArr,
-        transactionIdCount: count + 1,
-      },
-      () => {
-        this.addLog({
-          type: "info",
-          message: "Added transaction " + t.idString,
-        });
-      }
+  const addLog = (log: LogElem) => {
+    const time = new Date().toLocaleTimeString(
+      undefined,
+      TIME_FORMATTER_OPTIONS
     );
+    setLogs([...logs, { ...log, time }]);
   };
 
-  /**
-   * Signs a transaction with the private key
-   * @param t transaction
-   */
-  signTransaction = (t: Transaction) => {
-    if (this.state.accounts.length === 0) {
-      showError(
-        "At least one account is needed to set all transaction values!"
-      );
-      this.addLog({
-        type: "error",
-        message:
-          "At least one account is needed to set all transaction values!",
-      });
-      return;
-    }
+  // Recalculates hashes for blocks and checks for changes in previous hashes
+  useEffect(() => {
+    // If blocks haven't been initialized
+    if (!blocks || blocks.length < 2) return;
 
-    if (t.from === undefined || t.to === undefined) {
-      showError("All values have to be set to sign a transaction!");
-      this.addLog({
-        type: "error",
-        message:
-          "Transaction " +
-          t.id +
-          ": All values have to be set to sign the transaction!",
-      });
-      return;
-    }
+    const newBlocks = [...blocks];
+    const lastBlock = blocks[blocks.length - 1];
 
-    let sender: number = t.from;
-
-    let privateKey = this.state.accounts[sender].privateKeyArray;
-    let address = this.state.accounts[sender].addressArray;
-
-    if (sender !== -1 && privateKey !== undefined && address !== undefined) {
-      let sig: SignaturePair = signTransaction(t, privateKey);
-
-      let transactionArray = this.state.transactions;
-
-      transactionArray[t.id].signed = true;
-      transactionArray[t.id].signatureArray = sig.signatureArray;
-      transactionArray[t.id].signature = sig.signature;
-
-      this.setState({ transactions: transactionArray }, () => {
-        this.addLog({
-          type: "success",
-          message: "Signed transaction " + t.idString,
-        });
-      });
-    }
-  };
-
-  /**
-   * Removes signature of transaction
-   * @param id transactionId
-   */
-  removeSignature = (id: number) => {
-    let transactionArray: Transaction[] = this.state.transactions;
-    let t: Transaction = transactionArray[id];
-
-    if (t.signed) {
-      t.signed = false;
-      t.signatureArray = undefined;
-      t.signature = undefined;
-
-      transactionArray[id] = t;
-
-      this.setState({ transactions: transactionArray }, () => {
-        this.addLog({
-          type: "info",
-          message:
-            "Removed signature of transaction " +
-            t.idString +
-            " because some values changed",
-        });
-      });
-    }
-  };
-
-  /**
-   * Calculates the hashes of every block and sets them to unconfirmed if previous hashes changed
-   */
-  recalculateBlocks = () => {
-    let blocks = [...this.state.blocks];
-    let transactions = [...this.state.transactions];
-    let nextId = this.state.blockIdCount;
-    let lastUnusedBlock = this.state.lastUnusedBlock;
+    let newBlockAdded = false;
 
     // If the last block is confirmed or transactions are put into it, an empty block is appended to the list
-    if (
-      blocks[blocks.length - 1].confirmed ||
-      blocks[blocks.length - 1].transactions.length !== 0
-    ) {
-      blocks.push({
-        id: nextId,
+    if (lastBlock.confirmed || lastBlock.transactions.length !== 0) {
+      newBlocks.push({
+        id: blocks.length,
         nonce: 0,
         transactions: [],
         confirmed: false,
       });
-      this.addLog({
+      addLog({
         type: "info",
         message: "Added new block",
       });
-      lastUnusedBlock = nextId;
+      newBlockAdded = true;
     }
 
     let changed = false;
-    let lastConfirmed = this.state.lastConfirmedBlock;
+    let lastConfirmed = lastConfirmedBlock;
 
-    for (let i = 0; i < blocks.length; i++) {
-      let hash = generateBlockHash(blocks[i], transactions);
+    for (let i = 0; i < newBlocks.length; i++) {
+      let hash = generateBlockHash(newBlocks[i], transactions);
       if (hash === "") {
         console.log(
           "Error while generating hash, see previous error-messages!"
         );
         return;
       }
-      if (hash !== blocks[i].hash) {
+
+      if (hash !== newBlocks[i].hash) {
         if (!changed && lastConfirmed > i - 1) {
           lastConfirmed = i - 1;
-          this.addLog({
+          addLog({
             type: "warning",
-            message:
-              "Hash of block " +
-              i +
-              " changed, all following blocks are set to unconfirmed",
+            message: `Hash of block ${i} changed, all following blocks are set to unconfirmed`,
           });
         }
 
         changed = true;
       }
       if (changed) {
-        blocks[i].confirmed = false;
+        newBlocks[i].confirmed = false;
       }
 
-      blocks[i].hash = hash;
-      if (i !== blocks.length - 1) {
-        blocks[i + 1].prevHash = hash;
+      newBlocks[i].hash = hash;
+      if (i !== newBlocks.length - 1) {
+        newBlocks[i + 1].prevHash = hash;
       }
     }
 
-    this.setState({
-      blocks: blocks,
-      lastUnusedBlock: lastUnusedBlock,
-      lastConfirmedBlock: lastConfirmed,
-      blockIdCount: lastUnusedBlock + 1,
+    if (changed || newBlockAdded) {
+      setBlocks(newBlocks);
+      setLastConfirmedBlock(
+        newBlocks.map((block) => block.confirmed).lastIndexOf(true)
+      );
+    }
+  }, [blocks]);
+
+  const addAccount = () => {
+    const newAccount = generateAccount(accounts.length, lastConfirmedBlock);
+    setAccounts([...accounts, newAccount]);
+    addLog({
+      type: "info",
+      message: `Added account ${newAccount.idString}`,
     });
   };
 
-  confirmBlock = (id: number) => {
-    let blocks = [...this.state.blocks];
-    let transactions = [...this.state.transactions];
-    let accounts = [...this.state.accounts];
+  const addTransaction = () => {
+    const newTransaction: Transaction = {
+      id: transactions.length,
+      idString: "t" + transactions.length,
+      signed: false,
+      editable: true,
+    };
 
-    if (id !== 0 && !blocks[id - 1].confirmed) {
+    setTransactions([...transactions, newTransaction]);
+    setUnusedTransactions([...unusedTransactions, newTransaction.id]);
+
+    addLog({
+      type: "info",
+      message: `Added transaction ${newTransaction.idString}`,
+    });
+  };
+
+  const signTransaction = (transaction: Transaction) => {
+    if (accounts.length === 0) {
+      showError("At least one account is needed to set transaction values!");
+      addLog({
+        type: "error",
+        message: "At least one account is needed to set transaction values!",
+      });
+      return;
+    }
+
+    setTransactions((previousTransactions) => {
+      // Update transaction in case values have changed
+      const updatedTransactions = [...previousTransactions];
+      updatedTransactions[transaction.id] = transaction;
+
+      if (transaction.from === undefined || transaction.to === undefined) {
+        showError("All values have to be set to sign a transaction!");
+        addLog({
+          type: "error",
+          message: `Transaction ${transaction.id}: All values have to be set to sign the transaction!`,
+        });
+        return updatedTransactions;
+      }
+
+      const sender = transaction.from;
+      const senderPrivateKey = accounts[sender].privateKeyArray;
+      const senderAddress = accounts[sender].addressArray;
+
+      if (senderPrivateKey !== undefined && senderAddress !== undefined) {
+        const signaturePair = signTransactionWithPrivateKey(
+          transaction,
+          senderPrivateKey
+        );
+
+        updatedTransactions[transaction.id].signed = true;
+        updatedTransactions[transaction.id].signatureArray =
+          signaturePair.signatureArray;
+        updatedTransactions[transaction.id].signature = signaturePair.signature;
+        addLog({
+          type: "success",
+          message: `Signed transaction ${transaction.idString}`,
+        });
+      }
+
+      return updatedTransactions;
+    });
+  };
+
+  const removeSignature = (transactionId: number) => {
+    const updatedTransactions = [...transactions];
+
+    if (updatedTransactions[transactionId].signed) {
+      updatedTransactions[transactionId].signed = false;
+      updatedTransactions[transactionId].signatureArray = undefined;
+      updatedTransactions[transactionId].signature = undefined;
+
+      setTransactions(updatedTransactions);
+      addLog({
+        type: "info",
+        message: `Removed signature of transaction ${updatedTransactions[transactionId].idString} because some values changed`,
+      });
+    }
+  };
+
+  const confirmBlock = (blockId: number) => {
+    const updatedAccounts = [...accounts];
+    const updatedBlocks = [...blocks];
+    const block = { ...updatedBlocks[blockId] };
+
+    if (blockId !== 0 && !blocks[blockId - 1].confirmed) {
       showWarning("All previous blocks need to be confirmed first!");
-      this.addLog({
+      addLog({
         type: "error",
         message: "All previous blocks need to be confirmed first!",
       });
       return;
     }
 
-    let transactionsValidated = verifyAllBlockTransactions(
-      blocks[id],
+    const transactionsValidated = verifyAllBlockTransactions(
+      blocks[blockId],
       transactions,
       accounts
     );
 
     if (!transactionsValidated) {
       showError("Some transactions could not be verified!");
-      this.addLog({
+      addLog({
         type: "error",
-        message: "Some transactions in block " + id + " could not be verified!",
+        message: `Some transactions in block ${blockId} could not be verified!`,
       });
       return;
     }
-    this.addLog({
+    addLog({
       type: "info",
-      message: "All transactions in block " + id + " have valid signatures",
+      message: `All transactions in block ${blockId} have valid signatures`,
     });
 
-    let balancesAfterBlock: number[] = [];
+    const balancesAfterBlock: number[] = [];
     for (let i = 0; i < accounts.length; i++) {
-      balancesAfterBlock[i] = accounts[i].balanceBeforeBlock[id];
+      balancesAfterBlock[i] = accounts[i].balanceBeforeBlock[blockId];
     }
 
-    for (let i = 0; i < blocks[id].transactions.length; i++) {
-      let t = transactions[blocks[id].transactions[i]];
+    for (let i = 0; i < blocks[blockId].transactions.length; i++) {
+      const transaction = transactions[blocks[blockId].transactions[i]];
 
-      if (t.from === undefined || t.to === undefined || t.amount === undefined)
+      if (
+        transaction.from === undefined ||
+        transaction.to === undefined ||
+        transaction.amount === undefined
+      )
         return;
 
-      let newFromValue = balancesAfterBlock[t.from] - t.amount;
+      let newFromValue =
+        balancesAfterBlock[transaction.from] - transaction.amount;
       if (newFromValue < 0) {
         showError(
-          "Transaction " +
-            t.idString +
-            " could not be confirmed, account " +
-            t.from +
-            " doesn't have enough balance for this transaction!"
+          `Transaction ${transaction.idString} could not be confirmed, account ${transaction.from} doesn't have enough balance for this transaction!`
         );
-        this.addLog({
+        addLog({
           type: "error",
-          message:
-            "Transaction " +
-            t.idString +
-            " could not be confirmed, account " +
-            t.from +
-            " doesn't have enough balance for this transaction!",
+          message: `Transaction ${transaction.idString} could not be confirmed, account ${transaction.from} doesn't have enough balance for this transaction!`,
         });
         for (let j = 0; j < accounts.length; j++) {
-          accounts[j].balanceBeforeBlock = accounts[j].balanceBeforeBlock.slice(
-            0,
-            id + 1
-          );
+          updatedAccounts[j].balanceBeforeBlock = updatedAccounts[
+            j
+          ].balanceBeforeBlock.slice(0, blockId + 1);
         }
-        this.setState({ accounts: accounts });
+        setAccounts(updatedAccounts);
         return;
       }
 
-      balancesAfterBlock[t.from] = balancesAfterBlock[t.from] - t.amount;
-      balancesAfterBlock[t.to] = balancesAfterBlock[t.to] + t.amount;
+      balancesAfterBlock[transaction.from] =
+        balancesAfterBlock[transaction.from] - transaction.amount;
+      balancesAfterBlock[transaction.to] =
+        balancesAfterBlock[transaction.to] + transaction.amount;
     }
 
     for (let i = 0; i < accounts.length; i++) {
-      accounts[i].balanceBeforeBlock[id + 1] = balancesAfterBlock[i];
+      updatedAccounts[i].balanceBeforeBlock[blockId + 1] =
+        balancesAfterBlock[i];
     }
 
     let hash = "";
-    let block = blocks[id];
     let nonce = -1;
-
     let blockString = blockToString(block, transactions);
-
-    let iterations = 1000000;
 
     let startTime = performance.now();
     do {
       nonce++;
       hash = generateBlockHashFromString(blockString, nonce);
-    } while (!hash.startsWith(validStartHash) && nonce < iterations);
+    } while (
+      !hash.startsWith(validStartHash) &&
+      nonce < MAX_MINING_HASH_ITERATIONS
+    );
     let endTime = performance.now();
 
-    if (nonce >= iterations && !hash.startsWith(validStartHash)) {
+    if (
+      nonce >= MAX_MINING_HASH_ITERATIONS &&
+      !hash.startsWith(validStartHash)
+    ) {
       showError("Could not validate block!");
-      this.addLog({
+      addLog({
         type: "error",
-        message: "Didn't find a valid nonce in " + iterations + " iterations!",
+        message: `Didn't find a valid nonce after ${MAX_MINING_HASH_ITERATIONS} iterations!`,
       });
       return;
     }
 
-    block.nonce = nonce;
-    block.confirmed = true;
-    block.hash = hash;
-    blocks[id] = block;
+    updatedBlocks[blockId] = { ...block, nonce, hash, confirmed: true };
+    setBlocks(updatedBlocks);
 
-    this.setState(
-      { blocks: blocks, lastConfirmedBlock: block.id, accounts: accounts },
-      () => {
-        this.addLog({
-          type: "success",
-          message:
-            "Confirmed block " +
-            id +
-            " with nonce " +
-            nonce +
-            "; calculation time: " +
-            (endTime - startTime) +
-            "ms",
-        });
-        this.recalculateBlocks();
-      }
-    );
+    addLog({
+      type: "success",
+      message: `Confirmed block ${blockId} with nonce ${nonce}; calculation time: ${
+        endTime - startTime
+      }ms`,
+    });
   };
 
-  onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     let { destination, source, draggableId } = result;
 
-    if (result.destination === null) return;
+    if (!destination) return;
+
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     )
       return;
 
-    let sourceIndex: number = result.source.index;
-    let destinationIndex: number = result.destination.index;
     let transactionId: number = parseInt(
-      draggableId.replace("transaction", "")
+      draggableId.replace(TRANSACTION_DRAGGABLE_PREFIX, "")
     );
 
-    let transactionList = this.state.transactions;
-    let unusedTransactions = this.state.unusedTransactions;
-    let blocks = this.state.blocks;
+    const updatedTransactions = [...transactions];
+    const updatedUnusedTransactions = [...unusedTransactions];
+    const updatedBlocks = [...blocks];
 
-    if (result.destination.droppableId === TRANSACTION_LIST_DROPPABLE_ID) {
-      if (result.source.droppableId === TRANSACTION_LIST_DROPPABLE_ID) {
-        unusedTransactions.splice(sourceIndex, 1);
-        unusedTransactions.splice(destinationIndex, 0, transactionId);
-
-        this.setState({ unusedTransactions: unusedTransactions });
-      } else {
-        let source = result.source.droppableId.replace(
-          BLOCK_DROPPABLE_PREFIX,
-          ""
-        );
-        let blockId = parseInt(source);
-
-        blocks[blockId].transactions.splice(sourceIndex, 1);
-
-        unusedTransactions.splice(destinationIndex, 0, transactionId);
-
-        transactionList[transactionId].editable = true;
-
-        this.setState({
-          blocks: blocks,
-          unusedTransactions: unusedTransactions,
-          transactions: transactionList,
-        });
-      }
-    } else {
-      if (result.source.droppableId === TRANSACTION_LIST_DROPPABLE_ID) {
-        let transactionList = this.state.transactions;
-        if (!transactionList[transactionId].signed) {
-          showError("Transaction must be signed to be included in a block!");
-          return;
-        }
-
-        unusedTransactions.splice(sourceIndex, 1);
-
-        // console.log(this.state.blocks);
-
-        let blockId = parseInt(
-          result.destination.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
-        );
-        //console.log(blockId);
-        let blockIndex = result.destination.index;
-        blocks[blockId].transactions.splice(blockIndex, 0, transactionId);
-
-        transactionList[transactionId].editable = false;
-
-        this.setState({
-          unusedTransactions: unusedTransactions,
-          blocks: blocks,
-          transactions: transactionList,
-        });
-      } else {
-        // Source and destination are blocks
-        let sourceBlockId = parseInt(
-          result.source.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
-        );
-        let destinationBlockId = parseInt(
-          result.destination.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
-        );
-
-        if (sourceBlockId === destinationBlockId) {
-          let blocks = this.state.blocks;
-          let transactions = blocks[sourceBlockId].transactions;
-
-          transactions.splice(sourceIndex, 1);
-          transactions.splice(destinationIndex, 0, transactionId);
-
-          blocks[sourceBlockId].transactions = transactions;
-          this.setState({ blocks: blocks });
-        } else {
-          let sourceTransactions = blocks[sourceBlockId].transactions;
-          sourceTransactions.splice(sourceIndex, 1);
-          blocks[sourceBlockId].transactions = sourceTransactions;
-
-          let destinationTransactions = blocks[destinationBlockId].transactions;
-          destinationTransactions.splice(destinationIndex, 0, transactionId);
-          blocks[destinationBlockId].transactions = destinationTransactions;
-
-          this.setState({ blocks: blocks });
-        }
-      }
+    // If order changed inside unused transactions
+    if (
+      source.droppableId === TRANSACTION_LIST_DROPPABLE_ID &&
+      destination.droppableId === TRANSACTION_LIST_DROPPABLE_ID
+    ) {
+      updatedUnusedTransactions.splice(source.index, 1);
+      updatedUnusedTransactions.splice(destination.index, 0, transactionId);
+      setUnusedTransactions(updatedUnusedTransactions);
+      return;
     }
 
-    this.recalculateBlocks();
+    // If transaction was dropped from a block into unused transactions
+    if (
+      source.droppableId !== TRANSACTION_LIST_DROPPABLE_ID &&
+      destination.droppableId === TRANSACTION_LIST_DROPPABLE_ID
+    ) {
+      const sourceString = result.source.droppableId.replace(
+        BLOCK_DROPPABLE_PREFIX,
+        ""
+      );
+      const sourceBlockId = parseInt(sourceString);
+      updatedBlocks[sourceBlockId].transactions.splice(source.index, 1);
+
+      updatedUnusedTransactions.splice(destination.index, 0, transactionId);
+      updatedTransactions[transactionId].editable = true;
+
+      setBlocks(updatedBlocks);
+      setUnusedTransactions(updatedUnusedTransactions);
+      setTransactions(updatedTransactions);
+      return;
+    }
+
+    // If transaction was dropped from unused transactions into a block
+    if (
+      source.droppableId === TRANSACTION_LIST_DROPPABLE_ID &&
+      destination.droppableId !== TRANSACTION_LIST_DROPPABLE_ID
+    ) {
+      if (!transactions[transactionId].signed) {
+        showError("Transaction must be signed to be included in a block!");
+        return;
+      }
+
+      updatedUnusedTransactions.splice(source.index, 1);
+
+      const sourceBlockId = parseInt(
+        destination.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
+      );
+      const sourceBlockIndex = destination.index;
+      updatedBlocks[sourceBlockId].transactions.splice(
+        sourceBlockIndex,
+        0,
+        transactionId
+      );
+
+      updatedTransactions[transactionId].editable = false;
+
+      setBlocks(updatedBlocks);
+      setUnusedTransactions(updatedUnusedTransactions);
+      setTransactions(updatedTransactions);
+      return;
+    }
+
+    // If transaction was dropped from a block into another block
+    if (
+      source.droppableId !== TRANSACTION_LIST_DROPPABLE_ID &&
+      destination.droppableId !== TRANSACTION_LIST_DROPPABLE_ID
+    ) {
+      // Source and destination are blocks
+      const sourceBlockId = parseInt(
+        source.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
+      );
+      const destinationBlockId = parseInt(
+        destination.droppableId.replace(BLOCK_DROPPABLE_PREFIX, "")
+      );
+
+      if (sourceBlockId === destinationBlockId) {
+        const blockTransactions = [...blocks[sourceBlockId].transactions];
+
+        blockTransactions.splice(source.index, 1);
+        blockTransactions.splice(destination.index, 0, transactionId);
+
+        updatedBlocks[sourceBlockId].transactions = blockTransactions;
+        setBlocks(updatedBlocks);
+      } else {
+        const sourceTransactions = [...blocks[sourceBlockId].transactions];
+        sourceTransactions.splice(source.index, 1);
+        updatedBlocks[sourceBlockId].transactions = sourceTransactions;
+
+        const destinationTransactions = [
+          ...blocks[destinationBlockId].transactions,
+        ];
+        destinationTransactions.splice(destination.index, 0, transactionId);
+        updatedBlocks[destinationBlockId].transactions =
+          destinationTransactions;
+
+        setBlocks(updatedBlocks);
+      }
+    }
   };
 
-  addLog = (log: LogElem) => {
-    let date = new Date();
-    let h = date.getHours();
-    let m = date.getMinutes();
-    let s = date.getSeconds();
-    log.time =
-      (h < 10 ? "0" + h : h) +
-      ":" +
-      (m < 10 ? "0" + m : m) +
-      ":" +
-      (s < 10 ? "0" + s : s);
-
-    let logs = this.state.logs;
-    logs.push(log);
-    this.setState({ logs: logs });
-  };
-
-  render() {
-    return (
-      <div className="App">
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <div id={"upperContent"}>
-            <AccountList
-              accounts={this.state.accounts}
-              onAddAccount={this.addAccount}
-              lastConfirmedBlock={this.state.lastConfirmedBlock}
-            ></AccountList>
-            <TransactionList
-              numberOfAccounts={this.state.accountIdCount}
-              onAddTransaction={this.addTransaction}
-              onRemoveSignature={this.removeSignature}
-              onSign={this.signTransaction}
-              transactions={this.state.transactions}
-              transactionOrder={this.state.unusedTransactions}
-              droppableId={TRANSACTION_LIST_DROPPABLE_ID}
-              emptyText="Add some transactions!"
-            ></TransactionList>
-            <LogList
-              logsVisible={this.state.logsVisible}
-              logElements={this.state.logs}
-            />
-          </div>
-          <div id={"lowerContent"}>
-            <Blockchain
-              blocks={this.state.blocks}
-              transactions={this.state.transactions}
-              onConfirm={this.confirmBlock}
-              onAddLog={this.addLog}
-            />
-          </div>
-          <Footer
-            toggleLogs={() =>
-              this.setState({ logsVisible: !this.state.logsVisible })
-            }
-            logsVisible={this.state.logsVisible}
-          ></Footer>
-        </DragDropContext>
-        <ToastContainer />
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div id={"upperContent"}>
+          <AccountList
+            accounts={accounts}
+            onAddAccount={addAccount}
+            lastConfirmedBlock={lastConfirmedBlock}
+          ></AccountList>
+          <TransactionList
+            numberOfAccounts={accounts.length}
+            onAddTransaction={addTransaction}
+            onRemoveSignature={removeSignature}
+            onSign={signTransaction}
+            transactions={transactions}
+            transactionOrder={unusedTransactions}
+            droppableId={TRANSACTION_LIST_DROPPABLE_ID}
+            emptyText="Add some transactions!"
+          ></TransactionList>
+          <LogList logsVisible={logsVisible} logElements={logs} />
+        </div>
+        <div id={"lowerContent"}>
+          <Blockchain
+            blocks={blocks}
+            transactions={transactions}
+            onConfirm={confirmBlock}
+            onAddLog={addLog}
+          />
+        </div>
+        <Footer
+          toggleLogs={() => setLogsVisible(!logsVisible)}
+          logsVisible={logsVisible}
+        ></Footer>
+      </DragDropContext>
+      <ToastContainer />
+    </div>
+  );
 }
-
-export default App;
