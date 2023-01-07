@@ -83,7 +83,7 @@ export default function TransactionElem({
               type="number"
               className="w-full input input-sm"
               min="0"
-              value={transaction.amount ?? 0}
+              value={transaction.amount}
               onChange={(event) => {
                 let val = parseInt(event.target.value);
 

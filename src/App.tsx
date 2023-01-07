@@ -131,6 +131,7 @@ export default function App() {
     const newTransaction: Transaction = {
       id: transactions.length,
       idString: "t" + transactions.length,
+      amount: 0,
       signed: false,
     };
 
