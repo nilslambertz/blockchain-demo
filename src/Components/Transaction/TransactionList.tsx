@@ -31,14 +31,19 @@ export default function TransactionList({
   onSign,
 }: TransactionListProps) {
   return (
-    <div className="relative flex-1 flex flex-col overflow-hidden items-stretch">
-      <div className="flex-1 px-2 overflow-y-scroll overflow-x-hidden flex flex-col items-stretch gap-2 pb-16">
+    <div className="h-full relative flex-1 flex flex-col overflow-hidden items-stretch">
+      <div
+        className={
+          "flex-1 px-2 overflow-y-scroll overflow-x-hidden flex flex-col items-stretch gap-2 " +
+          (hideTitleAndButton ? "" : "pb-16")
+        }
+      >
         {!hideTitleAndButton && (
           <div className="sticky top-0 w-full text-center text-2xl py-2 bg-base">
             transactions
           </div>
         )}
-        {transactions?.length === 0 && emptyText && (
+        {transactionOrder?.length === 0 && emptyText && (
           <div className="w-full text-center opacity-50">{emptyText}</div>
         )}
         <Droppable droppableId={droppableId} isDropDisabled={dropDisabled}>
@@ -47,7 +52,7 @@ export default function TransactionList({
               ref={provided.innerRef}
               {...provided.droppableProps}
               className={
-                "p-2 rounded-md flex flex-col items-stretch gap-2 bg-white transition-colors " +
+                "flex-1 p-2 rounded-md flex flex-col items-stretch gap-2 bg-white transition-colors " +
                 (snapshot.isDraggingOver ? "bg-opacity-10" : "bg-opacity-0")
               }
             >

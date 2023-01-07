@@ -20,16 +20,18 @@ export default function BlockElem({
   block,
   transactions,
   onConfirm,
-  onAddLog,
 }: BlockElemProps) {
   return (
     <div
-      className={"h-full border flex flex-col w-full max-w-4xl " + BORDER_COLOR}
+      className={
+        "flex-shrink-0 flex-grow-0 h-full border flex flex-col w-[700px] " +
+        BORDER_COLOR
+      }
     >
       <BlockSection title="Previous hash" smallText={true}>
         {block?.prevHash}
       </BlockSection>
-      <BlockSection title="Transactions" className="flex-1 overflow-y-auto">
+      <BlockSection className="flex-1 overflow-hidden">
         <TransactionList
           transactions={transactions}
           transactionOrder={block.transactions}
@@ -68,7 +70,7 @@ export default function BlockElem({
 
 interface BlockSectionProps {
   children: ReactNode;
-  title: string;
+  title?: string;
   className?: string;
   hideBorder?: boolean;
   smallText?: boolean;
@@ -89,7 +91,7 @@ const BlockSection = ({
       (hideBorder ? "" : "border-b " + BORDER_COLOR)
     }
   >
-    <div className={smallText ? "text-sm" : ""}>{children}</div>
-    <div className="flex flex-row justify-end text-xs">{title}</div>
+    <div className={"h-full " + (smallText ? "text-sm" : "")}>{children}</div>
+    {title && <div className="flex flex-row justify-end text-xs">{title}</div>}
   </div>
 );
