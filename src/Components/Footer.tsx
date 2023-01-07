@@ -12,12 +12,18 @@ export default function Footer({ toggleLogs, logsVisible }: FooterProps) {
         href="https://github.com/nilslambertz/BlockchainDemo"
         target="_blank"
         rel="noreferrer"
+        className="link no-underline"
       >
         source code
       </a>
       <span>
         by{" "}
-        <a href="https://nilslambertz.de" target="_blank" rel="noreferrer">
+        <a
+          href="https://nilslambertz.de"
+          target="_blank"
+          rel="noreferrer"
+          className="link no-underline"
+        >
           nils lambertz
         </a>
       </span>
