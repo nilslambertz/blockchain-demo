@@ -43,19 +43,21 @@ export default function TransactionList({
             transactions
           </div>
         )}
-        {transactionOrder?.length === 0 && emptyText && (
-          <div className="w-full text-center opacity-50">{emptyText}</div>
-        )}
         <Droppable droppableId={droppableId} isDropDisabled={dropDisabled}>
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
               className={
-                "flex-1 p-2 rounded-md flex flex-col items-stretch gap-2 bg-white transition-colors " +
+                "relative flex-1 p-2 rounded-md flex flex-col items-stretch gap-2 bg-white transition-colors " +
                 (snapshot.isDraggingOver ? "bg-opacity-10" : "bg-opacity-0")
               }
             >
+              {transactionOrder?.length === 0 && emptyText && (
+                <div className="absolute top-0 w-full text-center opacity-50">
+                  {emptyText}
+                </div>
+              )}
               {transactionOrder.map((arrayIndex, index) => {
                 return (
                   <TransactionElem
