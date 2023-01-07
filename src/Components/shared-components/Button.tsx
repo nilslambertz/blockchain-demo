@@ -3,13 +3,23 @@ import React from "react";
 interface ButtonProps {
   text: string;
   extraClasses?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
-export default function Button({ text, onClick, extraClasses }: ButtonProps) {
+export default function Button({
+  text,
+  disabled,
+  onClick,
+  extraClasses,
+}: ButtonProps) {
   return (
-    <div className={"btn " + extraClasses} onClick={onClick}>
+    <button
+      disabled={disabled}
+      className={"btn " + extraClasses}
+      onClick={onClick}
+    >
       {text}
-    </div>
+    </button>
   );
 }

@@ -40,17 +40,19 @@ export default function BlockElem({
       </BlockSection>
       <BlockSection title="Nonce">{block?.nonce}</BlockSection>
       <BlockSection title="Confirmation">
-        {block.confirmed ? (
-          <div className="w-full text-center text-green-500">confirmed</div>
-        ) : (
-          <div className="w-full flex flex-row justify-center">
-            <Button
-              extraClasses="btn-warning"
-              onClick={() => onConfirm(block.id)}
-              text="Confirm"
-            ></Button>
-          </div>
-        )}
+        <div className="w-full flex flex-row justify-center">
+          <Button
+            extraClasses={
+              block.confirmed
+                ? "btn-success no-animation cursor-default"
+                : "btn-warning"
+            }
+            onClick={() => {
+              if (!block.confirmed) onConfirm(block.id);
+            }}
+            text={block.confirmed ? "Confirmed" : "Confirm"}
+          ></Button>
+        </div>
       </BlockSection>
       <BlockSection title="Hash" smallText={true} hideBorder={true}>
         {block.confirmed ? (
