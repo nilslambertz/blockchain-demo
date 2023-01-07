@@ -143,6 +143,14 @@ export default function App() {
     });
   };
 
+  const updateTransaction = (transaction: Transaction) => {
+    setTransactions((transactionsArray) => {
+      const updatedTransactions = [...transactionsArray];
+      updatedTransactions[transaction.id] = transaction;
+      return updatedTransactions;
+    });
+  };
+
   const signTransaction = (transaction: Transaction) => {
     if (accounts.length === 0) {
       showError("At least one account is needed to set transaction values!");
@@ -452,6 +460,7 @@ export default function App() {
             onAddTransaction={addTransaction}
             onRemoveSignature={removeSignature}
             onSign={signTransaction}
+            onUpdateTransaction={updateTransaction}
             transactions={transactions}
             transactionOrder={unusedTransactions}
             droppableId={TRANSACTION_LIST_DROPPABLE_ID}
@@ -463,6 +472,7 @@ export default function App() {
           <Blockchain
             blocks={blocks}
             transactions={transactions}
+            numberOfAccounts={accounts.length}
             onConfirm={confirmBlock}
             onAddLog={addLog}
           />

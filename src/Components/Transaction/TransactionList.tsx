@@ -8,13 +8,14 @@ import TransactionElem from "./TransactionElem";
 interface TransactionListProps {
   transactions: Transaction[];
   transactionOrder: number[];
-  numberOfAccounts?: number;
+  numberOfAccounts: number;
   hideTitleAndButton?: boolean;
   dropDisabled?: boolean;
   emptyText: string;
   droppableId: string;
   formsDisabled?: boolean;
   onAddTransaction?: () => void;
+  onUpdateTransaction?: (transaction: Transaction) => void;
   onSign?: (transaction: Transaction) => void;
   onRemoveSignature?: (id: number) => void;
 }
@@ -29,6 +30,7 @@ export default function TransactionList({
   droppableId,
   formsDisabled,
   onAddTransaction,
+  onUpdateTransaction,
   onRemoveSignature,
   onSign,
 }: TransactionListProps) {
@@ -68,6 +70,7 @@ export default function TransactionList({
                     key={arrayIndex}
                     signFunction={onSign}
                     removeSignatureFunction={onRemoveSignature}
+                    onUpdateTransaction={onUpdateTransaction}
                     formsDisabled={formsDisabled ?? false}
                     index={index}
                   />

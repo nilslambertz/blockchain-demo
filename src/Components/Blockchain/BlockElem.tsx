@@ -1,24 +1,20 @@
 import React, { ReactNode } from "react";
 import { BLOCK_DROPPABLE_PREFIX, BORDER_COLOR } from "../../shared/constants";
-import {
-  Block,
-  LogElem,
-  Transaction,
-  validStartHash,
-} from "../../Utils/Interfaces";
+import { Block, Transaction, validStartHash } from "../../Utils/Interfaces";
 import Button from "../shared-components/Button";
 import TransactionList from "../Transaction/TransactionList";
 
 interface BlockElemProps {
   block: Block;
   transactions: Transaction[];
+  numberOfAccounts: number;
   onConfirm: (id: number) => void;
-  onAddLog: (logElem: LogElem) => void;
 }
 
 export default function BlockElem({
   block,
   transactions,
+  numberOfAccounts,
   onConfirm,
 }: BlockElemProps) {
   return (
@@ -36,6 +32,7 @@ export default function BlockElem({
           transactions={transactions}
           transactionOrder={block.transactions}
           droppableId={BLOCK_DROPPABLE_PREFIX + block.id}
+          numberOfAccounts={numberOfAccounts}
           emptyText="Drag and drop transactions here!"
           formsDisabled
           hideTitleAndButton

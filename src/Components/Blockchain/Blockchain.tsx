@@ -6,6 +6,7 @@ import { ReactComponent as Arrow } from "../../res/arrowright.svg";
 interface BlockchainProps {
   blocks: Block[];
   transactions: Transaction[];
+  numberOfAccounts: number;
   onConfirm: (id: number) => void;
   onAddLog: (logElem: LogElem) => void;
 }
@@ -13,8 +14,8 @@ interface BlockchainProps {
 export default function Blockchain({
   blocks,
   transactions,
+  numberOfAccounts,
   onConfirm,
-  onAddLog,
 }: BlockchainProps) {
   return (
     <div className="w-full overflow-x-scroll p-2 flex flex-row items-center">
@@ -23,8 +24,8 @@ export default function Blockchain({
           <BlockElem
             block={block}
             transactions={transactions}
+            numberOfAccounts={numberOfAccounts}
             onConfirm={onConfirm}
-            onAddLog={onAddLog}
           />
           {index !== array.length - 1 && (
             <div className="h-full flex flex-row flex-shrink-0 w-20 items-center">

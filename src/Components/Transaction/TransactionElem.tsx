@@ -10,10 +10,11 @@ import {
 
 interface TransactionElemProps {
   transaction: Transaction;
-  numberOfAccounts?: number;
+  numberOfAccounts: number;
   index: number;
   formsDisabled: boolean;
   signFunction?: (t: Transaction) => void;
+  onUpdateTransaction?: (transaction: Transaction) => void;
   removeSignatureFunction?: (id: number) => void;
 }
 
@@ -22,22 +23,20 @@ export default function TransactionElem({
   numberOfAccounts,
   formsDisabled,
   signFunction,
+  onUpdateTransaction,
   removeSignatureFunction,
   index,
 }: TransactionElemProps) {
-  const [from, setFrom] = useState(transaction.from);
-  const [to, setTo] = useState(transaction.to);
-  const [amount, setAmount] = useState(transaction.amount ?? 0);
-
   useEffect(() => {
     if (numberOfAccounts && numberOfAccounts > 0) {
-      if (!transaction.from) setFrom(0);
-      if (!transaction.to) setTo(0);
+      const from = transaction.from ?? 0;
+      const to = transaction.to ?? 0;
+      onUpdateTransaction?.({ ...transaction, from, to });
     }
   }, [numberOfAccounts]);
 
   const sign = () => {
-    signFunction?.({ ...transaction, from, to, amount });
+    signFunction?.(transaction);
   };
 
   return (
@@ -57,11 +56,11 @@ export default function TransactionElem({
             <TransactionSelect
               disabled={formsDisabled}
               numberOfAccounts={numberOfAccounts}
-              value={from}
+              value={transaction.from}
               onNewValue={(newValue) => {
-                if (from !== newValue) {
+                if (transaction.from !== newValue) {
                   removeSignatureFunction?.(transaction.id);
-                  setFrom(newValue);
+                  onUpdateTransaction?.({ ...transaction, from: newValue });
                 }
               }}
             ></TransactionSelect>
@@ -70,11 +69,11 @@ export default function TransactionElem({
             <TransactionSelect
               disabled={formsDisabled}
               numberOfAccounts={numberOfAccounts}
-              value={to}
+              value={transaction.to}
               onNewValue={(newValue) => {
-                if (to !== newValue) {
+                if (transaction.to !== newValue) {
                   removeSignatureFunction?.(transaction.id);
-                  setTo(newValue);
+                  onUpdateTransaction?.({ ...transaction, to: newValue });
                 }
               }}
             ></TransactionSelect>
@@ -84,17 +83,17 @@ export default function TransactionElem({
               type="number"
               className="w-full input input-sm"
               min="0"
-              value={amount}
+              value={transaction.amount ?? 0}
               onChange={(event) => {
                 let val = parseInt(event.target.value);
 
                 if (!isNaN(val)) {
-                  let oldValue = amount;
+                  let oldValue = transaction.amount;
                   if (oldValue !== val) {
                     removeSignatureFunction?.(transaction.id);
                   }
 
-                  setAmount(val);
+                  onUpdateTransaction?.({ ...transaction, amount: val });
                 }
               }}
               disabled={formsDisabled}
