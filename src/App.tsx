@@ -111,10 +111,10 @@ export default function App() {
 
     if (changed || newBlockAdded) {
       setBlocks(newBlocks);
-      setLastConfirmedBlock(
-        newBlocks.map((block) => block.confirmed).lastIndexOf(true)
-      );
     }
+    setLastConfirmedBlock(
+      newBlocks.map((block) => block.confirmed).lastIndexOf(true)
+    );
   }, [blocks]);
 
   const addAccount = () => {
