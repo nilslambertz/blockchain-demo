@@ -3,7 +3,10 @@ import { Transaction } from "../../Utils/Interfaces";
 import { Draggable } from "react-beautiful-dnd";
 import Button from "../shared-components/Button";
 import GridElem from "../shared-components/GridElem";
-import { BORDER_COLOR } from "../../shared/constants";
+import {
+  BORDER_COLOR,
+  TRANSACTION_DRAGGABLE_PREFIX,
+} from "../../shared/constants";
 
 interface TransactionElemProps {
   transaction: Transaction;
@@ -36,7 +39,10 @@ export default function TransactionElem({
   };
 
   return (
-    <Draggable draggableId={"transaction" + transaction.id} index={index}>
+    <Draggable
+      draggableId={TRANSACTION_DRAGGABLE_PREFIX + transaction.id}
+      index={index}
+    >
       {(provided) => (
         <div
           className={"w-full bg-base grid grid-cols-7 border " + BORDER_COLOR}
@@ -66,7 +72,7 @@ export default function TransactionElem({
               onNewValue={(newValue) => {
                 if (to !== newValue) {
                   removeSignatureFunction?.(transaction.id);
-                  setFrom(newValue);
+                  setTo(newValue);
                 }
               }}
             ></TransactionSelect>
