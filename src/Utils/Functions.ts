@@ -2,7 +2,6 @@ import {
   Account,
   Block,
   KeyAddressPair,
-  maxInitialBalance,
   SignaturePair,
   Transaction,
 } from "./Interfaces";
@@ -11,6 +10,7 @@ import util from "tweetnacl-util";
 import { encode } from "@stablelib/utf8";
 import { sha256 } from "js-sha256";
 import { Buffer } from "buffer";
+import { MAX_INITIAL_BALANCE } from "../shared/constants";
 
 /**
  * Returns hex-encoded String from array
@@ -51,7 +51,7 @@ export function generateKeyAddressPair(): KeyAddressPair {
  * @param t Transaction to be signed
  * @param privateKeyArray Private key to sign the transaction
  */
-export function signTransaction(
+export function signTransactionWithPrivateKey(
   t: Transaction,
   privateKeyArray: Uint8Array
 ): SignaturePair {
@@ -193,7 +193,7 @@ export function generateAccount(
   lastConfirmedBlock: number
 ): Account {
   let keys = generateKeyAddressPair();
-  let balance = Math.floor(Math.random() * (maxInitialBalance + 1));
+  let balance = Math.floor(Math.random() * (MAX_INITIAL_BALANCE + 1));
 
   return {
     id: id,
