@@ -17,11 +17,7 @@ export default function Footer({ toggleLogs, logsVisible }: FooterProps) {
       </a>
       <span>
         by{" "}
-        <a
-          href="https://nilslambertz.github.io/"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://nilslambertz.de" target="_blank" rel="noreferrer">
           nils lambertz
         </a>
       </span>
