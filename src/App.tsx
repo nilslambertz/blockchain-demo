@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import "./Style/Buttons.css";
 import {
   Account,
@@ -448,9 +447,9 @@ export default function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App flex flex-col bg-base">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div id={"upperContent"}>
+        <div className="flex-1 w-full overflow-x-hidden flex flex-row border-b border-b-pink-500">
           <AccountList
             accounts={accounts}
             onAddAccount={addAccount}
@@ -469,7 +468,7 @@ export default function App() {
           ></TransactionList>
           <LogList logsVisible={logsVisible} logElements={logs} />
         </div>
-        <div id={"lowerContent"}>
+        <div className="flex-1 w-full flex flex-row">
           <Blockchain
             blocks={blocks}
             transactions={transactions}
