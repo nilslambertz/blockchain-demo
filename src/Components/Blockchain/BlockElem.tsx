@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { BLOCK_DROPPABLE_PREFIX, BORDER_COLOR } from "../../shared/constants";
-import "./Blockchain.css";
 import {
   Block,
   LogElem,
