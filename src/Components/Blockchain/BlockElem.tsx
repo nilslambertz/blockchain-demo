@@ -37,6 +37,7 @@ export default function BlockElem({
           transactionOrder={block.transactions}
           droppableId={BLOCK_DROPPABLE_PREFIX + block.id}
           emptyText="Drag and drop transactions here!"
+          formsDisabled
           hideTitleAndButton
         ></TransactionList>
       </BlockSection>

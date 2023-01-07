@@ -20,7 +20,6 @@ export interface Transaction {
   signed: boolean;
   signature?: string;
   signatureArray?: Uint8Array;
-  editable: boolean;
 }
 
 export interface KeyAddressPair {

@@ -13,6 +13,7 @@ interface TransactionListProps {
   dropDisabled?: boolean;
   emptyText: string;
   droppableId: string;
+  formsDisabled?: boolean;
   onAddTransaction?: () => void;
   onSign?: (transaction: Transaction) => void;
   onRemoveSignature?: (id: number) => void;
@@ -26,6 +27,7 @@ export default function TransactionList({
   emptyText,
   transactions,
   droppableId,
+  formsDisabled,
   onAddTransaction,
   onRemoveSignature,
   onSign,
@@ -66,6 +68,7 @@ export default function TransactionList({
                     key={arrayIndex}
                     signFunction={onSign}
                     removeSignatureFunction={onRemoveSignature}
+                    formsDisabled={formsDisabled ?? false}
                     index={index}
                   />
                 );

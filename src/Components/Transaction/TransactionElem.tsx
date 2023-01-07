@@ -12,6 +12,7 @@ interface TransactionElemProps {
   transaction: Transaction;
   numberOfAccounts?: number;
   index: number;
+  formsDisabled: boolean;
   signFunction?: (t: Transaction) => void;
   removeSignatureFunction?: (id: number) => void;
 }
@@ -19,6 +20,7 @@ interface TransactionElemProps {
 export default function TransactionElem({
   transaction,
   numberOfAccounts,
+  formsDisabled,
   signFunction,
   removeSignatureFunction,
   index,
@@ -53,7 +55,7 @@ export default function TransactionElem({
           <GridElem>{transaction.idString}</GridElem>
           <GridElem extraClasses="text-2xs">
             <TransactionSelect
-              disabled={!transaction.editable}
+              disabled={formsDisabled}
               numberOfAccounts={numberOfAccounts}
               value={from}
               onNewValue={(newValue) => {
@@ -66,7 +68,7 @@ export default function TransactionElem({
           </GridElem>
           <GridElem extraClasses="text-2xs">
             <TransactionSelect
-              disabled={!transaction.editable}
+              disabled={formsDisabled}
               numberOfAccounts={numberOfAccounts}
               value={to}
               onNewValue={(newValue) => {
@@ -95,7 +97,7 @@ export default function TransactionElem({
                   setAmount(val);
                 }
               }}
-              disabled={!transaction.editable}
+              disabled={formsDisabled}
             />
           </GridElem>
           <GridElem

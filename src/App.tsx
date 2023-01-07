@@ -132,7 +132,6 @@ export default function App() {
       id: transactions.length,
       idString: "t" + transactions.length,
       signed: false,
-      editable: true,
     };
 
     setTransactions([...transactions, newTransaction]);
@@ -366,7 +365,6 @@ export default function App() {
       updatedBlocks[sourceBlockId].transactions.splice(source.index, 1);
 
       updatedUnusedTransactions.splice(destination.index, 0, transactionId);
-      updatedTransactions[transactionId].editable = true;
 
       setBlocks(updatedBlocks);
       setUnusedTransactions(updatedUnusedTransactions);
@@ -395,8 +393,6 @@ export default function App() {
         0,
         transactionId
       );
-
-      updatedTransactions[transactionId].editable = false;
 
       setBlocks(updatedBlocks);
       setUnusedTransactions(updatedUnusedTransactions);
