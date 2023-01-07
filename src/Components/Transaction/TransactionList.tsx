@@ -7,22 +7,22 @@ import TransactionElem from "./TransactionElem";
 
 interface TransactionListProps {
   transactions: Transaction[];
-  unusedTransactions: number[];
-  numberOfAccounts: number;
-  hideTitle?: boolean;
+  transactionOrder: number[];
+  numberOfAccounts?: number;
+  hideTitleAndButton?: boolean;
   dropDisabled?: boolean;
   emptyText: string;
   droppableId: string;
-  onAddTransaction: () => void;
-  onSign: (transaction: Transaction) => void;
-  onRemoveSignature: (id: number) => void;
+  onAddTransaction?: () => void;
+  onSign?: (transaction: Transaction) => void;
+  onRemoveSignature?: (id: number) => void;
 }
 
 export default function TransactionList({
   dropDisabled,
-  hideTitle,
+  hideTitleAndButton,
   numberOfAccounts,
-  unusedTransactions,
+  transactionOrder,
   emptyText,
   transactions,
   droppableId,
@@ -33,7 +33,7 @@ export default function TransactionList({
   return (
     <div className="relative flex-1 flex flex-col overflow-hidden items-stretch">
       <div className="flex-1 px-2 overflow-y-scroll overflow-x-hidden flex flex-col items-stretch gap-2 pb-16">
-        {!hideTitle && (
+        {!hideTitleAndButton && (
           <div className="sticky top-0 w-full text-center text-2xl py-2 bg-base">
             transactions
           </div>
@@ -51,7 +51,7 @@ export default function TransactionList({
                 (snapshot.isDraggingOver ? "bg-opacity-10" : "bg-opacity-0")
               }
             >
-              {unusedTransactions.map((arrayIndex, index) => {
+              {transactionOrder.map((arrayIndex, index) => {
                 return (
                   <TransactionElem
                     transaction={transactions[arrayIndex]}
@@ -68,13 +68,15 @@ export default function TransactionList({
           )}
         </Droppable>
       </div>
-      <div className="absolute w-full flex flex-row justify-center bottom-3">
-        <Button
-          text="Add"
-          onClick={onAddTransaction}
-          extraClasses="btn-success"
-        ></Button>
-      </div>
+      {!hideTitleAndButton && (
+        <div className="absolute w-full flex flex-row justify-center bottom-3">
+          <Button
+            text="Add"
+            onClick={onAddTransaction}
+            extraClasses="btn-success"
+          ></Button>
+        </div>
+      )}
     </div>
   );
 }

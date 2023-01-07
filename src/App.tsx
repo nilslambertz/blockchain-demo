@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import "./Style/Buttons.css";
-import UpperList from "./Components/UpperList/UpperList";
 import {
   Account,
   Block,
@@ -548,7 +547,7 @@ class App extends React.Component<AppProps, AppState> {
               onRemoveSignature={this.removeSignature}
               onSign={this.signTransaction}
               transactions={this.state.transactions}
-              unusedTransactions={this.state.unusedTransactions}
+              transactionOrder={this.state.unusedTransactions}
               droppableId={TRANSACTION_LIST_DROPPABLE_ID}
               emptyText="Add some transactions!"
             ></TransactionList>

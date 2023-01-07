@@ -7,10 +7,10 @@ import { BORDER_COLOR } from "../../shared/constants";
 
 interface TransactionElemProps {
   transaction: Transaction;
-  numberOfAccounts: number;
+  numberOfAccounts?: number;
   index: number;
-  signFunction: (t: Transaction) => void;
-  removeSignatureFunction: (id: number) => void;
+  signFunction?: (t: Transaction) => void;
+  removeSignatureFunction?: (id: number) => void;
 }
 
 export default function TransactionElem({
@@ -25,14 +25,14 @@ export default function TransactionElem({
   const [amount, setAmount] = useState(transaction.amount ?? 0);
 
   useEffect(() => {
-    if (numberOfAccounts > 0) {
+    if (numberOfAccounts && numberOfAccounts > 0) {
       if (!transaction.from) setFrom(0);
       if (!transaction.to) setTo(0);
     }
   }, [numberOfAccounts]);
 
   const sign = () => {
-    signFunction({ ...transaction, from, to, amount });
+    signFunction?.({ ...transaction, from, to, amount });
   };
 
   return (
@@ -52,7 +52,7 @@ export default function TransactionElem({
               value={from}
               onNewValue={(newValue) => {
                 if (from !== newValue) {
-                  removeSignatureFunction(transaction.id);
+                  removeSignatureFunction?.(transaction.id);
                   setFrom(newValue);
                 }
               }}
@@ -65,7 +65,7 @@ export default function TransactionElem({
               value={to}
               onNewValue={(newValue) => {
                 if (to !== newValue) {
-                  removeSignatureFunction(transaction.id);
+                  removeSignatureFunction?.(transaction.id);
                   setFrom(newValue);
                 }
               }}
@@ -83,7 +83,7 @@ export default function TransactionElem({
                 if (!isNaN(val)) {
                   let oldValue = amount;
                   if (oldValue !== val) {
-                    removeSignatureFunction(transaction.id);
+                    removeSignatureFunction?.(transaction.id);
                   }
 
                   setAmount(val);
@@ -129,7 +129,7 @@ export default function TransactionElem({
 
 interface TransactionSelectProps {
   value?: number;
-  numberOfAccounts: number;
+  numberOfAccounts?: number;
   onNewValue: (newValue: number) => void;
   disabled: boolean;
 }

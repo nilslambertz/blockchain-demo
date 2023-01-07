@@ -2,8 +2,8 @@ import React from "react";
 
 interface ButtonProps {
   text: string;
-  onClick: () => void;
   extraClasses?: string;
+  onClick?: () => void;
 }
 
 export default function Button({ text, onClick, extraClasses }: ButtonProps) {

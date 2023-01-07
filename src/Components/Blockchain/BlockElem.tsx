@@ -7,8 +7,8 @@ import {
   Transaction,
   validStartHash,
 } from "../../Utils/Interfaces";
-import UpperList from "../UpperList/UpperList";
 import Button from "../shared-components/Button";
+import TransactionList from "../Transaction/TransactionList";
 
 interface BlockElemProps {
   block: Block;
@@ -31,16 +31,13 @@ export default function BlockElem({
         {block?.prevHash}
       </BlockSection>
       <BlockSection title="Transactions" className="flex-1 overflow-y-auto">
-        <UpperList
-          droppableId={BLOCK_DROPPABLE_PREFIX + block.id}
-          title={"transactions"}
+        <TransactionList
           transactions={transactions}
           transactionOrder={block.transactions}
-          className={"transactionListContainer"}
-          emptyText={"Drag and drop transactions here!"}
-          blockList={true}
-          addLogFunction={onAddLog}
-        />
+          droppableId={BLOCK_DROPPABLE_PREFIX + block.id}
+          emptyText="Drag and drop transactions here!"
+          hideTitleAndButton
+        ></TransactionList>
       </BlockSection>
       <BlockSection title="Nonce">{block?.nonce}</BlockSection>
       <BlockSection title="Confirmation">
