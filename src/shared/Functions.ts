@@ -33,10 +33,9 @@ function getArrayFromString(str: string): Uint8Array {
  * in hex-encoding and as Uint8-arrays
  */
 export function generateKeyAddressPair(): KeyAddressPair {
-  let pair: BoxKeyPair = nacl.sign.keyPair();
-
-  let privateKey = getStringFromArray(pair.secretKey);
-  let address = getStringFromArray(pair.publicKey);
+  const pair: BoxKeyPair = nacl.sign.keyPair();
+  const privateKey = getStringFromArray(pair.secretKey);
+  const address = getStringFromArray(pair.publicKey);
 
   return {
     privateKey: privateKey,
@@ -55,10 +54,9 @@ export function signTransactionWithPrivateKey(
   t: Transaction,
   privateKeyArray: Uint8Array
 ): SignaturePair {
-  let message: string = transactionToString(t);
-  let messageArr = getArrayFromString(message);
-
-  let sig: Uint8Array = nacl.sign.detached(messageArr, privateKeyArray);
+  const message: string = transactionToString(t);
+  const messageArr = getArrayFromString(message);
+  const sig: Uint8Array = nacl.sign.detached(messageArr, privateKeyArray);
 
   return {
     signature: getStringFromArray(sig),
@@ -77,8 +75,8 @@ export function verifyTransaction(
   signatureArray: Uint8Array,
   addressArray: Uint8Array
 ): boolean {
-  let message: string = transactionToString(t);
-  let messageArr = getArrayFromString(message);
+  const message: string = transactionToString(t);
+  const messageArr = getArrayFromString(message);
 
   return nacl.sign.detached.verify(messageArr, signatureArray, addressArray);
 }
@@ -110,11 +108,7 @@ export function verifyAllBlockTransactions(
         );
         if (!verified) {
           console.log(
-            "Error in block " +
-              t.id +
-              ": Signature in transaction " +
-              t.id +
-              " could not be verified!"
+            `Error in block ${b.id}: Signature of transaction ${t.id} could not be verified!`
           );
           return false;
         }
@@ -135,7 +129,7 @@ export function generateBlockHash(
 ): string {
   if (b.nonce === undefined) return "";
 
-  let blockString = blockToString(b, transactions);
+  const blockString = blockToString(b, transactions);
   return generateBlockHashFromString(blockString, b.nonce);
 }
 
@@ -158,13 +152,11 @@ export function generateBlockHashFromString(
  * @param transactions Array of all transactions
  */
 export function blockToString(b: Block, transactions: Transaction[]): string {
-  let transactionArray = [];
-  for (let i = 0; i < b.transactions.length; i++) {
-    let t = transactions[b.transactions[i]];
-    transactionArray.push(transactionToString(t));
-  }
+  const transactionArray = b.transactions.map((transactionIndex) =>
+    transactionToString(transactions[transactionIndex])
+  );
 
-  let obj = {
+  const obj = {
     prevHash: b.prevHash,
     transactions: transactionArray,
   };
@@ -178,30 +170,25 @@ export function blockToString(b: Block, transactions: Transaction[]): string {
  * @param t Transaction
  */
 function transactionToString(t: Transaction): string {
-  let obj = {
+  return JSON.stringify({
     id: t.id,
     from: t.from,
     to: t.to,
     amount: t.amount,
-  };
-
-  return JSON.stringify(obj);
+  });
 }
 
 export function generateAccount(
   id: number,
   lastConfirmedBlock: number
 ): Account {
-  let keys = generateKeyAddressPair();
-  let balance = Math.floor(Math.random() * (MAX_INITIAL_BALANCE + 1));
+  const keys = generateKeyAddressPair();
+  const balance = Math.floor(Math.random() * (MAX_INITIAL_BALANCE + 1));
 
   return {
-    id: id,
+    id,
     idString: "a" + id,
-    privateKey: keys.privateKey,
-    privateKeyArray: keys.privateKeyArray,
-    address: keys.address,
-    addressArray: keys.addressArray,
     balanceBeforeBlock: Array(lastConfirmedBlock + 2).fill(balance),
+    ...keys,
   };
 }
