@@ -380,11 +380,6 @@ export default function App() {
       source.droppableId === TRANSACTION_LIST_DROPPABLE_ID &&
       destination.droppableId !== TRANSACTION_LIST_DROPPABLE_ID
     ) {
-      if (!transactions[transactionId].signed) {
-        showError("Transaction must be signed to be included in a block!");
-        return;
-      }
-
       updatedUnusedTransactions.splice(source.index, 1);
 
       const sourceBlockId = parseInt(

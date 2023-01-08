@@ -110,6 +110,7 @@ export default function TransactionElem({
                 extraClasses="btn-primary"
                 text="Sign"
                 onClick={sign}
+                disabled={formsDisabled}
               ></Button>
             )}
           </GridElem>
