@@ -94,25 +94,22 @@ export function verifyAllBlockTransactions(
 ): boolean {
   for (let i = 0; i < b.transactions.length; i++) {
     let t = transactions[b.transactions[i]];
-    if (t.from !== undefined) {
-      let account = accounts[t.from];
 
-      if (
-        t.signatureArray !== undefined &&
-        account.addressArray !== undefined
-      ) {
-        let verified = verifyTransaction(
-          t,
-          t.signatureArray,
-          account.addressArray
-        );
-        if (!verified) {
-          console.log(
-            `Error in block ${b.id}: Signature of transaction ${t.id} could not be verified!`
-          );
-          return false;
-        }
-      }
+    if (t.from === undefined) return false;
+
+    const account = accounts[t.from];
+    if (!t.signatureArray || !account.addressArray) return false;
+
+    const verified = verifyTransaction(
+      t,
+      t.signatureArray,
+      account.addressArray
+    );
+    if (!verified) {
+      console.log(
+        `Error in block ${b.id}: Signature of transaction ${t.id} could not be verified!`
+      );
+      return false;
     }
   }
   return true;
