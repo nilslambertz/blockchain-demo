@@ -10,7 +10,7 @@ import util from "tweetnacl-util";
 import { encode } from "@stablelib/utf8";
 import { sha256 } from "js-sha256";
 import { Buffer } from "buffer";
-import { MAX_INITIAL_BALANCE } from "./Constants";
+import { MAX_INITIAL_BALANCE } from "./constants";
 
 /**
  * Returns hex-encoded String from array

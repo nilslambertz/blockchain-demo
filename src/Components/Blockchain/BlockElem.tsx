@@ -3,7 +3,7 @@ import {
   BLOCK_DROPPABLE_PREFIX,
   BORDER_COLOR,
   VALID_START_HASH,
-} from "../../shared/Constants";
+} from "../../shared/constants";
 import { Block, Transaction } from "../../shared/Types";
 import Button from "../shared-components/Button";
 import TransactionList from "../Transaction/TransactionList";

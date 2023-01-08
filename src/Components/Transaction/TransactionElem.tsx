@@ -6,7 +6,7 @@ import GridElem from "../shared-components/GridElem";
 import {
   BORDER_COLOR,
   TRANSACTION_DRAGGABLE_PREFIX,
-} from "../../shared/Constants";
+} from "../../shared/constants";
 
 interface TransactionElemProps {
   transaction: Transaction;
