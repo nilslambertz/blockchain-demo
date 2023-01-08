@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./Style/Buttons.css";
 import {
   Account,
   LogElem,
