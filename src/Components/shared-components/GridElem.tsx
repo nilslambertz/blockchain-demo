@@ -15,7 +15,7 @@ export default function GridElem({
   return (
     <div
       className={
-        "flex flex-row items-center p-2 break-all border-opacity-50 " +
+        "flex flex-row items-center p-2 break-all border-opacity-50 min-w-[80px] " +
         extraClasses +
         (!hideBorder ? " border-r " + BORDER_COLOR : "")
       }
