@@ -1,9 +1,5 @@
 import { toast, ToastOptions } from "react-toastify";
 
-const warnStyle = {
-  backgroundColor: "#FF5226",
-};
-
 const options: ToastOptions = {
   position: "top-right",
   autoClose: 3000,
@@ -11,8 +7,6 @@ const options: ToastOptions = {
   closeOnClick: true,
   pauseOnHover: true,
   draggable: false,
-  progress: undefined,
-  style: warnStyle,
 };
 
 export function showError(msg: string): void {
@@ -20,5 +14,5 @@ export function showError(msg: string): void {
 }
 
 export function showWarning(msg: string): void {
-  toast.warn(msg, { ...options, style: warnStyle });
+  toast.warn(msg, options);
 }
