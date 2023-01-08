@@ -1,6 +1,6 @@
 import React from "react";
-import { BORDER_COLOR } from "../../shared/constants";
-import { Account } from "../../Utils/Interfaces";
+import { BORDER_COLOR } from "../../shared/Constants";
+import { Account } from "../../shared/Types";
 import GridElem from "../shared-components/GridElem";
 
 interface AccountElemProps {

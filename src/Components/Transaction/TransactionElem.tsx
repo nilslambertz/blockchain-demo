@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Transaction } from "../../Utils/Interfaces";
+import { Transaction } from "../../shared/Types";
 import { Draggable } from "react-beautiful-dnd";
 import Button from "../shared-components/Button";
 import GridElem from "../shared-components/GridElem";
 import {
   BORDER_COLOR,
   TRANSACTION_DRAGGABLE_PREFIX,
-} from "../../shared/constants";
+} from "../../shared/Constants";
 
 interface TransactionElemProps {
   transaction: Transaction;

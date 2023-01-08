@@ -1,4 +1,4 @@
-import { Block } from "../Utils/Interfaces";
+import { Block } from "./Types";
 
 export const BORDER_COLOR = "border-gray-500";
 

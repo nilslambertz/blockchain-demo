@@ -1,5 +1,5 @@
 import React from "react";
-import { LogElem } from "../Utils/Interfaces";
+import { LogElem } from "../shared/Types";
 
 interface LogListProps {
   logElements: LogElem[];

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Account, LogElem, Transaction } from "./Utils/Interfaces";
+import { Account, LogElem, Transaction } from "./shared/Types";
 import {
   blockToString,
   generateAccount,
@@ -7,12 +7,12 @@ import {
   generateBlockHashFromString,
   signTransactionWithPrivateKey,
   verifyAllBlockTransactions,
-} from "./Utils/Functions";
+} from "./shared/Functions";
 import Blockchain from "./Components/Blockchain/Blockchain";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { showError, showWarning } from "./Utils/ToastFunctions";
+import { showError, showWarning } from "./shared/ToastFunctions";
 import LogList from "./Components/LogList";
 import Footer from "./Components/Footer";
 import AccountList from "./Components/Account/AccountList";
@@ -25,7 +25,7 @@ import {
   TRANSACTION_DRAGGABLE_PREFIX,
   TRANSACTION_LIST_DROPPABLE_ID,
   VALID_START_HASH,
-} from "./shared/constants";
+} from "./shared/Constants";
 
 export default function App() {
   const [logs, setLogs] = useState<LogElem[]>([]);

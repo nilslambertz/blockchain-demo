@@ -1,7 +1,7 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { TRANSACTION_LIST_DROPPABLE_ID } from "../../shared/constants";
-import { Transaction } from "../../Utils/Interfaces";
+import { TRANSACTION_LIST_DROPPABLE_ID } from "../../shared/Constants";
+import { Transaction } from "../../shared/Types";
 import Button from "../shared-components/Button";
 import TransactionElem from "./TransactionElem";
 

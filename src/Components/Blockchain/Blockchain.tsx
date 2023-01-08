@@ -1,5 +1,5 @@
 import React from "react";
-import { Block, LogElem, Transaction } from "../../Utils/Interfaces";
+import { Block, LogElem, Transaction } from "../../shared/Types";
 import BlockElem from "./BlockElem";
 import { ReactComponent as Arrow } from "../../res/arrowright.svg";
 

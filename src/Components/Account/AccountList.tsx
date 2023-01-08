@@ -1,5 +1,5 @@
 import React from "react";
-import { Account, LogElem } from "../../Utils/Interfaces";
+import { Account, LogElem } from "../../shared/Types";
 import Button from "../shared-components/Button";
 import AccountElem from "./AccountElem";
 
