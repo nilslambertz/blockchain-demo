@@ -447,35 +447,37 @@ export default function App() {
   };
 
   return (
-    <div className="App flex flex-col bg-base">
+    <div className="App flex flex-col flex-grow-0 bg-base">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex-1 w-full overflow-x-hidden flex flex-row border-b border-b-pink-500">
-          <AccountList
-            accounts={accounts}
-            onAddAccount={addAccount}
-            lastConfirmedBlock={lastConfirmedBlock}
-          ></AccountList>
-          <TransactionList
-            numberOfAccounts={accounts.length}
-            onAddTransaction={addTransaction}
-            onRemoveSignature={removeSignature}
-            onSign={signTransaction}
-            onUpdateTransaction={updateTransaction}
-            transactions={transactions}
-            transactionOrder={unusedTransactions}
-            droppableId={TRANSACTION_LIST_DROPPABLE_ID}
-            emptyText="Add some transactions!"
-          ></TransactionList>
-          <LogList logsVisible={logsVisible} logElements={logs} />
-        </div>
-        <div className="flex-1 w-full flex flex-row">
-          <Blockchain
-            blocks={blocks}
-            transactions={transactions}
-            numberOfAccounts={accounts.length}
-            onConfirm={confirmBlock}
-            onAddLog={addLog}
-          />
+        <div className="h-[calc(100%-3rem)] flex flex-col">
+          <div className="h-1/2 w-full overflow-x-hidden flex flex-row border-b border-b-pink-500">
+            <AccountList
+              accounts={accounts}
+              onAddAccount={addAccount}
+              lastConfirmedBlock={lastConfirmedBlock}
+            ></AccountList>
+            <TransactionList
+              numberOfAccounts={accounts.length}
+              onAddTransaction={addTransaction}
+              onRemoveSignature={removeSignature}
+              onSign={signTransaction}
+              onUpdateTransaction={updateTransaction}
+              transactions={transactions}
+              transactionOrder={unusedTransactions}
+              droppableId={TRANSACTION_LIST_DROPPABLE_ID}
+              emptyText="Add some transactions!"
+            ></TransactionList>
+            <LogList logsVisible={logsVisible} logElements={logs} />
+          </div>
+          <div className="h-1/2 w-full flex flex-row">
+            <Blockchain
+              blocks={blocks}
+              transactions={transactions}
+              numberOfAccounts={accounts.length}
+              onConfirm={confirmBlock}
+              onAddLog={addLog}
+            />
+          </div>
         </div>
         <Footer
           toggleLogs={() => setLogsVisible(!logsVisible)}
