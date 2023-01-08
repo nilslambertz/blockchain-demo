@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Account,
-  LogElem,
-  Transaction,
-  validStartHash,
-} from "./Utils/Interfaces";
+import { Account, LogElem, Transaction } from "./Utils/Interfaces";
 import {
   blockToString,
   generateAccount,
@@ -29,6 +24,7 @@ import {
   TIME_FORMATTER_OPTIONS,
   TRANSACTION_DRAGGABLE_PREFIX,
   TRANSACTION_LIST_DROPPABLE_ID,
+  VALID_START_HASH,
 } from "./shared/constants";
 
 export default function App() {
@@ -301,14 +297,14 @@ export default function App() {
       nonce++;
       hash = generateBlockHashFromString(blockString, nonce);
     } while (
-      !hash.startsWith(validStartHash) &&
+      !hash.startsWith(VALID_START_HASH) &&
       nonce < MAX_MINING_HASH_ITERATIONS
     );
     let endTime = performance.now();
 
     if (
       nonce >= MAX_MINING_HASH_ITERATIONS &&
-      !hash.startsWith(validStartHash)
+      !hash.startsWith(VALID_START_HASH)
     ) {
       showError("Could not validate block!");
       addLog({

@@ -1,6 +1,3 @@
-export const validStartHash = "0".repeat(3);
-export const maxInitialBalance = 1000;
-
 export interface Account {
   id: number;
   idString: string;

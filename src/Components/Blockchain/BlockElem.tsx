@@ -1,6 +1,10 @@
 import React, { ReactNode } from "react";
-import { BLOCK_DROPPABLE_PREFIX, BORDER_COLOR } from "../../shared/constants";
-import { Block, Transaction, validStartHash } from "../../Utils/Interfaces";
+import {
+  BLOCK_DROPPABLE_PREFIX,
+  BORDER_COLOR,
+  VALID_START_HASH,
+} from "../../shared/constants";
+import { Block, Transaction } from "../../Utils/Interfaces";
 import Button from "../shared-components/Button";
 import TransactionList from "../Transaction/TransactionList";
 
@@ -57,8 +61,8 @@ export default function BlockElem({
       <BlockSection title="Hash" smallText={true} hideBorder={true}>
         {block.confirmed ? (
           <span>
-            <b className="text-green-500">{validStartHash}</b>
-            {block?.hash?.substring(validStartHash.length)}
+            <b className="text-green-500">{VALID_START_HASH}</b>
+            {block?.hash?.substring(VALID_START_HASH.length)}
           </span>
         ) : (
           block?.hash
