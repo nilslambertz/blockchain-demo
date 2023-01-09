@@ -24,9 +24,9 @@ export default function BlockElem({
   return (
     <div
       className={
-        "flex-shrink-0 flex-grow-0 h-full border flex flex-col w-[700px] " +
+        "flex-shrink-0 flex-grow-0 h-full border flex flex-col w-[700px] transition-colors bg-success bg-opacity-0 " +
         BORDER_COLOR +
-        (block.confirmed ? " bg-success bg-opacity-20" : "")
+        (block.confirmed ? " !bg-opacity-20" : "")
       }
     >
       <BlockSection title="Previous hash" smallText={true}>
