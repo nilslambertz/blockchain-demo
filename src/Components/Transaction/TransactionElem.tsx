@@ -6,7 +6,7 @@ import GridElem from "../shared-components/GridElem";
 import {
   BORDER_COLOR,
   TRANSACTION_DRAGGABLE_PREFIX,
-} from "../../shared/Constants";
+} from "../../shared/constants";
 
 interface TransactionElemProps {
   transaction: Transaction;
@@ -110,6 +110,7 @@ export default function TransactionElem({
                 extraClasses="btn-primary"
                 text="Sign"
                 onClick={sign}
+                disabled={formsDisabled}
               ></Button>
             )}
           </GridElem>

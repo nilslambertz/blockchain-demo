@@ -10,7 +10,7 @@ import util from "tweetnacl-util";
 import { encode } from "@stablelib/utf8";
 import { sha256 } from "js-sha256";
 import { Buffer } from "buffer";
-import { MAX_INITIAL_BALANCE } from "./Constants";
+import { MAX_INITIAL_BALANCE } from "./constants";
 
 /**
  * Returns hex-encoded String from array
@@ -94,25 +94,22 @@ export function verifyAllBlockTransactions(
 ): boolean {
   for (let i = 0; i < b.transactions.length; i++) {
     let t = transactions[b.transactions[i]];
-    if (t.from !== undefined) {
-      let account = accounts[t.from];
 
-      if (
-        t.signatureArray !== undefined &&
-        account.addressArray !== undefined
-      ) {
-        let verified = verifyTransaction(
-          t,
-          t.signatureArray,
-          account.addressArray
-        );
-        if (!verified) {
-          console.log(
-            `Error in block ${b.id}: Signature of transaction ${t.id} could not be verified!`
-          );
-          return false;
-        }
-      }
+    if (t.from === undefined) return false;
+
+    const account = accounts[t.from];
+    if (!t.signatureArray || !account.addressArray) return false;
+
+    const verified = verifyTransaction(
+      t,
+      t.signatureArray,
+      account.addressArray
+    );
+    if (!verified) {
+      console.log(
+        `Error in block ${b.id}: Signature of transaction ${t.id} could not be verified!`
+      );
+      return false;
     }
   }
   return true;
