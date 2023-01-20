@@ -82,11 +82,11 @@ export default function TransactionList({
         </Droppable>
       </div>
       {!hideTitleAndButton && (
-        <div className="absolute w-full flex flex-row justify-center bottom-3">
+        <div className="absolute w-full flex flex-row justify-center bottom-3 pointer-events-none">
           <Button
             text="Add"
             onClick={onAddTransaction}
-            extraClasses="btn-success"
+            extraClasses="btn-success pointer-events-auto"
           ></Button>
         </div>
       )}

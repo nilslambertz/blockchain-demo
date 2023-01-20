@@ -33,11 +33,11 @@ export default function AccountList({
           </div>
         )}
       </div>
-      <div className="absolute w-full flex flex-row justify-center bottom-3">
+      <div className="absolute w-full flex flex-row justify-center bottom-3 pointer-events-none">
         <Button
           text="Add"
           onClick={onAddAccount}
-          extraClasses="btn-success"
+          extraClasses="btn-success pointer-events-auto"
         ></Button>
       </div>
     </div>
